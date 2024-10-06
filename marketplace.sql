@@ -17,8 +17,13 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8mb4 */;
 
+--
 -- Base de datos: `marketplace`
+--
 
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `productos`
 --
 
@@ -74,42 +79,45 @@ INSERT INTO `productos` (`id_producto`, `id_usuarios`, `nombre`, `descripcion`, 
 CREATE TABLE `usuarios` (
   `id_usuarios` int(11) NOT NULL AUTO_INCREMENT,
   `nombre` varchar(50) NOT NULL,
-  `correo` varchar(100) NOT NULL,
-  `contrasenia` varchar(255) NOT NULL,
+  `fecha_nacimiento` date NOT NULL,
+  `genero` enum('Masculino', 'Femenino', 'Otro') NOT NULL,
   `direccion` varchar(100) DEFAULT NULL,
   `telefono` varchar(15) DEFAULT NULL,
-  `fecha_nacimiento` date NOT NULL,
+  `correo` varchar(100) NOT NULL,
+  `contrasenia` varchar(255) NOT NULL,
   PRIMARY KEY (`id_usuarios`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+
 
 --
 -- Volcado de datos para la tabla `usuarios` con números de teléfono
 --
 
-INSERT INTO `usuarios` (`id_usuarios`, `nombre`, `correo`, `contrasenia`, `direccion`, `telefono`, `fecha_nacimiento`) VALUES
-(4, 'Sofía Morales', 'sofia.morales@outlook.com', 'password123', 'Av. América 321, Cochabamba', '74845678', '1992-04-15'),
-(5, 'José Sánchez', 'jose.sanchez@live.com', 'password123', 'Av. Melchor Pérez 654, Cochabamba', '71656789', '1989-09-30'),
-(6, 'Ana Gómez', 'ana.gomez@gmail.com', 'password123', 'Calle Tiquipaya 135, Cochabamba', '71267890', '1995-11-20'),
-(7, 'Pedro Ramírez', 'pedro.ramirez@hotmail.com', 'password123', 'Av. Blanco Galindo 246, Cochabamba', '71178901', '1990-07-10'),
-(8, 'María Vargas', 'maria.vargas@yahoo.com', 'password123', 'Calle Aranjuez 357, Cochabamba', '72289012', '1988-03-22'),
-(9, 'Fernando Ruiz', 'fernando.ruiz@outlook.com', 'password123', 'Av. Beijing 468, Cochabamba', '79990123', '1993-05-17'),
-(10, 'Julia López', 'julia.lopez@gmail.com', 'password123', 'Calle Cobija 579, Cochabamba', '72801234', '1996-02-08'),
-(11, 'Ricardo Martínez', 'ricardo.martinez@yahoo.com', 'password123', 'Av. Circunvalación 680, Cochabamba', '72512345', '1987-06-25'),
-(12, 'Patricia Herrera', 'patricia.herrera@outlook.com', 'password123', 'Av. Villazón 791, Cochabamba', '74423456', '1994-12-01'),
-(13, 'Manuel Gutiérrez', 'manuel.gutierrez@gmail.com', 'password123', 'Calle Lanza 902, Cochabamba', '72134567', '1991-08-18'),
-(14, 'Lucía Castro', 'lucia.castro@hotmail.com', 'password123', 'Av. Salamanca 135, Cochabamba', '73345678', '1990-10-05'),
-(15, 'Raúl Ortiz', 'raul.ortiz@yahoo.com', 'password123', 'Calle Tomás Frías 246, Cochabamba', '73556789', '1985-01-14'),
-(16, 'Valeria Jiménez', 'valeria.jimenez@outlook.com', 'password123', 'Calle Mairana 357, Cochabamba', '71267890', '1992-07-25'),
-(17, 'Gustavo Salazar', 'gustavo.salazar@gmail.com', 'password123', 'Av. Petrolera 468, Cochabamba', '72778901', '1989-11-11'),
-(18, 'Mónica Muñoz', 'monica.munoz@hotmail.com', 'password123', 'Calle Jordan 579, Cochabamba', '73489012', '1995-03-07'),
-(19, 'Sebastián Rojas', 'sebastian.rojas@outlook.com', 'password123', 'Calle España 680, Cochabamba', '72390123', '1988-05-14'),
-(20, 'Claudia Paredes', 'claudia.paredes@yahoo.com', 'password123', 'Av. América Oeste 791, Cochabamba', '74301234', '1994-09-22'),
-(21, 'Diego Espinoza', 'diego.espinoza@hotmail.com', 'password123', 'Calle Aroma 902, Cochabamba', '75412345', '1990-12-30'),
-(22, 'Elena Suárez', 'elena.suarez@gmail.com', 'password123', 'Calle Sucre 135, Cochabamba', '76623456', '1991-06-19'),
-(23, 'Rodrigo Medina', 'rodrigo.medina@yahoo.com', 'password123', 'Calle 25 de Mayo 246, Cochabamba', '77834567', '1992-02-03'),
-(24, 'Cecilia Villarroel', 'cecilia.villarroel@outlook.com', 'password123', 'Av. Oquendo 357, Cochabamba', '79045678', '1986-11-09'),
-(25, 'Andrés Álvarez', 'andres.alvarez@gmail.com', 'password123', 'Calle Punata 468, Cochabamba', '79956789', '1993-04-12');
---
+INSERT INTO `usuarios` (`id_usuarios`, `nombre`, `fecha_nacimiento`, `genero`, `direccion`, `telefono`, `correo`, `contrasenia`) VALUES
+(4, 'Sofía Morales', '1992-04-15', 'Femenino', 'Av. América 321, Cochabamba', '74845678', 'sofia.morales@outlook.com', 'password123'),
+(5, 'José Sánchez', '1989-09-30', 'Masculino', 'Av. Melchor Pérez 654, Cochabamba', '71656789', 'jose.sanchez@live.com', 'password123'),
+(6, 'Ana Gómez', '1995-11-20', 'Femenino', 'Calle Tiquipaya 135, Cochabamba', '71267890', 'ana.gomez@gmail.com', 'password123'),
+(7, 'Pedro Ramírez', '1990-07-10', 'Masculino', 'Av. Blanco Galindo 246, Cochabamba', '71178901', 'pedro.ramirez@hotmail.com', 'password123'),
+(8, 'María Vargas', '1988-03-22', 'Femenino', 'Calle Aranjuez 357, Cochabamba', '72289012', 'maria.vargas@yahoo.com', 'password123'),
+(9, 'Fernando Ruiz', '1993-05-17', 'Masculino', 'Av. Beijing 468, Cochabamba', '79990123', 'fernando.ruiz@outlook.com', 'password123'),
+(10, 'Julia López', '1996-02-08', 'Femenino', 'Calle Cobija 579, Cochabamba', '72801234', 'julia.lopez@gmail.com', 'password123'),
+(11, 'Ricardo Martínez', '1987-06-25', 'Masculino', 'Av. Circunvalación 680, Cochabamba', '72512345', 'ricardo.martinez@yahoo.com', 'password123'),
+(12, 'Patricia Herrera', '1994-12-01', 'Femenino', 'Av. Villazón 791, Cochabamba', '74423456', 'patricia.herrera@outlook.com', 'password123'),
+(13, 'Manuel Gutiérrez', '1991-08-18', 'Masculino', 'Calle Lanza 902, Cochabamba', '72134567', 'manuel.gutierrez@gmail.com', 'password123'),
+(14, 'Lucía Castro', '1990-10-05', 'Femenino', 'Av. Salamanca 135, Cochabamba', '73345678', 'lucia.castro@hotmail.com', 'password123'),
+(15, 'Raúl Ortiz', '1985-01-14', 'Masculino', 'Calle Tomás Frías 246, Cochabamba', '73556789', 'raul.ortiz@yahoo.com', 'password123'),
+(16, 'Valeria Jiménez', '1992-07-25', 'Femenino', 'Calle Mairana 357, Cochabamba', '71267890', 'valeria.jimenez@outlook.com', 'password123'),
+(17, 'Gustavo Salazar', '1989-11-11', 'Masculino', 'Av. Petrolera 468, Cochabamba', '72778901', 'gustavo.salazar@gmail.com', 'password123'),
+(18, 'Mónica Muñoz', '1995-03-07', 'Femenino', 'Calle Jordan 579, Cochabamba', '73489012', 'monica.munoz@hotmail.com', 'password123'),
+(19, 'Sebastián Rojas', '1988-05-14', 'Masculino', 'Calle España 680, Cochabamba', '72390123', 'sebastian.rojas@outlook.com', 'password123'),
+(20, 'Claudia Paredes', '1994-09-22', 'Femenino', 'Av. América Oeste 791, Cochabamba', '74301234', 'claudia.paredes@yahoo.com', 'password123'),
+(21, 'Diego Espinoza', '1990-12-30', 'Masculino', 'Calle Aroma 902, Cochabamba', '75412345', 'diego.espinoza@hotmail.com', 'password123'),
+(22, 'Elena Suárez', '1991-06-19', 'Femenino', 'Calle Sucre 135, Cochabamba', '76623456', 'elena.suarez@gmail.com', 'password123'),
+(23, 'Rodrigo Medina', '1992-02-03', 'Masculino', 'Calle 25 de Mayo 246, Cochabamba', '77834567', 'rodrigo.medina@yahoo.com', 'password123'),
+(24, 'Cecilia Villarroel', '1986-11-09', 'Femenino', 'Av. Oquendo 357, Cochabamba', '79045678', 'cecilia.villarroel@outlook.com', 'password123'),
+(25, 'Andrés Álvarez', '1993-04-12', 'Masculino', 'Calle Punata 468, Cochabamba', '79956789', 'andres.alvarez@gmail.com', 'password123');
+
 -- Indices de la tabla `productos`
 --
 ALTER TABLE `productos`
