@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Productos</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="#">Mi perfil</a></li>
+                <li><a href="#">INICIO</a></li>
+                <li><a href="#">REGISTRAR NUEVO</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <h5> </h5>
+
+
+    <!-- <div class="container">
+        <h4>Registro de Nuevo Producto</h4>
+        <form class="form" action="/cargar_producto" method="POST" enctype="multipart/form-data">
+            <b><label for="nombre">Nombre del producto:</label></b>
+            <input type="text" id="nombre" name="nombre" class="box" placeholder="Campo obligatorio" required>
+
+            <b><label for="descripcion">Descripción:</label></b>
+            <textarea id="descripcion" name="descripcion" class="descri" cols="10" rows="3" placeholder="Campo obligatorio" required></textarea>
+
+            <b><label for="precio">Precio:</label></b>
+            <input type="number" id="precio" name="precio" class="box" placeholder="Campo obligatorio" required step="0.01">
+
+            <b><label for="imagen">Imagen:</label></b>
+            <input type="file" id="imagen" name="imagen" class="box" accept="image/*" required>
+
+            <div class="botones">
+                <button type="submit" class="btn1">Publicar</button>
+                <button type="reset" class="btn2">Cancelar</button>
+            </div>
+        </form> -->
+    
+    <h2 class="titulo-productos">Productos Disponibles</h2>
+        
+    <div>
+        <div class="productos-container">
+            {% for producto in productos %}
+            <div class="producto-card">
+                <!-- <img src="{{ url_for('main.obtener_imagen', id_producto=producto.id_producto) }}" alt="Imagen del producto" class="producto-imagen"> -->
+                <img id="producto-imagen-{{ producto.id_producto }}" src="" alt="Imagen del producto" class="producto-imagen">
+                <h3>{{ producto.nombre }}</h3>
+                <p class="precio">${{ producto.precio }}</p>
+                <p class="descripcion">Descripción: {{ producto.descripcion }}</p>
+                <p class="descripcion">Marca: {{ producto.marca }}</p>
+                <!-- <label for="size-{{ producto.id_producto }}">Tamaño:</label>
+                <select id="size-{{ producto.id_producto }}" class="size-select">
+                    <option value="40">40</option>
+                    <option value="41">41</option>
+                    <option value="42">42</option>
+                    <option value="43">43</option>
+                </select> -->
+                <button class="btn-agregar">AGREGAR AL CARRITO</button>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <script>
+        const imagenes = [
+            '{{ url_for("static", filename="img/1.jpg") }}',
+            '{{ url_for("static", filename="img/2.jpg") }}',
+            '{{ url_for("static", filename="img/3.jpg") }}',
+            '{{ url_for("static", filename="img/4.jpg") }}',
+            '{{ url_for("static", filename="img/5.jpg") }}'
+        ];
+
+    // Función para obtener una imagen aleatoria
+    function obtenerImagenAleatoria() {
+        const indiceAleatorio = Math.floor(Math.random() * imagenes.length);
+        return imagenes[indiceAleatorio];
+    }
+
+    // Asignar una imagen aleatoria a cada producto
+    document.querySelectorAll('.producto-card').forEach(card => {
+        const idProducto = card.querySelector('img').id.split('-')[2]; // Obtener el id del producto
+        const imagenAleatoria = obtenerImagenAleatoria();
+        document.getElementById(`producto-imagen-${idProducto}`).src = imagenAleatoria;
+    });
+    </script>
+</body>
+</html>
