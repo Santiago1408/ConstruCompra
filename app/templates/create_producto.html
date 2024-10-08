@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    <script>
+        // Mostrar alerta si hay un mensaje de éxito
+        window.onload = function() {
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    alert("{{ message }}");
+                {% endfor %}
+                // Redireccionar a main.index después de un segundo
+                setTimeout(function() {
+                    window.location.href = "{{ url_for('main.index') }}"; // Redirige a la vista de inicio
+                }, 1000); // Tiempo en milisegundos antes de redirigir (1 segundo)
+            {% endif %}
+        {% endwith %}
+    }
+    </script>
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="#">Mi perfil</a></li>
+                <li><a href="{{ url_for('main.index') }}">INICIO</a></li>
+                <li><a href="{{ url_for('main.create_producto') }}">REGISTRAR NUEVO</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <h5> </h5>
+
+    <div class="container">
+        <form class= 'form' action="{{ url_for('main.cargar_producto') }}" method="POST" enctype="multipart/form-data">
+            <h4>REGISTRO DE NUEVO MATERIAL</h4>
+        
+            <b><label for="nombre">Nombre del producto</label></b>
+            <input type="text" id="nombre" name="nombre" class="box" placeholder="Campo obligatorio" required>
+        
+            <b><label for="descripcion">Descripción</label></b>
+            <textarea class="descri" id="descripcion" name="descripcion" cols="10" rows="3" placeholder="Campo obligatorio" required></textarea>
+        
+            <b><label for="ubicacion">Ubicación</label></b>
+            <input type="text" id="ubicacion" name="ubicacion" class="box" placeholder="Campo obligatorio" required>
+        
+            <b><label for="precio">Precio</label></b>
+            <input type="number" id="precio" name="precio" class="box" placeholder="Campo obligatorio" step="0.01" required>
+        
+            <b><label for="tipo_venta">Tipo Venta</label></b>
+            <select id="tipo_venta" name="tipo_venta" class="box" required>
+                <option value="Unitario" selected>Unitario</option>
+                <option value="Total">Total</option>
+            </select>
+        
+            <b><label for="tamano">Tamaño</label></b>
+            <input type="text" id="tamano" name="tamano" class="box" placeholder="Campo opcional">
+        
+            <b><label for="marca">Marca</label></b>
+            <input type="text" id="marca" name="marca" class="box" placeholder="Campo opcional">
+        
+            <b><label for="color">Color</label></b>
+            <input type="text" id="color" name="color" class="box" placeholder="Campo opcional">
+        
+            <div class="botones">
+                <button type="submit" class="btn1">Publicar</button>
+                <button type="button" class="btn2">Cancelar</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
+
+
+
