@@ -1,76 +1,58 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='estilos.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <script src="script.js"></script>
+    <title>ConstruCompra</title>
 </head>
 <body>
-    <!--<div class="menu">
-        <h3>Mi perfil</h3>
-        <h3>Menu</h3>
-        <h3>Registrar nuevo</h3>
-    </div>-->
 
+    <!-- Encabezado -->
     <header>
-        <nav>
-            <ul>
-                <li><a href="#">Mi perfil</a></li>
-                <li><a href="#">INICIO</a></li>
-                <li><a href="#">REGISTRAR NUEVO</a></li>
-            </ul>
-        </nav>
+        <div class="perfil">
+            <i class="fas fa-user-circle"></i>
+            <span>Mi perfil</span>
+        </div>
+        <div class="menu">
+            <a href="#">INICIO</a>
+            <a href="#">CARRITO</a>
+            <a href="#">HISTORIAL</a>
+            <a href="#">CONTACTO</a>
+        </div>
     </header>
 
-    <h5> </h5>
-
-    <div class="container">
-        <form class="form">
-            <h4>REGISTRO DE NUEVO MATERIAL</h4>
-
-            <b><label for="nombre" >Nombre del producto</label></b>
-            <input type="text" id="nombre" class="box" placeholder="Campo obligatorio">
-            
-            <b><label for="decripcion">Descripcion</label></b>
-            <textarea class="descri" id="descripcion" cols="10" rows="3" placeholder="Campo obligatorio"></textarea>
-<!--        <input type="text" id="Descripcion" class="box" placeholder="Campo obligatorio"> -->
-
-            <b><label for="ubicacion">Ubicacion</label></b>
-            <input type="text" id="ubicacion" class="box" placeholder="Campo obligatorio">
-
-            <b><label for="precio">Precio</label></b>
-            <input type="number" id="precio" class="box" placeholder="Campo obligatorio">
-
-            <b><label for="cantidad">Cantidad</label></b>
-            <select name="seleccionar" id="cantidad" class="box">
-                <option value="value1" selected>Unidad </option>
-                <option value="value2">Total</option>
-            </select>
-
-            <b><label for="tamaño">Tamaño</label></b>
-            <input type="text" id="tamaño" class="box" placeholder="Campo opcional">
-
-            <b><label for="marca">Marca</label></b>
-            <input type="text" id="marca" class="box" placeholder="Campo opcional">
-
-            <b><label for="color">Color</label></b>
-            <input type="text" id="color" class="box" placeholder="Campo obcional">
-
-
-            
-
-            <div class="botones">
-                <!--
-                <input type="submit" value="Publicar" class="submit">
-                <input type="submit" value="Cancelar" class="submit">
-                -->
-                <button class="btn1">Publicar</button>
-                <button class="btn2">Cancelar</button>
-            </div>
-        </form>        
-
+    <!-- Sección de búsqueda -->
+    <div class="busqueda">
+        <h1 id="titulo">ConstruCompra</h1>
     </div>
-    
+    <div class="busqueda2">
+        <input type="text" placeholder="Buscar">
+        <button><i class="fas fa-search"></i></button>
+    </div>
+
+    <!-- Sección de productos -->
+
+
+    <section class="productos">
+        {% for producto in productos %}
+        <div class="contenedor">
+            <img src="{{ url_for('static', filename='images/default-product.png') }}" alt="Imagen del producto"> <!-- Imágenes por defecto -->
+            <div class="tituloProducto">{{ producto.nombre }}
+                <button class="info" onclick="mostrarInfo()"><i class="material-icons">info</i></button>
+            </div>
+            <div class="descProducto">{{ producto.descripcion }}</div>
+            <div class="precioProducto">Bs. {{ producto.precio }}</div>
+            <button class="carrito" onclick="carrito()"><i class="material-icons">shopping_cart</i></button>
+        </div>
+        {% endfor %}
+    </section>
+
+    <!-- Font Awesome para los iconos -->
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
 </body>
 </html>
