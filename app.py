@@ -1,39 +1,76 @@
-from flask import Flask, render_template
-import pymysql  # Asegúrate de que pymysql está instalado y funcionando
+from flask import Flask, render_template, request, redirect, url_for
+import pymysql
+from datetime import datetime
 
 app = Flask(__name__)
 
-# Función para conectar a la base de datos
-def conectarBD():
+# Conexión a la base de datos MySQL en PythonAnywhere
+def get_db_connection():
     return pymysql.connect(
-        host="josue1408.mysql.pythonanywhere-services.com",
-        user="josue1408",
-        password="sANTIAGO1408",
-        database="josue1408$ConstruCompra1",
-        cursorclass=pymysql.cursors.DictCursor  # Para obtener resultados en formato diccionario
+        host='florenciaRamos.mysql.pythonanywhere-services.com',
+        user='florenciaRamos',
+        password='Polenpro060803',
+        db='florenciaRamos$marketplace'
     )
 
-@app.route('/')
-def index():
-    try:
+@app.route('/', methods=['GET', 'POST'])
+def registro():
+    if request.method == 'POST':
+        nombre = request.form['nombre']
+        fecha_nacimiento = request.form['fecha_nacimiento']
+        direccion = request.form['direccion']
+        telefono = request.form['telefono']
+        correo = request.form['correo']
+        contrasenia = request.form['password']
+        genero = request.form['genero']
+
+        # Validar que el usuario tenga al menos 18 años
+        fecha_nacimiento_dt = datetime.strptime(fecha_nacimiento, '%Y-%m-%d')
+        edad = (datetime.now() - fecha_nacimiento_dt).days // 365
+
+        if edad < 18:
+            return redirect(url_for('registro', menor_de_edad='true'))
+
+        # Verificar si el correo es @gmail.com
+        if not correo.endswith('@gmail.com'):
+            return redirect(url_for('registro', correo_invalido='true'))
+
         # Conectar a la base de datos
-        conn = conectarBD()
-        cursor = conn.cursor()
+        connection = get_db_connection()
+        cursor = connection.cursor()
 
-        # Ejecutar consulta SQL para obtener productos
-        cursor.execute("SELECT nombre, descripcion, precio FROM productos")
-        productos = cursor.fetchall()  # Obtener todos los productos
+        # Verificar si el correo ya existe
+        query_check_email = 'SELECT COUNT(*) FROM usuarios WHERE correo = %s'
+        cursor.execute(query_check_email, (correo,))
+        result = cursor.fetchone()
 
-        conn.close()  # Cerrar la conexión
+        if result[0] > 0:
+            cursor.close()
+            connection.close()
+            return redirect(url_for('registro', correo_existente='true'))
 
-        # Pasar los productos al template
-        return render_template('index.html', productos=productos)
+        # Insertar nuevo usuario en la base de datos
+        query = '''
+            INSERT INTO usuarios (nombre, fecha_nacimiento, genero, direccion, telefono, correo, contrasenia)
+            VALUES (%s, %s, %s, %s, %s, %s, %s)
+        '''
+        cursor.execute(query, (nombre, fecha_nacimiento, genero, direccion, telefono, correo, contrasenia))
 
-    except Exception as e:
-        return f"Error en la base de datos: {e}"
+        # Confirmar la transacción
+        connection.commit()
+
+        # Cerrar la conexión
+        cursor.close()
+        connection.close()
+
+        return redirect(url_for('registro', registro_exitoso='true'))
+
+    correo_existente = request.args.get('correo_existente', False)
+    correo_invalido = request.args.get('correo_invalido', False)
+    registro_exitoso = request.args.get('registro_exitoso', False)
+    menor_de_edad = request.args.get('menor_de_edad', False)
+
+    return render_template("registro.html", correo_existente=correo_existente, correo_invalido=correo_invalido, registro_exitoso=registro_exitoso, menor_de_edad=menor_de_edad)
 
 if __name__ == '__main__':
     app.run(debug=True)
-
-
-
