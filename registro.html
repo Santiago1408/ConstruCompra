@@ -71,6 +71,18 @@
             gap: 30px; /*Espacio entre los botones, aumentar?*/
             margin-top: 20px;
         }
+        .modal-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+        }
+        .modal-header {
+            border-bottom: none;
+        }
+        .modal-footer {
+            border-top: none;
+        }
     </style>
     <script>
         function validarFormulario(event) {
@@ -87,21 +99,20 @@
             // Verificar que los campos obligatorios no estén vacíos
             if (!nombre || !fechaNacimiento || !direccion || !correo || !password) {
                 alert("Por favor, completa todos los campos obligatorios.");
-                event.preventDefault(); // Evita que el formulario se envíe
+                event.preventDefault();
                 return;
             }
 
             // Validar que el nombre solo contenga letras y espacios
             if (!regexNombre.test(nombre)) {
                 alert("El nombre solo puede contener letras y espacios.");
-                event.preventDefault(); // Evita que el formulario se envíe
+                event.preventDefault();
                 return;
             }
 
-            // Validar el formato del correo electrónico
             if (!regexCorreo.test(correo)) {
                 alert("Por favor, ingresa un correo electrónico válido.");
-                event.preventDefault(); // Evita que el formulario se envíe
+                event.preventDefault();
                 return;
             }
         }
@@ -111,6 +122,9 @@
             const form = document.querySelector('form');
             form.addEventListener('submit', validarFormulario);
         });
+        function mostrarAlerta(mensaje) {
+            alert(mensaje);
+        }
     </script>
 </head>
 <body>
@@ -133,6 +147,22 @@
     <div class="caja">
         <!--salto de linea para el titulo-->
         <h1><span>Crear nueva</span><br><span>cuenta</span></h1>
+
+        <!-- MENSAJE DE MENOR-->
+        {% if menor_de_edad %}
+            <div class="alert alert-danger" role="alert">
+                Debe tener al menos 18 años para registrarse.
+            </div>
+        {% endif %}
+
+        <!-- MENSAJE DE CORREO @GMAIL-->
+        {% if correo_invalido %}
+            <div class="alert alert-danger" role="alert">
+                El correo electrónico debe ser una dirección @gmail.com.
+            </div>
+        {% endif %}
+
+
         <form action="/" method="post">
             <div class="form-container">
                 <div class="col">
@@ -185,6 +215,44 @@
             </div>
         </form>
     </div>
+
+    <div class="modal fade" id="registroExitosoModal" tabindex="-1" aria-labelledby="registroExitosoModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="registroExitosoModalLabel">Registro Exitoso</h5>
+                </div>
+                <div class="modal-body">
+                    El registro se completó con éxito.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const registroExitoso = urlParams.get('registro_exitoso');
+            if (registroExitoso === 'true') {
+                // Mostrar el modal si el registro fue exitoso
+                const modal = new bootstrap.Modal(document.getElementById('registroExitosoModal'));
+                modal.show();
+            }
+        });
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const correoExistente = urlParams.get('correo_existente');
+            if (correoExistente === 'true') {
+                alert('Ya existe una cuenta asociada a este correo.');
+            }
+        });
+    </script>
 </body>
 </html>
 
