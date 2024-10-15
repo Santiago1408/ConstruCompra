@@ -93,6 +93,17 @@
             const correo = document.getElementById('correo').value.trim();
             const password = document.getElementById('password').value.trim();
 
+
+            const regexCorreo = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            
+             if (!regexCorreo.test(correo)) {
+                alert("Por favor, ingresa un correo electrónico válido.");
+                event.preventDefault();
+                return;
+            }
+        }
+
+    
         // Asignar el evento de validación al formulario
         document.addEventListener('DOMContentLoaded', function() {
             const form = document.querySelector('form');
