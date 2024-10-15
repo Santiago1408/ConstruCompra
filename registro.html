@@ -131,6 +131,14 @@
     <div class="caja">
         <!--salto de linea para el titulo-->
         <h1><span>Crear nueva</span><br><span>cuenta</span></h1>
+
+        <!-- MENSAJE DE CORREO @GMAIL-->
+       {% if correo_invalido %}
+           <div class="alert alert-danger" role="alert">
+               El correo electrónico debe ser una dirección @gmail.com.
+           </div>
+       {% endif %}
+        
             <form action="/" method="post">
             <div class="form-container">
                 <div class="col">
