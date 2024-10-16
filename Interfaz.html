@@ -220,6 +220,50 @@
                 <button class="button" onclick="cerrarModal()">Cancelar</button>
             </div>
         </div>
-    </div>
-</body>
-</html>
+    </div> </body> </html> 
+<script>
+
+    function guardar() {
+    const nombre = document.getElementById("nombre").value;
+    const descripcion = document.getElementById("descripcion").value;
+    const precio = document.getElementById("precio").value.replace(" Bs.", "");
+    const cantidad = document.getElementById("cantidad").value.replace(" Unidades", "");
+    const tipo_venta = document.getElementById("tipo_venta").value; // Asegúrate de tener este campo en tu HTML
+    const ubicacion = document.getElementById("ubicacion").value; // Asegúrate de tener este campo en tu HTML
+    const marca = document.getElementById("marca").value; // Asegúrate de tener este campo en tu HTML
+    const color = document.getElementById("color").value; // Asegúrate de tener este campo en tu HTML
+    const tamano = document.getElementById("tamano").value; // Asegúrate de tener este campo en tu HTML
+
+    fetch('/guardar_producto', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            nombre: nombre,
+            descripcion: descripcion,
+            precio: parseFloat(precio),
+            cantidad: parseInt(cantidad),
+            tipo_venta: tipo_venta,
+            ubicacion: ubicacion,
+            marca: marca,
+            color: color,
+            tamano: tamano
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === "success") {
+            alert(data.message); // Muestra mensaje de éxito
+            window.location.href = '/Menu.html'; // Redirige al menú principal
+        } else {
+            alert(data.message); // Muestra mensaje de error
+        }
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+        alert("Hubo un problema al realizar los cambios"); // Mensaje genérico en caso de error
+    });
+}
+
+</script>
