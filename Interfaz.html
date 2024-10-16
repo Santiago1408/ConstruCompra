@@ -149,7 +149,6 @@
     </style>
 </head>
 <body>
-
     <div class="container">
         <h1>Editar Producto</h1>
         <form id="editar-producto-form">
@@ -189,6 +188,17 @@
             </div>
         </form>
 
+    </div>
+    <!-- Modal de Confirmación -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header" id="modal-header">Guardar Cambios</div>
+            <div class="modal-body" id="modal-message">¿Está seguro que desea guardar los cambios?</div>
+            <div class="button-container">
+                <button class="button" onclick="guardarProducto()">Aceptar</button>
+                <button class="button" onclick="cerrarModal()">Cancelar</button>
+            </div>
+        </div>
     </div>
 </body>
 </html>
