@@ -138,6 +138,13 @@
         <!--salto de linea para el titulo-->
         <h1><span>Crear nueva</span><br><span>cuenta</span></h1>
 
+        <!-- MENSAJE DE MENOR-->
+        {% if menor_de_edad %}
+            <div class="alert alert-danger" role="alert">
+                Debe tener al menos 18 años para registrarse.
+            </div>
+        {% endif %}
+
         <!-- MENSAJE DE CORREO @GMAIL-->
        {% if correo_invalido %}
            <div class="alert alert-danger" role="alert">
