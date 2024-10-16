@@ -215,12 +215,35 @@
             </div>
         </form>
     </div>
+
+    <div class="modal fade" id="registroExitosoModal" tabindex="-1" aria-labelledby="registroExitosoModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="registroExitosoModalLabel">Registro Exitoso</h5>
+                </div>
+                <div class="modal-body">
+                    El registro se completó con éxito.
+                </div>
+
     <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                 </div>
             </div>
         </div>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const registroExitoso = urlParams.get('registro_exitoso');
+            if (registroExitoso === 'true') {
+                // Mostrar el modal si el registro fue exitoso
+                const modal = new bootstrap.Modal(document.getElementById('registroExitosoModal'));
+                modal.show();
+            }
+        });
+    </script>
 
 </body>
 </html>
