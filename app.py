@@ -13,7 +13,25 @@ db_config = {
 
 def get_db_connection():
     """Establece la conexión a la base de datos."""
+
     return mysql.connector.connect(**db_config)
+
+@app.route('/')
+def editar_producto():
+    # Conectar a la base de datos y obtener un producto aleatorio
+    conn = mysql.connector.connect(**db_config)
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute("SELECT * FROM productos ORDER BY RAND() LIMIT 1;")
+    producto = cursor.fetchone()
+
+    if producto is None:
+        return "No se encontró ningún producto", 404
+
+    cursor.close()
+    conn.close()
+
+    return render_template('Interfaz.html', producto=producto)
+
 
 # Ruta para abrir el archivo "Interfaz.html"
 @app.route('/interfaz')
