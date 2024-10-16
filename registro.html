@@ -95,7 +95,13 @@
 
 
             const regexCorreo = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-            
+
+            if (!nombre || !fechaNacimiento || !direccion || !correo || !password) {
+                alert("Por favor, completa todos los campos obligatorios.");
+                event.preventDefault();
+                return;
+            }
+
              if (!regexCorreo.test(correo)) {
                 alert("Por favor, ingresa un correo electrónico válido.");
                 event.preventDefault();
