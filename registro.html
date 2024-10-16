@@ -93,7 +93,7 @@
             const correo = document.getElementById('correo').value.trim();
             const password = document.getElementById('password').value.trim();
 
-
+            const regexNombre = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/;
             const regexCorreo = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
             if (!nombre || !fechaNacimiento || !direccion || !correo || !password) {
@@ -102,6 +102,13 @@
                 return;
             }
 
+             if (!regexNombre.test(nombre)) {
+                alert("El nombre solo puede contener letras y espacios.");
+                event.preventDefault();
+                return;
+            }
+
+            
              if (!regexCorreo.test(correo)) {
                 alert("Por favor, ingresa un correo electrónico válido.");
                 event.preventDefault();
