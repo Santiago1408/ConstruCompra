@@ -7,13 +7,13 @@ SET time_zone = "+00:00";
 CREATE TABLE `productos` (
   `id_producto` int(11) NOT NULL AUTO_INCREMENT,
   `id_usuarios` int(11) NOT NULL,
-  `nombre` varchar(25) NOT NULL,
-  `descripcion` varchar(100) DEFAULT NULL,
+  `nombre` varchar(50) NOT NULL,
+  `descripcion` varchar(500) DEFAULT NULL,
   `cantidad` int(11) DEFAULT NULL,
   `tipo_venta` enum('Unitario','Total') NOT NULL,
   `precio` decimal(10,2) NOT NULL,
-  `ubicacion` varchar(255) NOT NULL,
-  `marca` varchar(50) DEFAULT NULL,
+  `ubicacion` varchar(500) NOT NULL,
+  `marca` varchar(100) DEFAULT NULL,
   `color` varchar(50) DEFAULT NULL,
   `tamano` varchar(50) DEFAULT NULL,
   `fecha_publicacion` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP(),
@@ -44,3 +44,59 @@ INSERT INTO `productos` (`id_producto`, `id_usuarios`, `nombre`, `descripcion`, 
 (20, 20, 'Interruptor eléctrico', 'Interruptor eléctrico de pared', 100, 'Unitario', 20.00, 'Av. América Oeste 791, Cochabamba', 'Elec', 'Blanco', '15 cm', '2024-10-05 00:47:51');
 
 
+CREATE TABLE `usuarios` (
+  `id_usuarios` int(11) NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(50) NOT NULL,
+  `fecha_nacimiento` date NOT NULL,
+  `genero` enum('Masculino', 'Femenino', 'Otro') NOT NULL,
+  `direccion` varchar(100) DEFAULT NULL,
+  `telefono` varchar(15) DEFAULT NULL,
+  `correo` varchar(100) NOT NULL,
+  `contrasenia` varchar(255) NOT NULL,
+  PRIMARY KEY (`id_usuarios`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+
+-- Indices de la tabla `productos`
+--
+ALTER TABLE `productos`
+  ADD PRIMARY KEY (`id_producto`),
+  ADD KEY `id_usuarios` (`id_usuarios`);
+
+--
+-- Indices de la tabla `usuarios`
+--
+ALTER TABLE `usuarios`
+  ADD PRIMARY KEY (`id_usuarios`),
+  ADD UNIQUE KEY `correo` (`correo`);
+
+--
+-- AUTO_INCREMENT de las tablas volcadas
+--
+
+--
+-- AUTO_INCREMENT de la tabla `productos`
+--
+ALTER TABLE `productos`
+  MODIFY `id_producto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+
+--
+-- AUTO_INCREMENT de la tabla `usuarios`
+--
+ALTER TABLE `usuarios`
+  MODIFY `id_usuarios` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+
+--
+-- Restricciones para tablas volcadas
+--
+
+--
+-- Filtros para la tabla `productos`
+--
+ALTER TABLE `productos`
+  ADD CONSTRAINT `productos_ibfk_1` FOREIGN KEY (`id_usuarios`) REFERENCES `usuarios` (`id_usuarios`) ON DELETE CASCADE;
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
