@@ -303,6 +303,17 @@
             return formValido; // Devuelve false si algún campo está vacío
         }
        
+         // Validar nombre (alfanumérico y símbolos permitidos)
+        const regexNombre = /^[A-Za-z0-9 %?"!*;]*$/;
+        if (!regexNombre.test(nombre)) {
+                document.getElementById('error-nombre').textContent = 'El nombre contiene caracteres inválidos.';
+                formValido = false;
+            } else if (nombre.length < 20 || nombre.length > 100) {
+                document.getElementById('error-nombre').textContent = 'El nombre debe tener entre 20 y 100 caracteres.';
+                formValido = false;
+            } else {
+                document.getElementById('error-nombre').textContent = ''; // Limpiar el mensaje de error
+            }
 
 	
     
