@@ -222,6 +222,20 @@
         </div>
     </div> </body> </html> 
 <script>
+    function abrirModalGuardar() {
+        if (validarFormulario(event)) {
+            document.getElementById('modal-header').textContent = 'Guardar Cambios';
+            document.getElementById('modal-message').textContent = '¿Está seguro que desea guardar los cambios?';
+            document.getElementById('modal').style.display = 'flex';
+        }
+    }
+
+    function abrirModalCancelar() {
+        document.getElementById('modal-cancelar-header').textContent = 'Cancelar Cambios';
+        document.getElementById('modal-cancelar-message').textContent = '¿Está seguro que desea cancelar los cambios?';
+        document.getElementById('modal-cancelar').style.display = 'flex';
+    }	
+    
 
     function guardar() {
     const nombre = document.getElementById("nombre").value;
@@ -266,4 +280,15 @@
     });
 }
 
+    function cerrarModal() {
+        document.getElementById('modal').style.display = 'none';
+    }
+
+    function cerrarModalExito() {
+        document.getElementById('modal-exito').style.display = 'none';
+        window.location.href = '/ruta_a_redireccionar'; // Reemplazar con la ruta deseada
+    }
+    function confirmarCancelar() {
+        window.location.href = '/productos';
+    }
 </script>
