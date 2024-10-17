@@ -249,6 +249,59 @@
 
 
         let formValido = true;
+// Validar que ningún campo esté vacío
+        if (!nombre || !descripcion || !precio || !cantidad || !ubicacion || !tamano || !marca || !color) {
+         formValido = false;
+            if (!nombre) {
+                document.getElementById('error-nombre').textContent = 'El nombre no puede estar vacío.';
+            } else {
+                document.getElementById('error-nombre').textContent = '';
+            }
+
+            if (!descripcion) {
+                document.getElementById('error-descripcion').textContent = 'La descripción no puede estar vacía.';
+            } else {
+                document.getElementById('error-descripcion').textContent = '';
+            }
+
+            if (!precio) {
+                document.getElementById('error-precio').textContent = 'El precio no puede estar vacío.';
+            } else {
+                document.getElementById('error-precio').textContent = '';
+            }
+
+            if (!cantidad) {
+                document.getElementById('error-cantidad').textContent = 'La cantidad no puede estar vacía.';
+            } else {
+                document.getElementById('error-cantidad').textContent = '';
+            }
+
+            if (!ubicacion) {
+                document.getElementById('error-ubicacion').textContent = 'La ubicación no puede estar vacía.';
+            } else {
+                document.getElementById('error-ubicacion').textContent = '';
+            }
+
+            if (!tamano) {
+                document.getElementById('error-tamano').textContent = 'El tamaño no puede estar vacío.';
+            } else {
+                document.getElementById('error-tamano').textContent = '';
+            }
+
+            if (!marca) {
+                document.getElementById('error-marca').textContent = 'La marca no puede estar vacía.';
+            } else {
+                document.getElementById('error-marca').textContent = '';
+            }
+
+            if (!color) {
+                document.getElementById('error-color').textContent = 'El color no puede estar vacío.';
+            } else {
+                document.getElementById('error-color').textContent = '';
+            }
+
+            return formValido; // Devuelve false si algún campo está vacío
+        }
 
         // Validar que ningún campo esté vacío
         if (!nombre || !descripcion || !precio || !cantidad || !ubicacion || !tamano || !marca || !color) {
