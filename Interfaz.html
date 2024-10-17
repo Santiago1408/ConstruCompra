@@ -222,6 +222,7 @@
         </div>
     </div> </body> </html> 
 <script>
+<<<<<<< HEAD
     function abrirModalGuardar() {
         if (validarFormulario(event)) {
             document.getElementById('modal-header').textContent = 'Guardar Cambios';
@@ -236,17 +237,85 @@
         document.getElementById('modal-cancelar').style.display = 'flex';
     }	
     
+    function validarFormulario() {
+        const nombre = document.getElementById('nombre').value.trim();
+        const descripcion = document.getElementById('descripcion').value.trim();
+        const precio = document.getElementById('precio').value.trim();
+        const cantidad = document.getElementById('cantidad').value.trim();
+        const ubicacion = document.getElementById('ubicacion').value.trim();
+        const tamano = document.getElementById('tamano').value.trim();
+        const marca = document.getElementById('marca').value.trim();
+        const color = document.getElementById('color').value.trim();
 
+
+        let formValido = true;
+
+        // Validar que ningún campo esté vacío
+        if (!nombre || !descripcion || !precio || !cantidad || !ubicacion || !tamano || !marca || !color) {
+         formValido = false;
+            if (!nombre) {
+                document.getElementById('error-nombre').textContent = 'El nombre no puede estar vacío.';
+            } else {
+                document.getElementById('error-nombre').textContent = '';
+            }
+
+            if (!descripcion) {
+                document.getElementById('error-descripcion').textContent = 'La descripción no puede estar vacía.';
+            } else {
+                document.getElementById('error-descripcion').textContent = '';
+            }
+
+            if (!precio) {
+                document.getElementById('error-precio').textContent = 'El precio no puede estar vacío.';
+            } else {
+                document.getElementById('error-precio').textContent = '';
+            }
+
+            if (!cantidad) {
+                document.getElementById('error-cantidad').textContent = 'La cantidad no puede estar vacía.';
+            } else {
+                document.getElementById('error-cantidad').textContent = '';
+            }
+
+            if (!ubicacion) {
+                document.getElementById('error-ubicacion').textContent = 'La ubicación no puede estar vacía.';
+            } else {
+                document.getElementById('error-ubicacion').textContent = '';
+            }
+
+            if (!tamano) {
+                document.getElementById('error-tamano').textContent = 'El tamaño no puede estar vacío.';
+            } else {
+                document.getElementById('error-tamano').textContent = '';
+            }
+
+            if (!marca) {
+                document.getElementById('error-marca').textContent = 'La marca no puede estar vacía.';
+            } else {
+                document.getElementById('error-marca').textContent = '';
+            }
+
+            if (!color) {
+                document.getElementById('error-color').textContent = 'El color no puede estar vacío.';
+            } else {
+                document.getElementById('error-color').textContent = '';
+            }
+
+            return formValido; // Devuelve false si algún campo está vacío
+        }
+
+	
+    
     function guardar() {
-    const nombre = document.getElementById("nombre").value;
-    const descripcion = document.getElementById("descripcion").value;
-    const precio = document.getElementById("precio").value.replace(" Bs.", "");
-    const cantidad = document.getElementById("cantidad").value.replace(" Unidades", "");
-    const tipo_venta = document.getElementById("tipo_venta").value; // Asegúrate de tener este campo en tu HTML
-    const ubicacion = document.getElementById("ubicacion").value; // Asegúrate de tener este campo en tu HTML
-    const marca = document.getElementById("marca").value; // Asegúrate de tener este campo en tu HTML
-    const color = document.getElementById("color").value; // Asegúrate de tener este campo en tu HTML
-    const tamano = document.getElementById("tamano").value; // Asegúrate de tener este campo en tu HTML
+        const nombre = document.getElementById("nombre").value;
+        const descripcion = document.getElementById("descripcion").value;
+    	const precio = document.getElementById("precio").value.replace(" Bs.", "");
+    	const cantidad = document.getElementById("cantidad").value.replace(" Unidades", "");
+    	const tipo_venta = document.getElementById("tipo_venta").value; // Asegúrate de tener este campo en tu HTML
+    	const ubicacion = document.getElementById("ubicacion").value; // Asegúrate de tener este campo en tu HTML
+    	const marca = document.getElementById("marca").value; // Asegúrate de tener este campo en tu HTML
+    	const color = document.getElementById("color").value; // Asegúrate de tener este campo en tu HTML
+    	const tamano = document.getElementById("tamano").value; // Asegúrate de tener este campo en tu HTML
 
     fetch('/guardar_producto', {
         method: 'POST',
