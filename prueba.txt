@@ -1,5 +1,0 @@
-Contenido de prueba
-<<<<<<< HEAD
-Ayuda no entiendo git Dx
-Holaaaaa
->>>>>>> 25e163990017590f7f376d440f309fc08b4c0661
