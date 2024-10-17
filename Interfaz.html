@@ -315,6 +315,13 @@
                 document.getElementById('error-nombre').textContent = ''; // Limpiar el mensaje de error
             }
         
+         // Validar cantidad (entero positivo)
+        if (!Number.isInteger(Number(cantidad)) || cantidad <= 0) {
+            document.getElementById('error-cantidad').textContent = 'La cantidad debe ser un número entero positivo.';
+            formValido = false;
+        } else {
+            document.getElementById('error-cantidad').textContent = '';
+        }
 
 	
     
