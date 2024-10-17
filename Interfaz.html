@@ -322,6 +322,17 @@
         } else {
             document.getElementById('error-cantidad').textContent = '';
         }
+        // Validar tamaño (numérico y no negativo)
+        const regexTamano = /^\d+(\.\d+)?$/;
+        if (!regexTamano.test(tamano) || parseFloat(tamano) <= 0) {
+            document.getElementById('error-tamano').textContent = 'El tamaño debe ser un valor numérico positivo.';
+            formValido = false;
+        } else {
+            document.getElementById('error-tamano').textContent = '';
+        }
+
+        return formValido;
+    }
 
 	
     
