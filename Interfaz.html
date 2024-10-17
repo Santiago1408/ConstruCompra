@@ -314,6 +314,13 @@
             } else {
                 document.getElementById('error-nombre').textContent = ''; // Limpiar el mensaje de error
             }
+        // Validar descripción
+        if (descripcion.length < 50 || descripcion.length > 500) {
+            document.getElementById('error-descripcion').textContent = 'La descripción debe tener entre 50 y 500 caracteres.';
+            formValido = false;
+        } else {
+            document.getElementById('error-descripcion').textContent = '';
+        }
 
 	
     
