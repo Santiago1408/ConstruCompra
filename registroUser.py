@@ -54,6 +54,7 @@ def registro():
         connection.close()
 
     correo_invalido = request.args.get('correo_invalido', False)
+    menor_de_edad = request.args.get('menor_de_edad', False)
 
 if __name__ == '__main__':
     app.run(debug=True)
