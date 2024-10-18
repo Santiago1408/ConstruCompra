@@ -117,7 +117,7 @@
 <body>
     <div class="container">
         <div class="header">
-            <span class="title">Registrar Producto</span>
+            <!-- <span class="title">Registrar Producto</span> -->
         </div>
 
         <div class="bar"></div>
@@ -178,25 +178,25 @@
     <script> // Validaciones de cada campo del formulario de registro
         // Funcion para validar el campo de registro de nombre 
         function validarNombre(){
-        const nombre = document.getElementById('nombre').value;
-        const errorNombre = document.getElementById('error-nombre');
-        errorNombre.innerHTML = ''; // Limpiar mensajes previos
-        let esValido = true;
-        if (nombre.trim() === ""){
-            errorNombre.innerHTML = 'El nombre del producto no puede estar vacío.';
-            esValido = false;
-        } else if (/\d/.test(nombre)){
-            errorNombre.innerHTML = 'El nombre del producto no puede contener números.';
-            esValido = false;
-        } else if (nombre.length < 3 || nombre.length > 25){
-            errorNombre.innerHTML = 'El nombre del producto debe tener entre 3 y 25 caracteres.';
-            esValido = false;
-        } else if (/[^a-zA-Z\s]/.test(nombre)){
-            errorNombre.innerHTML = 'El nombre del producto no puede contener caracteres especiales.';
-            esValido = false;
+            const nombre = document.getElementById('nombre').value;
+            const errorNombre = document.getElementById('error-nombre');
+            errorNombre.innerHTML = ''; // Limpiar mensajes previos
+            let esValido = true;
+            if (nombre.trim() === ""){
+                errorNombre.innerHTML = 'El nombre del producto no puede estar vacío.';
+                esValido = false;
+            } else if (/\d/.test(nombre)){
+                errorNombre.innerHTML = 'El nombre del producto no puede contener números.';
+                esValido = false;
+            } else if (/[^a-zA-Z\s]/.test(nombre)){
+                errorNombre.innerHTML = 'El nombre del producto no puede contener caracteres especiales.';
+                esValido = false;
+            } else if (nombre.length < 3 || nombre.length > 25){
+                errorNombre.innerHTML = 'El nombre del producto debe tener entre 3 y 25 caracteres.';
+                esValido = false;
+            }
+            return esValido;
         }
-        return esValido;
-    }
 
         // Funcion para validar el campo de registro de descripciopn  
         function validarDescripcion(){
