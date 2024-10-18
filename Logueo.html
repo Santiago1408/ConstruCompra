@@ -191,21 +191,26 @@
     </style>
 </head>
 <body>
-    <div class="form-container">
+    <div class="container">
         <div class="image-container">
             <img src="static/constru.jpeg" alt="En construcción">
         </div>
-        <h1>Iniciar Sesión</h1>
+        <div class="form-container">
+            <img src="static/Logo2.png" alt="Logo" class="logo">
 
-        <form action="/iniciar_sesion" method="POST">
-            <label for="usuario">Usuario:</label>
-            <input type="text" id="usuario" name="usuario" required>
+            <form id="loginForm" action="/iniciar_sesion" method="POST">
+                <label for="usuario">Usuario:</label>
+                <input type="text" id="usuario" name="usuario" placeholder="Ingrese su usuario" required>
 
-            <label for="contra">Contraseña:</label>
-            <input type="password" id="contra" name="contra" required>
+                <label for="contra">Contraseña:</label>
+                <input type="password" id="contra" name="contra" placeholder="Ingrese su contraseña" required>
 
-            <button type="submit">Iniciar sesión</button>
-        </form>
+                <div class="btn-container">
+                    <button type="button" id="registrarse">Registrarse</button>
+                    <button type="submit" id="iniciarSesion">Iniciar sesión</button>
+                </div>
+            </form>
+        </div>
     </div>
 </body>
 </html>
