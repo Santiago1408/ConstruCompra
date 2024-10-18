@@ -249,7 +249,14 @@
             });
         });
 
-        
+        function showModal(message) {
+            document.getElementById('modalMessage').textContent = message;
+            document.getElementById('modal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('modal').style.display = 'none';
+        }
     </script>
 </body>
 </html>
