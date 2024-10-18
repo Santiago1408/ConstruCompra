@@ -40,6 +40,19 @@
         <button class="sidebar-button">Popular</button>
         <button class="sidebar-button">En promoción</button>
     </div>
-    
+    <section class="productos">
+        {% for producto in productos %}
+        <div class="contenedor">
+            <img src="{{ url_for('static', filename='images/default-product.png') }}" alt="Imagen del producto"> <!-- Imágenes por defecto -->
+            <div class="tituloProducto">{{ producto.nombre }}
+                <button class="info" onclick="mostrarInfo()"><i class="material-icons">info</i></button>
+            </div>
+            <div class="descProducto">{{ producto.descripcion }}</div>
+            <div class="precioProducto">Bs. {{ producto.precio }}</div>
+            <button class="carrito" onclick="carrito()"><i class="material-icons">shopping_cart</i></button>
+        </div>
+        {% endfor %}
+     </section>
+     
 </body>
 </html>
