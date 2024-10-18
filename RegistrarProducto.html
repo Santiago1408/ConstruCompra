@@ -361,6 +361,18 @@
         }
     }
 
+    // Funcion para mostrar el mesaje emergente
+    function mostrarMensajeEmergente(mensaje){
+        const mensajeEmergente = document.getElementById('mensajeEmergente');
+        mensajeEmergente.innerText = mensaje; // Actualizar el mensaje
+        mensajeEmergente.classList.add('visible');
+        // Esperar 3 segundos y luego redirigir a index.html
+        setTimeout(() => {
+            mensajeEmergente.classList.remove('visible');
+            window.location.href = '/index';
+        }, 3000); // Desaparecer después de 3 segundos
+    }
+
     // Asignar el evento input para validar en tiempo real
     document.getElementById('nombre').addEventListener('input', validarNombre);
     document.getElementById('descripcion').addEventListener('input', validarDescripcion);
