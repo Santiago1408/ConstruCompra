@@ -225,6 +225,30 @@
             window.location.href = '{{ url_for("registro") }}';
         });
 
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const formData = new FormData(this);
+
+            fetch(this.action, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    window.location.href = '{{ url_for("index") }}';
+                } else {
+                    let message = data.message || "Error en el inicio de sesión.";
+                    showModal(message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showModal("Ocurrió un error. Intente nuevamente.");
+            });
+        });
+
         
     </script>
 </body>
