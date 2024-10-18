@@ -346,6 +346,13 @@
         } else {
             document.getElementById('error-precio').textContent = '';
         }
+        //nueva validacion de marca
+        if (marca.length > 50) {
+            document.getElementById('error-marca').textContent = 'La marca no puede tener más de 50 caracteres.';
+            formValido = false;
+        } else {
+            document.getElementById('error-marca').textContent = ''; // Limpiar el mensaje de error
+        }
 
         return formValido;
     }
