@@ -349,18 +349,20 @@
             errorTamano.innerHTML = ''; // Limpiar los mensajes previos
             let esValido = true;
             
-            const formatoTamano = /^\d+(\.\d+)?\s*(cm|m|in|ft)\s*(de\s+(alto|ancho|profundidad|largo))?\s*(x\s*\d+(\.\d+)?\s*(cm|m|in|ft)\s*(de\s+(alto|ancho|profundidad|largo))?)?$/i;
-            if (tamano.trim() === ""){
-                return esValido; // Salir de la función sin validar
+            // Expresión regular que permite letras, números, espacios y algunas palabras clave como "de", "x"
+            const formatoTamanoFlexible = /^[a-zA-Z0-9\s]+$/;
+
+            if (tamano.trim() === "") {
+                return esValido; // Salir de la función sin validar si está vacío (opcional)
             }
             // Verificar si el tamaño tiene más de 50 caracteres
-            if (tamano.length > 50){
+            if (tamano.length > 50) {
                 errorTamano.innerHTML = 'El tamaño no puede tener más de 50 caracteres.';
                 esValido = false;
             }
             // Verificar si el formato del tamaño es incorrecto
-            else if (!formatoTamano.test(tamano)){
-                errorTamano.innerHTML = 'El tamaño debe estar en un formato válido, como "30 cm de alto y 1 m de ancho" o "3 m x 50 cm".';
+            else if (!formatoTamanoFlexible.test(tamano)) {
+                errorTamano.innerHTML = 'El tamaño solo puede contener letras, números y espacios. No se permiten caracteres especiales.';
                 esValido = false;
             }
             return esValido;
