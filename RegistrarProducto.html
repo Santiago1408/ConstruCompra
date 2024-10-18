@@ -91,6 +91,22 @@
             font-size: 12px;
         }
 
+        /* Estilo para el mensaje emergente */
+        #mensajeEmergente {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #df8755;
+            color: white;
+            padding: 20px;
+            border-radius: 5px;
+            z-index: 1000;
+        }
+        #mensajeEmergente.visible {
+            display: block;
+        }
 
     </style>
 
@@ -153,6 +169,8 @@
         </form>
     </div>
 
+    <!-- Mensaje emergente -->
+    <div id="mensajeEmergente">Producto registrado exitosamente</div>
 
     <script> // Validaciones de cada campo del formulario de registro
         // Funcion para validar el campo de registro de nombre 
