@@ -420,4 +420,17 @@
     function confirmarCancelar() {
         window.location.href = '/productos';
     }
+    function abrirModalGuardar() {
+        if (validarFormulario()) {
+            if (hayChanges()) {
+                const modal = document.getElementById('modal');
+                modal.style.display = 'flex';
+                document.getElementById('modal-header').innerText = 'Guardar Cambios';
+                document.getElementById('modal-message').innerText = '¿Está seguro que desea guardar los cambios?';
+            } else {
+                const modalNoChanges = document.getElementById('modal-no-changes');
+                modalNoChanges.style.display = 'flex';
+            }
+        }
+    }
 </script>
