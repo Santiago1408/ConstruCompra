@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrar producto</title>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <span class="title">Registrar Producto</span>
+        </div>
+
+        <div class="bar"></div>
+
+        <h2 style="text-align:center; color:#df8755;">REGISTRAR NUEVO PRODUCTO</h2>
+
+        <form id="registrar-producto-form" action="/registrar_producto" method="POST">
+            <input type="hidden" id="id_usuario" name="id_usuario" value="{{ session['id_usuario'] }}">
+    
+            <label for="nombre">Nombre del producto:</label>
+            <input type="text" id="nombre" name="nombre" required>
+            <div id="error-nombre" class="error"></div>
+    
+            <label for="descripcion">Descripción:</label>
+            <input type="text" id="descripcion" name="descripcion" required>
+            <div id="error-descripcion" class="error"></div>
+    
+            <label for="precio">Precio (Bs.):</label>
+            <input type="number" id="precio" name="precio" step="0.01" required>
+            <div id="error-precio" class="error"></div>
+    
+            <label for="cantidad">Cantidad:</label>
+            <input type="number" id="cantidad" name="cantidad" required>
+            <div id="error-cantidad" class="error"></div>
+    
+            <label for="tipo_venta">Tipo de venta:</label>
+            <select id="tipo_venta" name="tipo_venta" required>
+                <option value="Unitario" selected>Unitario</option>
+                <option value="Total">Total</option>
+            </select>
+    
+            <label for="ubicacion">Ubicación:</label>
+            <input type="text" id="ubicacion" name="ubicacion" required>
+            <div id="error-ubicacion" class="error"></div>
+    
+            <label for="marca">Marca:</label>
+            <input type="text" id="marca" name="marca">
+            <div id="error-marca" class="error"></div>
+    
+            <label for="color">Color:</label>
+            <input type="text" id="color" name="color">
+            <div id="error-color" class="error"></div>
+    
+            <label for="tamano">Tamaño:</label>
+            <input type="text" id="tamano" name="tamano">
+            <div id="error-tamano" class="error"></div>
+    
+            <div class="button-container">
+                <button type="button" id="botonRegistrar" onclick="validarFormulario(event)">Registrar Producto</button>
+                <button type="button" id="cancelar-button" onclick="limpiarFormulario()">Cancelar</button>
+            </div>
+        </form>
+    </div>
+    
+</body>
+</html>
