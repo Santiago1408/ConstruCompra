@@ -26,6 +26,9 @@ def iniciar_sesion():
     connection = get_db_connection()
     cursor = connection.cursor(dictionary=True)
 
+
+    cursor.execute("SELECT * FROM usuarios WHERE correo = %s", (usuario,))
+    usuario_db = cursor.fetchone()
     if usuario == 'admin' and contra == '1234':
         return redirect(url_for('dashboard'))
     else:
