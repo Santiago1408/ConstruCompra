@@ -86,6 +86,11 @@
             background-color: #c56d4a;
         }
 
+        .error {
+            color: red;
+            font-size: 12px;
+        }
+
 
     </style>
 
@@ -280,6 +285,47 @@
         return esValido;
     }
 
+    // Funcion para validar el campo de registro de color
+    function validarColor(){
+        // Obtener el valor del color
+        const color = document.getElementById('color').value;
+        const errorColor = document.getElementById('error-color');
+        errorColor.innerHTML = ''; // Limpiar los mensajes previos
+        let esValido = true;
+        // Verificar que solo existan caracteres alfabéticos
+        if (/[^a-zA-Z\s]/.test(color)){
+            errorColor.innerHTML = 'El color solo puede contener caracteres alfabéticos.';
+            esValido = false;
+        }
+        // Verificar si el color tiene más de 20 caracteres
+        else if (color.length > 20){
+            errorColor.innerHTML = 'El color no puede tener más de 20 caracteres.';
+            esValido = false;
+        }
+        return esValido;
+    }
+
+    // Funcion para validar el campo de registro de tamaño
+    function validarTamano(){
+        const tamano = document.getElementById('tamano').value;
+        const errorTamano = document.getElementById('error-tamano');
+        errorTamano.innerHTML = ''; // Limpiar los mensajes previos
+        let esValido = true;
+        // Expresión regular para admitir números seguidos de cualquier unidad alfanumérica
+        const formatoTamano = /^\d+(\.\d+)?\s*[a-zA-Z%]*$/;
+
+        // Verificar si el tamaño tiene más de 25 caracteres
+        if (tamano.length > 25){
+            errorTamano.innerHTML = 'El tamaño no puede tener más de 25 caracteres.';
+            esValido = false;
+        }
+        // Verificar si el formato del tamaño es incorrecto
+        else if (!formatoTamano.test(tamano)){
+            errorTamano.innerHTML = 'El tamaño debe ser un número seguido de una unidad válida (ej. 30kg, 50L).';
+            esValido = false;
+        }
+        return esValido;
+    }
 
     // Asignar el evento input para validar en tiempo real
     document.getElementById('nombre').addEventListener('input', validarNombre);
@@ -288,6 +334,8 @@
     document.getElementById('cantidad').addEventListener('input', validarCantidad);
     document.getElementById('ubicacion').addEventListener('input', validarUbicacion);
     document.getElementById('marca').addEventListener('input', validarMarca);
+    document.getElementById('color').addEventListener('input', validarColor);
+    document.getElementById('tamano').addEventListener('input', validarTamano);
 
     </script>
     
