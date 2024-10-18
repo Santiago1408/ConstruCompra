@@ -24,6 +24,9 @@ def registro():
         contrasenia = request.form['password']
         genero = request.form['genero']
 
+
+        if not correo.endswith('@gmail.com'):
+            return redirect(url_for('registro', correo_invalido='true'))
         # Conectar a la base de datos
         connection = get_db_connection()
         cursor = connection.cursor()
