@@ -125,13 +125,13 @@
     {% if productos %}
     <div class="publications">
 	{% for producto in productos %}
-		<div class="product-card">
-    			<div class="product-details">
-        			<h3><!-- Nombre del producto irá aquí --></h3>
-        			<p class="description"><!-- Descripción del producto irá aquí --></p>
-        			<p class="price"><!-- Precio del producto irá aquí --></p>
-    			</div>
+	<div class="product-card">
+  		<div class="product-details">
+  			<h3>{{ producto.nombre }}</h3>
+                        <p class="description">{{ producto.descripcion }}</p>
+                        <p class="price">Precio: {{ producto.precio }}</p>	
 		</div>
+	</div>
 	{% endfor %}
 
     </div>
