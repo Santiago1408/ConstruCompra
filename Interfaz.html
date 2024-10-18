@@ -313,7 +313,15 @@
                 formValido = false;
             } else {
                 document.getElementById('error-nombre').textContent = ''; // Limpiar el mensaje de error
+
             }
+
+	 if (descripcion.length < 50 || descripcion.length > 500) {
+            document.getElementById('error-descripcion').textContent = 'La descripción debe tener entre 50 y 500 caracteres.';
+            formValido = false;
+        } else {
+            document.getElementById('error-descripcion').textContent = '';
+        }
         
          // Validar cantidad (entero positivo)
         if (!Number.isInteger(Number(cantidad)) || cantidad <= 0) {
