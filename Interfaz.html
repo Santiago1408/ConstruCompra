@@ -330,6 +330,14 @@
         } else {
             document.getElementById('error-tamano').textContent = '';
         }
+        
+        const regexPrecio = /^\d+(\.\d{1,2})?$/;
+        if (!regexPrecio.test(precio) || parseFloat(precio) <= 0) {
+            document.getElementById('error-precio').textContent = 'El precio debe ser un valor numérico positivo con hasta 2 decimales.';
+            formValido = false;
+        } else {
+            document.getElementById('error-precio').textContent = '';
+        }
 
         return formValido;
     }
