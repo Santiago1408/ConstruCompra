@@ -346,6 +346,20 @@
         } else {
             document.getElementById('error-precio').textContent = '';
         }
+        //nueva validacion de marca
+        if (marca.length > 50) {
+            document.getElementById('error-marca').textContent = 'La marca no puede tener más de 50 caracteres.';
+            formValido = false;
+        } else {
+            document.getElementById('error-marca').textContent = ''; // Limpiar el mensaje de error
+        }
+        //modificacion en la validacion de ubicacion
+        if (!/\b(calle|avenida|av|plaza|boulevard|paseo|ruta|carretera)\b/i.test(ubicacion)) {
+            document.getElementById('error-ubicacion').textContent = 'La ubicación debe contener palabras como "calle", "Avenida", "Av", etc.';
+            formValido = false;
+        } else {
+            document.getElementById('error-ubicacion').textContent = ''; // Limpiar el mensaje de error
+        }
 
         return formValido;
     }
@@ -405,5 +419,28 @@
     }
     function confirmarCancelar() {
         window.location.href = '/productos';
+    }
+    function abrirModalGuardar() {
+        if (validarFormulario()) {
+            if (hayChanges()) {
+                const modal = document.getElementById('modal');
+                modal.style.display = 'flex';
+                document.getElementById('modal-header').innerText = 'Guardar Cambios';
+                document.getElementById('modal-message').innerText = '¿Está seguro que desea guardar los cambios?';
+            } else {
+                const modalNoChanges = document.getElementById('modal-no-changes');
+                modalNoChanges.style.display = 'flex';
+            }
+        }
+    }
+    function hayChanges() {
+        const form = document.getElementById('editar-producto-form');
+        const inputs = form.querySelectorAll('input, select');
+        for (let input of inputs) {
+            if (input.value !== originalValues[input.id]) {
+                return true;
+            }
+        }
+        return false;
     }
 </script>
