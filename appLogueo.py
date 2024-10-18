@@ -15,13 +15,16 @@ def get_db_connection():
 
 
 @app.route('/')
-def iniciar_sesion():
+def logueo():
     return render_template('Logueo.html')
 
 @app.route('/iniciar_sesion', methods=['POST'])
-def login():
+def iniciar_sesion():
     usuario = request.form['usuario']
-    contra = request.form['contra']
+    contrasena = request.form['contra']
+
+    connection = get_db_connection()
+    cursor = connection.cursor(dictionary=True)
 
     if usuario == 'admin' and contra == '1234':
         return redirect(url_for('dashboard'))
