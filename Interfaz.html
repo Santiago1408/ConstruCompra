@@ -433,4 +433,14 @@
             }
         }
     }
+    function hayChanges() {
+        const form = document.getElementById('editar-producto-form');
+        const inputs = form.querySelectorAll('input, select');
+        for (let input of inputs) {
+            if (input.value !== originalValues[input.id]) {
+                return true;
+            }
+        }
+        return false;
+    }
 </script>
