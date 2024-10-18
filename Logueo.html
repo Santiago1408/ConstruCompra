@@ -142,6 +142,32 @@
             border-radius: 5px;
             cursor: pointer;
         }
+
+	  @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                height: auto;
+            }
+
+            .image-container, .form-container {
+                width: 100%;
+            }
+
+            .image-container img {
+                height: 300px;
+                border-radius: 10px 10px 0 0;
+            }
+
+            .form-container {
+                padding: 20px;
+            }
+
+            .logo {
+                max-width: 250px;
+            }
+        }
+
+
 	
 	
     </style>
