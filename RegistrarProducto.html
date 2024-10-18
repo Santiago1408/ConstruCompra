@@ -340,6 +340,25 @@
         const esColorValido = validarColor();
         const esTamanoValido = validarTamano();
 
+        if (esNombreValido && esDescripcionValido && esPrecioValido && esCantidadValido && esUbicacionValido && esMarcaValido && esColorValido && esTamanoValido) {
+            // Crear un objeto FormData para enviar el formulario
+            const formData = new FormData(document.getElementById('registrar-producto-form'));
+            fetch('/registrar_producto', {
+                method: 'POST',
+                body: formData,
+            })
+            .then(response => response.json()) // Analizar la respuesta JSON
+            .then(data => {
+                // Mostrar el mensaje de éxito
+                mostrarMensajeEmergente(data.message);
+                // Limpiar el formulario después de guardar
+                limpiarFormulario();
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                mostrarMensajeEmergente('Hubo un error al guardar el producto. Intenta nuevamente.');
+            });
+        }
     }
 
     // Asignar el evento input para validar en tiempo real
