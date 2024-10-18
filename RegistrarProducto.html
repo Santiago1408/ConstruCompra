@@ -156,16 +156,16 @@
         const errorNombre = document.getElementById('error-nombre');
         errorNombre.innerHTML = ''; // Limpiar mensajes previos
         let esValido = true;
-        if (nombre.trim() === "") {
+        if (nombre.trim() === ""){
             errorNombre.innerHTML = 'El nombre del producto no puede estar vacío.';
             esValido = false;
-        } else if (/\d/.test(nombre)) {
+        } else if (/\d/.test(nombre)){
             errorNombre.innerHTML = 'El nombre del producto no puede contener números.';
             esValido = false;
-        } else if (nombre.length < 3 || nombre.length > 25) {
+        } else if (nombre.length < 3 || nombre.length > 25){
             errorNombre.innerHTML = 'El nombre del producto debe tener entre 3 y 25 caracteres.';
             esValido = false;
-        } else if (/[^a-zA-Z\s]/.test(nombre)) {
+        } else if (/[^a-zA-Z\s]/.test(nombre)){
             errorNombre.innerHTML = 'El nombre del producto no puede contener caracteres especiales.';
             esValido = false;
         }
@@ -179,32 +179,33 @@
         errorDescripcion.innerHTML = ''; // Limpiar mensajes previos
         let esValido = true;
         // Verifica si el campo está vacío
-        if (descripcion.trim() === "") {
+        if (descripcion.trim() === ""){
             errorDescripcion.innerHTML = 'La descripción no puede estar vacía.';
             esValido = false;
         }
         // Verifica si la descripción solo tiene números
-        else if (/^\d+$/.test(descripcion)) {
+        else if (/^\d+$/.test(descripcion)){
             errorDescripcion.innerHTML = 'La descripción no puede contener solo números.';
             esValido = false;
         }
         // Verifica si la descripción solo tiene caracteres especiales
-        else if (/^[^a-zA-Z0-9]+$/.test(descripcion)) {
+        else if (/^[^a-zA-Z0-9]+$/.test(descripcion)){
             errorDescripcion.innerHTML = 'La descripción no puede contener solo caracteres especiales.';
             esValido = false;
         }
         // Verificar si la descripción tiene menos de 3 caracteres
-        else if (descripcion.length < 3) {
+        else if (descripcion.length < 3){
             errorDescripcion.innerHTML = 'La descripción debe tener al menos 3 caracteres.';
             esValido = false;
         }
         // Verifica si la descripción tiene más de 100 caracteres
-        else if (descripcion.length > 100) {
+        else if (descripcion.length > 100){
             errorDescripcion.innerHTML = 'La descripción no puede tener más de 100 caracteres.';
             esValido = false;
         }
         return esValido;
     }
+
     // Funcion para validar el campo de registro del precio
     function validarPrecio(){
         const precio = document.getElementById('precio').value;
@@ -212,17 +213,68 @@
         errorPrecio.innerHTML = ''; // Limpiar mensajes previos
         let esValido = true;
         const formatoPrecio = /^[0-9]+([.,][0-9]{1,2})?$/;
-        if (precio.trim() === "") {
+        if (precio.trim() === ""){
             errorPrecio.innerHTML = 'El campo de precio no puede estar vacío.';
             esValido = false;
         } else if (parseFloat(precio.replace(',', '.')) < 0) {
             errorPrecio.innerHTML = 'El precio no puede ser negativo.';
             esValido = false;
-        } else if (!formatoPrecio.test(precio)) {
+        } else if (!formatoPrecio.test(precio)){
             errorPrecio.innerHTML = 'El precio solo puede contener números, un punto o una coma con 2 decimales.';
             esValido = false;
-        } else if (parseFloat(precio.replace(',', '.')) > 99999999) {
+        } else if (parseFloat(precio.replace(',', '.')) > 99999999){
             errorPrecio.innerHTML = 'El precio no puede ser mayor a 99,999,999.99.';
+            esValido = false;
+        }
+        return esValido;
+    }
+
+    // Funcion para validar el campo de registro de cantidad
+    function validarCantidad(){
+        const cantidad = document.getElementById('cantidad').value;
+        const errorCantidad = document.getElementById('error-cantidad');
+        errorCantidad.innerHTML = ''; // Limpiar mensajes previos
+        let esValido = true;
+        if (cantidad.trim() === ""){
+            errorCantidad.innerHTML = 'La cantidad no puede estar vacía.';
+            esValido = false;
+        } else if (parseInt(cantidad) <= 0){
+            errorCantidad.innerHTML = 'La cantidad debe ser un número positivo.';
+            esValido = false;
+        }
+        return esValido;
+    }
+
+    // Funcion para validar el campo de registro de ubicacion
+    function validarUbicacion(){
+        const ubicacion = document.getElementById('ubicacion').value;
+        const errorUbicacion = document.getElementById('error-ubicacion');
+        errorUbicacion.innerHTML = ''; // Limpiar mensajes previos
+        let esValido = true;
+        if (ubicacion.trim() === ""){
+            errorUbicacion.innerHTML = 'La ubicación no puede estar vacía.';
+            esValido = false;
+        } else if (ubicacion.length < 3 || ubicacion.length > 25){
+            errorUbicacion.innerHTML = 'La ubicación debe tener entre 3 y 25 caracteres.';
+            esValido = false;
+        }
+        return esValido;
+    }
+
+    // Funcion para validar el campo de registro de marca
+    function validarMarca(){
+        const marca = document.getElementById('marca').value;
+        const errorMarca = document.getElementById('error-marca');
+        errorMarca.innerHTML = ''; // Limpiar mensajes previos
+        let esValido = true;
+        if (marca.length > 25){
+            errorMarca.innerHTML = 'La marca no puede tener más de 25 caracteres.';
+            esValido = false;
+        } else if (/\d/.test(marca)){
+            errorMarca.innerHTML = 'La marca no puede contener números.';
+            esValido = false;
+        } else if (/[^a-zA-Z\s]/.test(marca)){
+            errorMarca.innerHTML = 'La marca no puede contener caracteres especiales.';
             esValido = false;
         }
         return esValido;
@@ -233,6 +285,9 @@
     document.getElementById('nombre').addEventListener('input', validarNombre);
     document.getElementById('descripcion').addEventListener('input', validarDescripcion);
     document.getElementById('precio').addEventListener('input', validarPrecio);
+    document.getElementById('cantidad').addEventListener('input', validarCantidad);
+    document.getElementById('ubicacion').addEventListener('input', validarUbicacion);
+    document.getElementById('marca').addEventListener('input', validarMarca);
 
     </script>
     
