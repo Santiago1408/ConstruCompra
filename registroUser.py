@@ -24,6 +24,14 @@ def registro():
         contrasenia = request.form['password']
         genero = request.form['genero']
 
+        # Validar que el usuario tenga al menos 18 años
+        fecha_nacimiento_dt = datetime.strptime(fecha_nacimiento, '%Y-%m-%d')
+        edad = (datetime.now() - fecha_nacimiento_dt).days // 365
+
+        if edad < 18:
+            return redirect(url_for('registro', menor_de_edad='true'))
+
+
 
         if not correo.endswith('@gmail.com'):
             return redirect(url_for('registro', correo_invalido='true'))
