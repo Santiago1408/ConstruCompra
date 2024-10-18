@@ -13,3 +13,7 @@ header{
     border-bottom:5px solid #A96424;
     margin-bottom: 30px;
 }
+header .menu {
+    display: flex;
+    gap: 20px;
+}
