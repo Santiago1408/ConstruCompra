@@ -287,6 +287,15 @@
             } else if (ubicacion.length < 3 || ubicacion.length > 25){
                 errorUbicacion.innerHTML = 'La ubicación debe tener entre 3 y 25 caracteres.';
                 esValido = false;
+            }// Validar caracteres permitidos (letras, números, espacios, comas, y guiones)
+            else if (!/^[a-zA-Z0-9\s,.-]+$/.test(ubicacion)) {
+                errorUbicacion.innerHTML = 'La ubicación solo puede contener letras, números, espacios, comas y guiones.';
+                esValido = false;
+            } 
+            // Validar que no contenga solo números
+            else if (/^\d+$/.test(ubicacion)) {
+                errorUbicacion.innerHTML = 'La ubicación no puede contener solo números.';
+                esValido = false;
             }
             return esValido;
         }
