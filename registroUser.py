@@ -7,10 +7,10 @@ app = Flask(__name__)
 # Conexión a la base de datos MySQL en PythonAnywhere
 def get_db_connection():
     return pymysql.connect(
-        host='florenciaRamos.mysql.pythonanywhere-services.com',
-        user='florenciaRamos',
-        password='Polenpro060803',
-        db='florenciaRamos$marketplace'
+        host='milenats.mysql.pythonanywhere-services.com',
+        user='milenats',
+        password='Oshin2022*',
+        db='milenats$isConstruCompra'
     )
 
 @app.route('/', methods=['GET', 'POST'])
@@ -31,11 +31,6 @@ def registro():
         if edad < 18:
             return redirect(url_for('registro', menor_de_edad='true'))
 
-
-
-        if not correo.endswith('@gmail.com'):
-            return redirect(url_for('registro', correo_invalido='true'))
-
         # Verificar si el correo es @gmail.com
         if not correo.endswith('@gmail.com'):
             return redirect(url_for('registro', correo_invalido='true'))
@@ -54,7 +49,6 @@ def registro():
             connection.close()
             return redirect(url_for('registro', correo_existente='true'))
 
-
         # Insertar nuevo usuario en la base de datos
         query = '''
             INSERT INTO usuarios (nombre, fecha_nacimiento, genero, direccion, telefono, correo, contrasenia)
@@ -69,9 +63,14 @@ def registro():
         cursor.close()
         connection.close()
 
+        return redirect(url_for('registro', registro_exitoso='true'))
+
     correo_existente = request.args.get('correo_existente', False)
     correo_invalido = request.args.get('correo_invalido', False)
+    registro_exitoso = request.args.get('registro_exitoso', False)
     menor_de_edad = request.args.get('menor_de_edad', False)
+
+    return render_template("registro.html", correo_existente=correo_existente, correo_invalido=correo_invalido, registro_exitoso=registro_exitoso, menor_de_edad=menor_de_edad)
 
 if __name__ == '__main__':
     app.run(debug=True)
