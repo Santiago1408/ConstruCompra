@@ -348,17 +348,19 @@
             const errorTamano = document.getElementById('error-tamano');
             errorTamano.innerHTML = ''; // Limpiar los mensajes previos
             let esValido = true;
-            // Expresión regular para admitir números seguidos de cualquier unidad alfanumérica
-            const formatoTamano = /^\d+(\.\d+)?\s*[a-zA-Z%]*$/;
-
-            // Verificar si el tamaño tiene más de 25 caracteres
-            if (tamano.length > 25){
-                errorTamano.innerHTML = 'El tamaño no puede tener más de 25 caracteres.';
+            
+            const formatoTamano = /^\d+(\.\d+)?\s*(cm|m|in|ft)\s*(de\s+(alto|ancho|profundidad|largo))?\s*(x\s*\d+(\.\d+)?\s*(cm|m|in|ft)\s*(de\s+(alto|ancho|profundidad|largo))?)?$/i;
+            if (tamano.trim() === ""){
+                return esValido; // Salir de la función sin validar
+            }
+            // Verificar si el tamaño tiene más de 50 caracteres
+            if (tamano.length > 50){
+                errorTamano.innerHTML = 'El tamaño no puede tener más de 50 caracteres.';
                 esValido = false;
             }
             // Verificar si el formato del tamaño es incorrecto
             else if (!formatoTamano.test(tamano)){
-                errorTamano.innerHTML = 'El tamaño debe ser un número seguido de una unidad válida (ej. 30kg, 50L).';
+                errorTamano.innerHTML = 'El tamaño debe estar en un formato válido, como "30 cm de alto y 1 m de ancho" o "3 m x 50 cm".';
                 esValido = false;
             }
             return esValido;
