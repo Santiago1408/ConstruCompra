@@ -208,6 +208,10 @@
             if (descripcion.trim() === ""){
                 errorDescripcion.innerHTML = 'La descripción no puede estar vacía.';
                 esValido = false;
+            }// Verifica si la descripción contiene una mezcla de números y caracteres especiales
+            else if (/[\d][^a-zA-Z0-9]+|[^a-zA-Z0-9]+[\d]/.test(descripcion)) {
+                errorDescripcion.innerHTML = 'La descripción no puede tener una combinación de números y caracteres especiales.';
+                esValido = false;
             }
             // Verifica si la descripción solo tiene números
             else if (/^\d+$/.test(descripcion)){
