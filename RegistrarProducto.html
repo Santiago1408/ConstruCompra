@@ -86,7 +86,7 @@
             background-color: #c56d4a;
         }
 
-        
+
     </style>
 
 </head>
@@ -147,6 +147,94 @@
             </div>
         </form>
     </div>
+
+
+    <script> // Validaciones de cada campo del formulario de registro
+        // Funcion para validar el campo de registro de nombre 
+        function validarNombre(){
+        const nombre = document.getElementById('nombre').value;
+        const errorNombre = document.getElementById('error-nombre');
+        errorNombre.innerHTML = ''; // Limpiar mensajes previos
+        let esValido = true;
+        if (nombre.trim() === "") {
+            errorNombre.innerHTML = 'El nombre del producto no puede estar vacío.';
+            esValido = false;
+        } else if (/\d/.test(nombre)) {
+            errorNombre.innerHTML = 'El nombre del producto no puede contener números.';
+            esValido = false;
+        } else if (nombre.length < 3 || nombre.length > 25) {
+            errorNombre.innerHTML = 'El nombre del producto debe tener entre 3 y 25 caracteres.';
+            esValido = false;
+        } else if (/[^a-zA-Z\s]/.test(nombre)) {
+            errorNombre.innerHTML = 'El nombre del producto no puede contener caracteres especiales.';
+            esValido = false;
+        }
+        return esValido;
+    }
+
+    // Funcion para validar el campo de registro de descripciopn  
+    function validarDescripcion(){
+        const descripcion = document.getElementById('descripcion').value;
+        const errorDescripcion = document.getElementById('error-descripcion');
+        errorDescripcion.innerHTML = ''; // Limpiar mensajes previos
+        let esValido = true;
+        // Verifica si el campo está vacío
+        if (descripcion.trim() === "") {
+            errorDescripcion.innerHTML = 'La descripción no puede estar vacía.';
+            esValido = false;
+        }
+        // Verifica si la descripción solo tiene números
+        else if (/^\d+$/.test(descripcion)) {
+            errorDescripcion.innerHTML = 'La descripción no puede contener solo números.';
+            esValido = false;
+        }
+        // Verifica si la descripción solo tiene caracteres especiales
+        else if (/^[^a-zA-Z0-9]+$/.test(descripcion)) {
+            errorDescripcion.innerHTML = 'La descripción no puede contener solo caracteres especiales.';
+            esValido = false;
+        }
+        // Verificar si la descripción tiene menos de 3 caracteres
+        else if (descripcion.length < 3) {
+            errorDescripcion.innerHTML = 'La descripción debe tener al menos 3 caracteres.';
+            esValido = false;
+        }
+        // Verifica si la descripción tiene más de 100 caracteres
+        else if (descripcion.length > 100) {
+            errorDescripcion.innerHTML = 'La descripción no puede tener más de 100 caracteres.';
+            esValido = false;
+        }
+        return esValido;
+    }
+    // Funcion para validar el campo de registro del precio
+    function validarPrecio(){
+        const precio = document.getElementById('precio').value;
+        const errorPrecio = document.getElementById('error-precio');
+        errorPrecio.innerHTML = ''; // Limpiar mensajes previos
+        let esValido = true;
+        const formatoPrecio = /^[0-9]+([.,][0-9]{1,2})?$/;
+        if (precio.trim() === "") {
+            errorPrecio.innerHTML = 'El campo de precio no puede estar vacío.';
+            esValido = false;
+        } else if (parseFloat(precio.replace(',', '.')) < 0) {
+            errorPrecio.innerHTML = 'El precio no puede ser negativo.';
+            esValido = false;
+        } else if (!formatoPrecio.test(precio)) {
+            errorPrecio.innerHTML = 'El precio solo puede contener números, un punto o una coma con 2 decimales.';
+            esValido = false;
+        } else if (parseFloat(precio.replace(',', '.')) > 99999999) {
+            errorPrecio.innerHTML = 'El precio no puede ser mayor a 99,999,999.99.';
+            esValido = false;
+        }
+        return esValido;
+    }
+
+
+    // Asignar el evento input para validar en tiempo real
+    document.getElementById('nombre').addEventListener('input', validarNombre);
+    document.getElementById('descripcion').addEventListener('input', validarDescripcion);
+    document.getElementById('precio').addEventListener('input', validarPrecio);
+
+    </script>
     
 </body>
 </html>
