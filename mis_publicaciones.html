@@ -131,6 +131,9 @@
                         <p class="description">{{ producto.descripcion }}</p>
                         <p class="price">Precio: {{ producto.precio }}</p>	
 		</div>
+		<a href="{{ url_for('editar_producto', id_producto=producto.id_producto) }}" class="edit-btn">
+                        <img src="{{ url_for('static', filename='Edit.png') }}" alt="Editar">
+                </a>
 	</div>
 	{% endfor %}
 
