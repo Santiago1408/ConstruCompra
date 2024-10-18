@@ -327,6 +327,21 @@
         return esValido;
     }
 
+    // Creacion de la funcion para validar todo el formulario
+    function validarFormulario(event){
+        event.preventDefault(); // Evitar el envío del formulario por defecto
+
+        const esNombreValido = validarNombre();
+        const esDescripcionValido = validarDescripcion();
+        const esPrecioValido = validarPrecio();
+        const esCantidadValido = validarCantidad();
+        const esUbicacionValido = validarUbicacion();
+        const esMarcaValido = validarMarca();
+        const esColorValido = validarColor();
+        const esTamanoValido = validarTamano();
+
+    }
+
     // Asignar el evento input para validar en tiempo real
     document.getElementById('nombre').addEventListener('input', validarNombre);
     document.getElementById('descripcion').addEventListener('input', validarDescripcion);
