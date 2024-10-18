@@ -327,10 +327,13 @@
             errorColor.innerHTML = ''; // Limpiar los mensajes previos
             let esValido = true;
             // Verificar que solo existan caracteres alfabéticos
-            if (/[^a-zA-Z\s]/.test(color)){
-                errorColor.innerHTML = 'El color solo puede contener caracteres alfabéticos.';
+            if (/\d/.test(color)){
+                errorColor.innerHTML = 'El color no puede contener números.';
                 esValido = false;
-            }
+            }else if (/[^a-zA-Z\s]/.test(color)){
+                errorColor.innerHTML = 'El color no puede contener caracteres especiales.';
+                esValido = false;
+            } 
             // Verificar si el color tiene más de 20 caracteres
             else if (color.length > 20){
                 errorColor.innerHTML = 'El color no puede tener más de 20 caracteres.';
