@@ -331,12 +331,12 @@
             document.getElementById('error-cantidad').textContent = '';
         }
         // Validar tamaño (numérico y no negativo)
-        const regexTamano = /^\d+(\.\d+)?$/;
-        if (!regexTamano.test(tamano) || parseFloat(tamano) <= 0) {
-            document.getElementById('error-tamano').textContent = 'El tamaño debe ser un valor numérico positivo.';
+        const regexTamano = /^\d+(\.\d{1,2})?\s?(cm|m|kg|g|l|ml)$/i;  // Unidades válidas: cm, m, kg, g, l, ml
+        if (!regexTamano.test(tamano)) {
+            document.getElementById('error-tamano').textContent = 'El tamaño debe ser un número seguido de una unidad válida (cm, m, kg, g, l, ml).';
             formValido = false;
         } else {
-            document.getElementById('error-tamano').textContent = '';
+            document.getElementById('error-tamano').textContent = ''; // Limpiar el mensaje de error
         }
         
         const regexPrecio = /^\d+(\.\d{1,2})?$/;
