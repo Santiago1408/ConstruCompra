@@ -39,6 +39,17 @@ def registro():
         connection = get_db_connection()
         cursor = connection.cursor()
 
+        # Verificar si el correo ya existe
+        query_check_email = 'SELECT COUNT(*) FROM usuarios WHERE correo = %s'
+        cursor.execute(query_check_email, (correo,))
+        result = cursor.fetchone()
+
+        if result[0] > 0:
+            cursor.close()
+            connection.close()
+            return redirect(url_for('registro', correo_existente='true'))
+
+
         # Insertar nuevo usuario en la base de datos
         query = '''
             INSERT INTO usuarios (nombre, fecha_nacimiento, genero, direccion, telefono, correo, contrasenia)
@@ -53,6 +64,7 @@ def registro():
         cursor.close()
         connection.close()
 
+    correo_existente = request.args.get('correo_existente', False)
     correo_invalido = request.args.get('correo_invalido', False)
     menor_de_edad = request.args.get('menor_de_edad', False)
 
