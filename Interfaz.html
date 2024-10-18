@@ -353,6 +353,13 @@
         } else {
             document.getElementById('error-marca').textContent = ''; // Limpiar el mensaje de error
         }
+        //modificacion en la validacion de ubicacion
+        if (!/\b(calle|avenida|av|plaza|boulevard|paseo|ruta|carretera)\b/i.test(ubicacion)) {
+            document.getElementById('error-ubicacion').textContent = 'La ubicación debe contener palabras como "calle", "Avenida", "Av", etc.';
+            formValido = false;
+        } else {
+            document.getElementById('error-ubicacion').textContent = ''; // Limpiar el mensaje de error
+        }
 
         return formValido;
     }
