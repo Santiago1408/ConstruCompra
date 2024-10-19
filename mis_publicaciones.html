@@ -110,40 +110,36 @@
 
     <div class="header">
         <div class="profile-section">
-            <img src="{{ url_for('static', filename='perfil.png') }}" alt="Perfil" class="profile-pic">
-            <h1 style= "color:#df8755;">Mi perfil</h1>
+            <!--<img src="{{ url_for('static', filename='perfil.png') }}" alt="Perfil" class="profile-pic">
+            <h1 style= "color:#df8755;">Mi perfil</h1> -->
         </div>
         <h1>Inicio</h1>
     </div>
-    
+
     <div class="container">
-    	<div class="title-container">
-        	<h2>Mis Publicaciones</h2>
-    	</div>
-    </div>
+        <div class="title-container">
+            <h2>Mis Publicaciones</h2>
+        </div>
 
-    {% if productos %}
-    <div class="publications">
-	{% for producto in productos %}
-	<div class="product-card">
-  		<div class="product-details">
-  			<h3>{{ producto.nombre }}</h3>
+        {% if productos %}
+            <div class="publications">
+                {% for producto in productos %}
+                <div class="product-card">
+                    <div class="product-details">
+                        <h3>{{ producto.nombre }}</h3>
                         <p class="description">{{ producto.descripcion }}</p>
-                        <p class="price">Precio: {{ producto.precio }}</p>	
-		</div>
-		<a href="{{ url_for('editar_producto', id_producto=producto.id_producto) }}" class="edit-btn">
+                        <p class="price">Precio: {{ producto.precio }}</p>
+                    </div>
+                    <a href="{{ url_for('editar_producto', id_producto=producto.id_producto) }}" class="edit-btn">
                         <img src="{{ url_for('static', filename='Edit.png') }}" alt="Editar">
-                </a>
-	</div>
-	{% endfor %}
-
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>No has registrado ningún producto aún.</p>
+        {% endif %}
     </div>
 
-    
-    {% else %}
-   
- 	<p>No has registrado ningún producto aún.</p>
-
-    {% endif %}    
 </body>
 </html>
