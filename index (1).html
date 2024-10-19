@@ -282,6 +282,7 @@
     </div>
 
     <script>
+        
     function mostrarInfo(id_producto) {
         fetch(`/producto/${id_producto}`)
             .then(response => {
@@ -297,9 +298,9 @@
                     <div class="precio">Bs. ${data.precio}</div> 
                     <div class="datos">
                         <p>Descripción: ${data.descripcion || ''}</p> <!-- Muestra la descripción del producto, o un valor vacío si no hay descripción -->
-                        <p>Marca: ${data.marca || ''}</p> <!-- Muestra la marca del producto, o un valor vacío si no está disponible -->
+                        <p>Marca: ${data.marca || ''}</p> 
                         <p>Cantidad: ${data.cantidad || ''}</p> <!-- Muestra la cantidad disponible del producto -->
-                        <p>Tamaño: ${data.tamano || ''}</p> <!-- Muestra el tamaño del producto, o un valor vacío si no está definido -->
+                        <p>Tamaño: ${data.tamano || ''}</p>
                         <p>Color: ${data.color || ''}</p> <!-- Muestra el color del producto -->
                         <p>Ubicación: ${data.ubicacion || ''}</p> 
                     </div>
@@ -317,6 +318,7 @@
 
     function cerrarModal() {
         document.getElementById('detalleProductoModal').style.display = 'none';
+        
         document.getElementById('modalOverlay').style.display = 'none';
     }
     </script>
