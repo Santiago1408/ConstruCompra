@@ -1,0 +1,20 @@
+@app.route('/producto/<int:id_producto>')
+def producto(id_producto):
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor(dictionary=True)
+        cursor.execute("SELECT * FROM productos WHERE id_producto = %s", (id_producto,))
+        producto = cursor.fetchone()
+        cursor.close()
+        conn.close()
+
+        if producto:
+            return jsonify(producto)  # Devuelve el producto como JSON
+        else:
+            return jsonify({"error": "Producto no encontrado"}), 404
+
+    except mysql.connector.Error as err:
+        return jsonify({"error": f"Error en la base de datos: {err}"}), 500
+
+if __name__ == '__main__':
+    app.run(debug=True)
