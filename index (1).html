@@ -284,6 +284,7 @@
     <script>
         
     function mostrarInfo(id_producto) {
+        //obtenemos el id de producto
         fetch(`/producto/${id_producto}`)
             .then(response => {
                 if (!response.ok) {
