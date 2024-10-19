@@ -1,20 +1,37 @@
-@app.route('/producto/<int:id_producto>')
+@app.route('/producto/<int:id_producto>') 
 def producto(id_producto):
+    # Maneja la solicitud para obtener un producto específico por su ID
+    
     try:
+        # Establece una conexión a la base de datos
         conn = get_db_connection()
+        
+        # Crea un cursor para ejecutar consultas SQL, con resultados devueltos como diccionarios
         cursor = conn.cursor(dictionary=True)
+        
+        # Ejecuta una consulta para obtener el producto con el ID proporcionado
         cursor.execute("SELECT * FROM productos WHERE id_producto = %s", (id_producto,))
+        
+        # Obtiene el primer resultado de la consulta
         producto = cursor.fetchone()
+        
+        # Cierra el cursor para liberar los recursos
         cursor.close()
+        
+        # Cierra la conexión a la base de datos
         conn.close()
 
+        # Si el producto fue encontrado, lo devuelve en formato JSON
         if producto:
-            return jsonify(producto)  # Devuelve el producto como JSON
+            return jsonify(producto)  # Devuelve los detalles del producto como JSON
         else:
+            # Si no se encuentra el producto, devuelve un mensaje de error con código 404
             return jsonify({"error": "Producto no encontrado"}), 404
 
     except mysql.connector.Error as err:
+        # Si ocurre un error relacionado con la base de datos, lo captura y devuelve un error 500
         return jsonify({"error": f"Error en la base de datos: {err}"}), 500
 
+# Bloque principal que ejecuta la aplicación Flask
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True)  # Ejecuta la aplicación en modo de depuración
