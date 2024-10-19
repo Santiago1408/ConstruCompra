@@ -66,5 +66,31 @@ def guardar_producto():
         cursor.close()
         conn.close()
 
+@app.route('/mis_publicaciones')
+def mis_publicaciones():
+    if 'id_usuario' not in session:
+        return redirect(url_for('logueo'))  # Redirigir si no ha iniciado sesión
+
+    # Obtener el ID del usuario de la sesión
+    id_usuario = session['id_usuario']
+
+    # Consultar los productos asociados a este usuario
+    connection = get_db_connection()
+    cursor = connection.cursor(dictionary=True)
+    query = '''
+        SELECT id_producto, nombre, descripcion, precio
+        FROM productos
+        WHERE id_usuarios = %s
+    '''
+    cursor.execute(query, (id_usuario,))
+    productos = cursor.fetchall()
+
+    cursor.close()
+    connection.close()
+
+    # Pasar los productos al HTML
+    return render_template('mis_publicaciones.html', productos=productos)
+
+
 if __name__ == '__main__':
     app.run(debug=True)
