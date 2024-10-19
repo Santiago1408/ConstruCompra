@@ -7,7 +7,7 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
 
-        body {
+  body {
             font-family: 'Roboto', sans-serif;
             background-color: #f2f0f0;
             color: #333;
@@ -24,7 +24,7 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
-        .header {
+                .header {
             display: flex;
             align-items: center;
         }
@@ -48,10 +48,20 @@
             margin: 10px 0;
         }
 
+
+        /* .header h1 {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            margin: 0;
+        }*/
+
+
+
         label {
             font-size: 16px;
             font-weight: bold;
-            color: #df8755;
+            color: #000;
             margin-top: 10px;
             display: block;
         }
@@ -62,7 +72,7 @@
             margin-top: 5px;
             margin-bottom: 10px;
             border: 1px solid #ccc;
-            border-radius: 5px;
+            border-radius: 20px; /* Cambiado a más ovalado */
             font-size: 14px;
             color: #989680;
         }
@@ -72,26 +82,32 @@
             font-size: 12px;
         }
 
-        .button-container {
-            margin-top: 20px;
-            text-align: right;
-        }
-
         button {
-            background-color: #df8755;
+            background-color: #bc8741;
             color: white;
             border: none;
-            padding: 10px 20px;
-            font-size: 16px;
+            padding: 15px 30px;
+            font-size: 20px; /* Tamaño de letra más grande */
             font-weight: bold;
-            border-radius: 5px;
+            border-radius: 30px;
             cursor: pointer;
+            margin: 0 10px;
         }
 
         button:hover {
             background-color: #c56d4a;
         }
 
+        /* Estilo para los botones "Aceptar" y "Guardar" */
+        .modal .button {
+            font-size: 20px; /* Tamaño de letra más grande */
+            background-color: #bc8741; /* Color personalizado */
+        }
+
+        .button-container {
+            margin-top: 20px;
+            text-align: right;
+        }
         .modal {
             display: none;
             position: fixed;
@@ -145,98 +161,134 @@
         .modal .button:hover {
             background-color: #c56d4a;
         }
-
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Editar Producto</h1>
-        <form id="editar-producto-form">
-            <label for="nombre">Nombre del producto:</label>
-            <input type="text" id="nombre" name="nombre" value="{{ producto['nombre'] }}">
-        
-            <label for="descripcion">Descripción:</label>
-            <input type="text" id="descripcion" name="descripcion" value="{{ producto['descripcion'] }}">
-        
-            <label for="precio">Precio:</label>
-            <input type="text" id="precio" name="precio" value="{{ producto['precio'] }} Bs.">
-        
-            <label for="cantidad">Cantidad:</label>
-            <input type="number" id="cantidad" name="cantidad" value="{{ producto['cantidad'] }}">
-        
-            <label for="tipo_venta">Tipo de venta:</label>
-            <select id="tipo_venta" name="tipo_venta">
-                <option value="Unitario" {% if producto['tipo_venta'] == 'Unitario' %}selected{% endif %}>Unitario</option>
-                <option value="Total" {% if producto['tipo_venta'] == 'Total' %}selected{% endif %}>Total</option>
-            </select>
-        
-            <label for="ubicacion">Ubicación:</label>
-            <input type="text" id="ubicacion" name="ubicacion" value="{{ producto['ubicacion'] }}">
-        
-            <label for="marca">Marca:</label>
-            <input type="text" id="marca" name="marca" value="{{ producto['marca'] }}">
-        
-            <label for="color">Color:</label>
-            <input type="text" id="color" name="color" value="{{ producto['color'] }}">
-        
-            <label for="tamano">Tamaño:</label>
-            <input type="text" id="tamano" name="tamano" value="{{ producto['tamano'] }}">
-        
-            <div class="button-container">
-                <button type="button" onclick="abrirModalGuardar()">Guardar</button>
-                <button type="button" onclick="abrirModalCancelar()">Cancelar</button>
-            </div>
-        </form>
 
+<div class="container">
+    <div class="header">
+       <!-- <img src="{{ url_for('static', filename='perfil.png') }}" alt="Perfil" class="profile-pic">
+        <span class="title">Mi Perfil</span>-->
     </div>
-    <!-- Modal de Confirmación -->
-    <div id="modal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header" id="modal-header">Guardar Cambios</div>
-            <div class="modal-body" id="modal-message">¿Está seguro que desea guardar los cambios?</div>
-            <div class="button-container">
-                <button class="button" onclick="guardarProducto()">Aceptar</button>
-                <button class="button" onclick="cerrarModal()">Cancelar</button>
-            </div>
+    <div class="bar"></div>
+
+    <h2 style="text-align:center; color:#df8755;">EDITAR PRODUCTO</h2>
+
+    <form id="editar-producto-form" onsubmit="return validarFormulario(event)">
+        <input type="hidden" id="id_producto" name="id_producto" value="{{ producto['id_producto'] }}">
+
+        <label for="nombre">Nombre del producto:</label>
+        <input type="text" id="nombre" name="nombre" value="{{ producto['nombre'] }}">
+        <div id="error-nombre" class="error"></div>
+
+        <label for="descripcion">Descripción:</label>
+        <input type="text" id="descripcion" name="descripcion" value="{{ producto['descripcion'] }}">
+        <div id="error-descripcion" class="error"></div>
+
+        <label for="precio">Precio (Bs.):</label>
+        <input type="text" id="precio" name="precio" value="{{ producto['precio'] }}">
+        <div id="error-precio" class="error"></div>
+
+        <label for="cantidad">Cantidad:</label>
+        <input type="number" id="cantidad" name="cantidad" value="{{ producto['cantidad'] }}">
+        <div id="error-cantidad" class="error"></div>
+
+        <label for="tipo_venta">Tipo de venta:</label>
+        <select id="tipo_venta" name="tipo_venta">
+            <option value="Unitario" {% if producto['tipo_venta'] == 'Unitario' %}selected{% endif %}>Unitario</option>
+            <option value="Total" {% if producto['tipo_venta'] == 'Total' %}selected{% endif %}>Total</option>
+        </select>
+
+        <label for="ubicacion">Ubicación:</label>
+        <input type="text" id="ubicacion" name="ubicacion" value="{{ producto['ubicacion'] }}">
+        <div id="error-ubicacion" class="error"></div>
+
+        <label for="marca">Marca:</label>
+        <input type="text" id="marca" name="marca" value="{{ producto['marca'] }}">
+        <div id="error-marca" class="error"></div>
+
+        <label for="color">Color:</label>
+        <select id="color" name="color">
+            <option value="Rojo" {% if producto['color'] == 'Rojo' %}selected{% endif %}>Rojo</option>
+            <option value="Azul" {% if producto['color'] == 'Azul' %}selected{% endif %}>Azul</option>
+            <option value="Verde" {% if producto['color'] == 'Verde' %}selected{% endif %}>Verde</option>
+            <option value="Negro" {% if producto['color'] == 'Negro' %}selected{% endif %}>Negro</option>
+            <option value="Blanco" {% if producto['color'] == 'Blanco' %}selected{% endif %}>Blanco</option>
+            <option value="Amarillo" {% if producto['color'] == 'Amarillo' %}selected{% endif %}>Amarillo</option>
+            <option value="Amarillo" {% if producto['color'] == 'Ninguno' %}selected{% endif %}>Ninguno</option>
+        </select>
+        <div id="error-color" class="error"></div>
+
+        <label for="tamano">Tamaño:</label>
+        <input type="text" id="tamano" name="tamano" value="{{ producto['tamano'] }}">
+        <div id="error-tamano" class="error"></div>
+
+        <div class="button-container">
+            <button type="button" onclick="abrirModalGuardar()">Guardar</button>
+            <button type="button" onclick="abrirModalCancelar()">Cancelar</button>
+        </div>
+    </form>
+</div>
+
+<!-- Modales -->
+<div id="modal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">Guardar Cambios</div>
+        <div class="modal-body">¿Está seguro que desea guardar los cambios?</div>
+        <div class="button-container">
+            <button class="button" onclick="guardarProducto()">Aceptar</button>
+            <button class="button" onclick="cerrarModal()">Cancelar</button>
         </div>
     </div>
-    <!-- Modal de Éxito -->
-    <div id="modal-exito" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">Guardar Cambios</div>
-            <div class="modal-body">Se ha guardado los cambios exitosamente.</div>
-            <div class="button-container">
-                <button class="button" onclick="cerrarModalExito()">Aceptar</button>
-            </div>
+</div>
+
+<div id="modal-exito" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">Guardar Cambios</div>
+        <div class="modal-body">Se ha guardado los cambios exitosamente.</div>
+        <div class="modal-button-container" style="display: flex; justify-content: center; margin-top: 20px;">
+            <button class="button" onclick="cerrarModalExito()" style="padding: 10px 20px; background-color: #df8755; color: white; border: none; cursor: pointer; border-radius: 5px;">
+                Aceptar
+            </button>
         </div>
     </div>
-    <!-- Modal de Cancelación -->
-    <div id="modal-cancelar" class="modal">
-        <div class="modal-content">
-            <div class="modal-header" id="modal-cancelar-header">Cancelar Cambios</div>
-            <div class="modal-body" id="modal-cancelar-message">¿Está seguro que desea cancelar los cambios?</div>
-            <div class="button-container">
-                <button class="button" onclick="confirmarCancelar()">Confirmar</button>
-                <button class="button" onclick="cerrarModal()">Cancelar</button>
-            </div>
+</div>
+
+<div id="modal-cancelar" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">Cancelar Cambios</div>
+        <div class="modal-body">¿Está seguro que desea cancelar los cambios?</div>
+        <div class="button-container">
+            <button class="button" onclick="confirmarCancelar()">Confirmar</button>
+            <button class="button" onclick="cerrarModal()">Cancelar</button>
         </div>
-    </div> </body> </html> 
+    </div>
+</div>
+
+<div id="modal-no-changes" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">Sin Cambios</div>
+        <div class="modal-body">No hay cambios por guardar.</div>
+        <div class="modal-button-container-sincambios" style="display: flex; justify-content: center; margin-top: 20px;">
+            <button class="button" onclick="cerrarModalExito()" style="padding: 10px 20px; background-color: #df8755; color: white; border: none; cursor: pointer; border-radius: 5px;">
+                Aceptar
+            </button>
+        </div>
+    </div>
+</div>
+
 <script>
+    let originalValues = {};
 
-    function abrirModalGuardar() {
-        if (validarFormulario(event)) {
-            document.getElementById('modal-header').textContent = 'Guardar Cambios';
-            document.getElementById('modal-message').textContent = '¿Está seguro que desea guardar los cambios?';
-            document.getElementById('modal').style.display = 'flex';
-        }
+    window.onload = function() {
+        const form = document.getElementById('editar-producto-form');
+        const inputs = form.querySelectorAll('input, select');
+        inputs.forEach(input => {
+            originalValues[input.id] = input.value;
+        });
     }
 
-    function abrirModalCancelar() {
-        document.getElementById('modal-cancelar-header').textContent = 'Cancelar Cambios';
-        document.getElementById('modal-cancelar-message').textContent = '¿Está seguro que desea cancelar los cambios?';
-        document.getElementById('modal-cancelar').style.display = 'flex';
-    }	
-    
+    let isFormDirty = false;
     function validarFormulario() {
         const nombre = document.getElementById('nombre').value.trim();
         const descripcion = document.getElementById('descripcion').value.trim();
@@ -246,9 +298,11 @@
         const tamano = document.getElementById('tamano').value.trim();
         const marca = document.getElementById('marca').value.trim();
         const color = document.getElementById('color').value.trim();
-
+        const form = document.getElementById('editar-producto-form');
+        form.addEventListener('input', markFormDirty);
 
         let formValido = true;
+
         // Validar que ningún campo esté vacío
         if (!nombre || !descripcion || !precio || !cantidad || !ubicacion || !tamano || !marca || !color) {
          formValido = false;
@@ -282,6 +336,7 @@
                 document.getElementById('error-ubicacion').textContent = '';
             }
 
+
             if (!tamano) {
                 document.getElementById('error-tamano').textContent = 'El tamaño no puede estar vacío.';
             } else {
@@ -302,43 +357,38 @@
 
             return formValido; // Devuelve false si algún campo está vacío
         }
-       
-         // Validar nombre (alfanumérico y símbolos permitidos)
-        const regexNombre = /^[A-Za-z0-9 %?"!*;]*$/;
+
+        // Si todos los campos tienen valor, continuar con las validaciones detalladas:
+
+        // Validar nombre (alfanumérico y símbolos permitidos)
+        const regexNombre = /^[A-Za-z0-9 ,%?"!;áéíóúÁÉÍÓÚñÑ\s]+$/;
         if (!regexNombre.test(nombre)) {
-                document.getElementById('error-nombre').textContent = 'El nombre contiene caracteres inválidos.';
-                formValido = false;
-            } else if (nombre.length < 20 || nombre.length > 100) {
-                document.getElementById('error-nombre').textContent = 'El nombre debe tener entre 20 y 100 caracteres.';
-                formValido = false;
-            } else {
-                document.getElementById('error-nombre').textContent = ''; // Limpiar el mensaje de error
+            document.getElementById('error-nombre').textContent = 'El nombre contiene caracteres inválidos.';
+            formValido = false;
+        } else if (nombre.length < 3 || nombre.length > 100) {
+            document.getElementById('error-nombre').textContent = 'El nombre debe tener entre 3 y 100 caracteres.';
+            formValido = false;
+        } else {
+            document.getElementById('error-nombre').textContent = ''; // Limpiar el mensaje de error
+        }
 
-            }
+        if (marca.length > 50) {
+        document.getElementById('error-marca').textContent = 'La marca no puede tener más de 50 caracteres.';
+        formValido = false;
+        } else {
+        document.getElementById('error-marca').textContent = ''; // Limpiar el mensaje de error
+        }
 
-	 if (descripcion.length < 50 || descripcion.length > 500) {
+
+        // Validar descripción
+        if (descripcion.length < 50 || descripcion.length > 500) {
             document.getElementById('error-descripcion').textContent = 'La descripción debe tener entre 50 y 500 caracteres.';
             formValido = false;
         } else {
             document.getElementById('error-descripcion').textContent = '';
         }
-        
-         // Validar cantidad (entero positivo)
-        if (!Number.isInteger(Number(cantidad)) || cantidad <= 0) {
-            document.getElementById('error-cantidad').textContent = 'La cantidad debe ser un número entero positivo.';
-            formValido = false;
-        } else {
-            document.getElementById('error-cantidad').textContent = '';
-        }
-        // Validar tamaño (numérico y no negativo)
-        const regexTamano = /^\d+(\.\d{1,2})?\s?(cm|m|kg|g|l|ml)$/i;  // Unidades válidas: cm, m, kg, g, l, ml
-        if (!regexTamano.test(tamano)) {
-            document.getElementById('error-tamano').textContent = 'El tamaño debe ser un número seguido de una unidad válida (cm, m, kg, g, l, ml).';
-            formValido = false;
-        } else {
-            document.getElementById('error-tamano').textContent = ''; // Limpiar el mensaje de error
-        }
-        
+
+        // Validar precio (numérico con hasta 2 decimales y no negativo)
         const regexPrecio = /^\d+(\.\d{1,2})?$/;
         if (!regexPrecio.test(precio) || parseFloat(precio) <= 0) {
             document.getElementById('error-precio').textContent = 'El precio debe ser un valor numérico positivo con hasta 2 decimales.';
@@ -346,93 +396,35 @@
         } else {
             document.getElementById('error-precio').textContent = '';
         }
-        //nueva validacion de marca
-        if (marca.length > 50) {
-            document.getElementById('error-marca').textContent = 'La marca no puede tener más de 50 caracteres.';
+
+        // Validar cantidad (entero positivo)
+        if (!Number.isInteger(Number(cantidad)) || cantidad <= 0) {
+            document.getElementById('error-cantidad').textContent = 'La cantidad debe ser un número entero positivo.';
             formValido = false;
         } else {
-            document.getElementById('error-marca').textContent = ''; // Limpiar el mensaje de error
+            document.getElementById('error-cantidad').textContent = '';
         }
-        //modificacion en la validacion de ubicacion
+
+
+
         if (!/\b(calle|avenida|av|plaza|boulevard|paseo|ruta|carretera)\b/i.test(ubicacion)) {
             document.getElementById('error-ubicacion').textContent = 'La ubicación debe contener palabras como "calle", "Avenida", "Av", etc.';
             formValido = false;
         } else {
             document.getElementById('error-ubicacion').textContent = ''; // Limpiar el mensaje de error
         }
+        // Validar tamaño (número positivo)
+       const regexTamano = /^\d+(\.\d{1,2})?\s?(cm|m|kg|g|l|ml)$/i;  // Unidades válidas: cm, m, kg, g, l, ml
+        if (!regexTamano.test(tamano)) {
+            document.getElementById('error-tamano').textContent = 'El tamaño debe ser un número seguido de una unidad válida (cm, m, kg, g, l, ml).';
+            formValido = false;
+        } else {
+            document.getElementById('error-tamano').textContent = ''; // Limpiar el mensaje de error
+        }
 
         return formValido;
     }
 
-	
-    
-    function guardar() {
-        const nombre = document.getElementById("nombre").value;
-        const descripcion = document.getElementById("descripcion").value;
-    	const precio = document.getElementById("precio").value.replace(" Bs.", "");
-    	const cantidad = document.getElementById("cantidad").value.replace(" Unidades", "");
-    	const tipo_venta = document.getElementById("tipo_venta").value; // Asegúrate de tener este campo en tu HTML
-    	const ubicacion = document.getElementById("ubicacion").value; // Asegúrate de tener este campo en tu HTML
-    	const marca = document.getElementById("marca").value; // Asegúrate de tener este campo en tu HTML
-    	const color = document.getElementById("color").value; // Asegúrate de tener este campo en tu HTML
-    	const tamano = document.getElementById("tamano").value; // Asegúrate de tener este campo en tu HTML
-
-    fetch('/guardar_producto', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            nombre: nombre,
-            descripcion: descripcion,
-            precio: parseFloat(precio),
-            cantidad: parseInt(cantidad),
-            tipo_venta: tipo_venta,
-            ubicacion: ubicacion,
-            marca: marca,
-            color: color,
-            tamano: tamano
-        })
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.status === "success") {
-            alert(data.message); // Muestra mensaje de éxito
-            window.location.href = '/Menu.html'; // Redirige al menú principal
-        } else {
-            alert(data.message); // Muestra mensaje de error
-        }
-    })
-    .catch((error) => {
-        console.error('Error:', error);
-        alert("Hubo un problema al realizar los cambios"); // Mensaje genérico en caso de error
-    });
-}
-
-    function cerrarModal() {
-        document.getElementById('modal').style.display = 'none';
-    }
-
-    function cerrarModalExito() {
-        document.getElementById('modal-exito').style.display = 'none';
-        window.location.href = '/ruta_a_redireccionar'; // Reemplazar con la ruta deseada
-    }
-    function confirmarCancelar() {
-        window.location.href = '/productos';
-    }
-    function abrirModalGuardar() {
-        if (validarFormulario()) {
-            if (hayChanges()) {
-                const modal = document.getElementById('modal');
-                modal.style.display = 'flex';
-                document.getElementById('modal-header').innerText = 'Guardar Cambios';
-                document.getElementById('modal-message').innerText = '¿Está seguro que desea guardar los cambios?';
-            } else {
-                const modalNoChanges = document.getElementById('modal-no-changes');
-                modalNoChanges.style.display = 'flex';
-            }
-        }
-    }
     function hayChanges() {
         const form = document.getElementById('editar-producto-form');
         const inputs = form.querySelectorAll('input, select');
@@ -443,4 +435,96 @@
         }
         return false;
     }
+
+    function abrirModalGuardar() {
+    if (validarFormulario()) {
+        if (hayChanges()) {
+            const modal = document.getElementById('modal');
+            modal.style.display = 'flex';
+            document.getElementById('modal-header').innerText = 'Guardar Cambios';
+            document.getElementById('modal-message').innerText = '¿Está seguro que desea guardar los cambios?';
+        } else {
+            const modalNoChanges = document.getElementById('modal-no-changes');
+            modalNoChanges.style.display = 'flex';
+        }
+    }
+}
+
+    function abrirModalCancelar() {
+        const modalCancelar = document.getElementById('modal-cancelar');
+        modalCancelar.style.display = 'flex';
+    }
+
+    function cerrarModal() {
+        const modal = document.getElementById('modal');
+        modal.style.display = 'none';
+        const modalCancelar = document.getElementById('modal-cancelar');
+        modalCancelar.style.display = 'none';
+    }
+
+    function cerrarModalExito() {
+        const modalExito = document.getElementById('modal-exito');
+        modalExito.style.display = 'none';
+        window.location.href = '/index';
+    }
+
+    function markFormDirty() {
+        isFormDirty = true;
+    }
+
+    function guardarProducto() {
+    const datos = {
+        id_producto: document.getElementById('id_producto').value,
+        nombre: document.getElementById('nombre').value,
+        descripcion: document.getElementById('descripcion').value,
+        precio: document.getElementById('precio').value,
+        cantidad: document.getElementById('cantidad').value,
+        tipo_venta: document.getElementById('tipo_venta').value,
+        ubicacion: document.getElementById('ubicacion').value,
+        marca: document.getElementById('marca').value,
+        color: document.getElementById('color').value,
+        tamano: document.getElementById('tamano').value
+    };
+
+    console.log(datos);  // Verificar los datos antes de enviarlos
+
+    fetch('/guardar_producto', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(datos)
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'success') {
+            const modalExito = document.getElementById('modal-exito');
+            modalExito.style.display = 'flex';
+        } else {
+            alert('Error al guardar el producto: ' + data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error en la solicitud:', error);
+        alert('Ocurrió un error al intentar guardar el producto. Por favor, inténtelo de nuevo.');
+    });
+}
+
+
+    function cancelarRegistro() {
+        // Lógica para cancelar el registro
+        alert('Registro cancelado'); // Ejemplo de alerta
+    }
+
+    function confirmarCancelar() {
+        cerrarModal();
+        window.location.href = '/index';
+    }
+
+    function cerrarModalNoChanges() {
+    const modalNoChanges = document.getElementById('modal-no-changes');
+    modalNoChanges.style.display = 'none';
+}
 </script>
+</body>
+</html>
