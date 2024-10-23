@@ -10,13 +10,11 @@
 </head>
 <body>
     <header>
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">
-                <img src="logo.png" alt="Logo" class="logo-img">
+        <div class="container-fluid d-flex align-items-center">
+            <a class="navbar-brand d-flex align-items-center" href="{{ url_for('edicionUsr') }}">
+                <img src="{{ url_for('static', filename='perfil.png') }}" alt="Logo" width="50" height="50">
+                <span class="perfil-text ms-2">Mi Perfil</span>
             </a>
-            <div class="ms-auto">
-                <a href="edicionUsr.html" class="nav-link perfil-link">Mi Perfil</a>
-            </div>
         </div>
         <div class="menu">
             <a href="#">INICIO</a>
