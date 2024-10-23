@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrar producto</title>
+
+    <style>
+
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f2f0f0;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 70%;
+            margin: 50px auto;
+            background-color: #f2f0f0;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+        }
+
+        .profile-pic {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        .title {
+            font-size: 24px;
+            color: #df8755;
+            font-weight: bold;
+        }
+
+        .bar {
+            background-color: #df8755;
+            height: 5px;
+            margin: 10px 0;
+        }
+
+        label {
+            font-size: 16px;
+            font-weight: bold;
+            color: #df8755;
+            margin-top: 10px;
+            display: block;
+        }
+
+        input[type="text"], input[type="number"], select {
+            width: 95%;
+            padding: 8px;
+            margin-top: 5px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+            color: #989680;
+        }
+
+        .button-container {
+            margin-top: 20px;
+            text-align: right;
+        }
+
+        button {
+            background-color: #df8755;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #c56d4a;
+        }
+
+        .error {
+            color: red;
+            font-size: 12px;
+        }
+
+        /* Estilo para el mensaje emergente */
+        #mensajeEmergente {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #df8755;
+            color: white;
+            padding: 20px;
+            border-radius: 5px;
+            z-index: 1000;
+        }
+        #mensajeEmergente.visible {
+            display: block;
+        }
+
+    </style>
+
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <!-- <span class="title">Registrar Producto</span> -->
+        </div>
+
+        <div class="bar"></div>
+
+        <h2 style="text-align:center; color:#df8755;">REGISTRAR NUEVO PRODUCTO</h2>
+
+        <form id="registrar-producto-form" action="/registrar_producto" method="POST">
+            <input type="hidden" id="id_usuario" name="id_usuario" value="{{ session['id_usuario'] }}">
+
+            <label for="nombre">Nombre del producto:</label>
+            <input type="text" id="nombre" name="nombre" required>
+            <div id="error-nombre" class="error"></div>
+
+            <label for="descripcion">Descripción:</label>
+            <input type="text" id="descripcion" name="descripcion" required>
+            <div id="error-descripcion" class="error"></div>
+
+            <label for="precio">Precio (Bs.):</label>
+            <input type="number" id="precio" name="precio" step="0.01" required>
+            <div id="error-precio" class="error"></div>
+
+            <label for="cantidad">Cantidad:</label>
+            <input type="number" id="cantidad" name="cantidad" required>
+            <div id="error-cantidad" class="error"></div>
+
+            <label for="tipo_venta">Tipo de venta:</label>
+            <select id="tipo_venta" name="tipo_venta" required>
+                <option value="Unitario" selected>Unitario</option>
+                <option value="Total">Total</option>
+            </select>
+
+            <label for="ubicacion">Ubicación:</label>
+            <input type="text" id="ubicacion" name="ubicacion" required>
+            <div id="error-ubicacion" class="error"></div>
+
+            <label for="marca">Marca:</label>
+            <input type="text" id="marca" name="marca">
+            <div id="error-marca" class="error"></div>
+
+            <label for="color">Color:</label>
+            <input type="text" id="color" name="color">
+            <div id="error-color" class="error"></div>
+
+            <label for="tamano">Tamaño:</label>
+            <input type="text" id="tamano" name="tamano">
+            <div id="error-tamano" class="error"></div>
+
+            <div class="button-container">
+                            
+                <button type="button" id="botonSubir" onclick="subirImagen(event)">Subir imagen</button>
+                <button type="button" id="botonRegistrar" onclick="validarFormulario(event)">Registrar Producto</button>
+                <button type="button" id="cancelar-button" onclick="limpiarFormulario()">Cancelar</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Mensaje emergente -->
+    <div id="mensajeEmergente">Producto registrado exitosamente</div>
+
+    <script> // Validaciones de cada campo del formulario de registro
+        // Funcion para validar el campo de registro de nombre
+        function validarNombre(){
+            const nombre = document.getElementById('nombre').value;
+            const errorNombre = document.getElementById('error-nombre');
+            errorNombre.innerHTML = ''; // Limpiar mensajes previos
+            let esValido = true;
+            if (nombre.trim() === ""){
+                errorNombre.innerHTML = 'El nombre del producto no puede estar vacío.';
+                esValido = false;
+            } else if (/\d/.test(nombre)){
+                errorNombre.innerHTML = 'El nombre del producto no puede contener números.';
+                esValido = false;
+            } else if (/[^a-zA-Z\s]/.test(nombre)){
+                errorNombre.innerHTML = 'El nombre del producto no puede contener caracteres especiales.';
+                esValido = false;
+            } else if (nombre.length < 3 || nombre.length >100){
+                errorNombre.innerHTML = 'El nombre del producto debe tener entre 3 y 25 caracteres.';
+                esValido = false;
+            }
+            return esValido;
+        }
+
+        // Funcion para validar el campo de registro de descripciopg
+        function validarDescripcion(){
+            const descripcion = document.getElementById('descripcion').value;
+            const errorDescripcion = document.getElementById('error-descripcion');
+            errorDescripcion.innerHTML = ''; // Limpiar mensajes previos
+            let esValido = true;
+            // Verifica si el campo está vacío
+            if (descripcion.trim() === ""){
+                errorDescripcion.innerHTML = 'La descripción no puede estar vacía.';
+                esValido = false;
+            }// Verifica si la descripción contiene una mezcla de números y caracteres especiales
+            else if (/[\d][^a-zA-Z0-9]+|[^a-zA-Z0-9]+[\d]/.test(descripcion)) {
+                errorDescripcion.innerHTML = 'La descripción no puede tener una combinación de números y caracteres especiales.';
+                esValido = false;
+            }
+            // Verifica si la descripción solo tiene números
+            else if (/^\d+$/.test(descripcion)){
+                errorDescripcion.innerHTML = 'La descripción no puede contener solo números.';
+                esValido = false;
+            }
+            // Verifica si la descripción solo tiene caracteres especiales
+            else if (/^[^a-zA-Z0-9]+$/.test(descripcion)){
+                errorDescripcion.innerHTML = 'La descripción no puede contener solo caracteres especiales.';
+                esValido = false;
+            }
+            // Verificar si la descripción tiene menos de 3 caracteres
+            else if (descripcion.length < 3){
+                errorDescripcion.innerHTML = 'La descripción debe tener al menos 3 caracteres.';
+                esValido = false;
+            }
+            // Verifica si la descripción tiene más de 100 caracteres
+            else if (descripcion.length > 100){
+                errorDescripcion.innerHTML = 'La descripción no puede tener más de 100 caracteres.';
+                esValido = false;
+            }
+            return esValido;
+        }
+
+        // Funcion para validar el campo de registro del precio
+        function validarPrecio(){
+            const precio = document.getElementById('precio').value;
+            const errorPrecio = document.getElementById('error-precio');
+            errorPrecio.innerHTML = ''; // Limpiar mensajes previos
+            let esValido = true;
+            const formatoPrecio = /^[0-9]+([.,][0-9]{1,2})?$/;
+            if (precio.trim() === ""){
+                errorPrecio.innerHTML = 'El campo de precio no puede estar vacío.';
+                esValido = false;
+            } else if (parseFloat(precio.replace(',', '.')) < 0) {
+                errorPrecio.innerHTML = 'El precio no puede ser negativo.';
+                esValido = false;
+            } else if (!formatoPrecio.test(precio)){
+                errorPrecio.innerHTML = 'El precio solo puede contener números, un punto o una coma con 2 decimales.';
+                esValido = false;
+            } else if (parseFloat(precio.replace(',', '.')) > 99999999){
+                errorPrecio.innerHTML = 'El precio no puede ser mayor a 99,999,999.99.';
+                esValido = false;
+            }
+            return esValido;
+        }
+
+        // Funcion para validar el campo de registro de cantidad
+        function validarCantidad(){
+            const cantidad = document.getElementById('cantidad').value;
+            const errorCantidad = document.getElementById('error-cantidad');
+            errorCantidad.innerHTML = ''; // Limpiar mensajes previos
+            let esValido = true;
+            if (cantidad.trim() === ""){
+                errorCantidad.innerHTML = 'La cantidad no puede estar vacía.';
+                esValido = false;
+            } else if (parseInt(cantidad) <= 0){
+                errorCantidad.innerHTML = 'La cantidad debe ser un número positivo.';
+                esValido = false;
+            }
+            return esValido;
+        }
+
+        // Funcion para validar el campo de registro de ubicacion
+        function validarUbicacion(){
+            const ubicacion = document.getElementById('ubicacion').value;
+            const errorUbicacion = document.getElementById('error-ubicacion');
+            errorUbicacion.innerHTML = ''; // Limpiar mensajes previos
+            let esValido = true;
+            if (ubicacion.trim() === ""){
+                errorUbicacion.innerHTML = 'La ubicación no puede estar vacía.';
+                esValido = false;
+            } else if (ubicacion.length < 3 || ubicacion.length > 25){
+                errorUbicacion.innerHTML = 'La ubicación debe tener entre 3 y 25 caracteres.';
+                esValido = false;
+            }// Validar caracteres permitidos (letras, números, espacios, comas, y guiones)
+            else if (!/^[a-zA-Z0-9\s,.-]+$/.test(ubicacion)) {
+                errorUbicacion.innerHTML = 'La ubicación solo puede contener letras, números, espacios, comas y guiones.';
+                esValido = false;
+            }
+            // Validar que no contenga solo números
+            else if (/^\d+$/.test(ubicacion)) {
+                errorUbicacion.innerHTML = 'La ubicación no puede contener solo números.';
+                esValido = false;
+            }
+            return esValido;
+        }
+
+        // Funcion para validar el campo de registro de marca
+        function validarMarca(){
+            const marca = document.getElementById('marca').value;
+            const errorMarca = document.getElementById('error-marca');
+            errorMarca.innerHTML = ''; // Limpiar mensajes previos
+            let esValido = true;
+            if (marca.length > 25){
+                errorMarca.innerHTML = 'La marca no puede tener más de 25 caracteres.';
+                esValido = false;
+            } else if (/\d/.test(marca)){
+                errorMarca.innerHTML = 'La marca no puede contener números.';
+                esValido = false;
+            } else if (/[^a-zA-Z\s]/.test(marca)){
+                errorMarca.innerHTML = 'La marca no puede contener caracteres especiales.';
+                esValido = false;
+            }
+            return esValido;
+        }
+
+        // Funcion para validar el campo de registro de color
+        function validarColor(){
+            // Obtener el valor del color
+            const color = document.getElementById('color').value;
+            const errorColor = document.getElementById('error-color');
+            errorColor.innerHTML = ''; // Limpiar los mensajes previos
+            let esValido = true;
+            // Verificar que solo existan caracteres alfabéticos
+            if (/\d/.test(color)){
+                errorColor.innerHTML = 'El color no puede contener números.';
+                esValido = false;
+            }else if (/[^a-zA-Z\s]/.test(color)){
+                errorColor.innerHTML = 'El color no puede contener caracteres especiales.';
+                esValido = false;
+            }
+            // Verificar si el color tiene más de 20 caracteres
+            else if (color.length > 20){
+                errorColor.innerHTML = 'El color no puede tener más de 20 caracteres.';
+                esValido = false;
+            }
+            return esValido;
+        }
+
+        // Funcion para validar el campo de registro de tamaño
+       function validarTamano(){
+            const tamano = document.getElementById('tamano').value;
+            const errorTamano = document.getElementById('error-tamano');
+            errorTamano.innerHTML = ''; // Limpiar los mensajes previos
+            let esValido = true;
+
+            // Expresión regular que permite letras, números, espacios y algunas palabras clave como "de", "x"
+            const formatoTamanoFlexible = /^[a-zA-Z0-9\s]+$/;
+
+            if (tamano.trim() === "") {
+                return esValido; // Salir de la función sin validar si está vacío (opcional)
+            }
+            // Verificar si el tamaño tiene más de 50 caracteres
+            if (tamano.length > 50) {
+                errorTamano.innerHTML = 'El tamaño no puede tener más de 50 caracteres.';
+                esValido = false;
+            }
+            // Verificar si el formato del tamaño es incorrecto
+            else if (!formatoTamanoFlexible.test(tamano)) {
+                errorTamano.innerHTML = 'El tamaño solo puede contener letras, números y espacios. No se permiten caracteres especiales.';
+                esValido = false;
+            }
+            return esValido;
+        }
+
+        // Creacion de la funcion para validar todo el formulario
+        function validarFormulario(event){
+            event.preventDefault(); // Evitar el envío del formulario por defecto
+
+            const esNombreValido = validarNombre();
+            const esDescripcionValido = validarDescripcion();
+            const esPrecioValido = validarPrecio();
+            const esCantidadValido = validarCantidad();
+            const esUbicacionValido = validarUbicacion();
+            const esMarcaValido = validarMarca();
+            const esColorValido = validarColor();
+            const esTamanoValido = validarTamano();
+
+            if (esNombreValido && esDescripcionValido && esPrecioValido && esCantidadValido && esUbicacionValido && esMarcaValido && esColorValido && esTamanoValido) {
+                // Crear un objeto FormData para enviar el formulario
+                const formData = new FormData(document.getElementById('registrar-producto-form'));
+                fetch('/registrar_producto', {
+                    method: 'POST',
+                    body: formData,
+                })
+                .then(response => response.json()) // Analizar la respuesta JSON
+                .then(data => {
+                    // Mostrar el mensaje de éxito
+                    mostrarMensajeEmergente(data.message);
+                    // Limpiar el formulario después de guardar
+                    limpiarFormulario();
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    mostrarMensajeEmergente('Hubo un error al guardar el producto. Intenta nuevamente.');
+                });
+            }
+        }
+
+        // Funcion para mostrar el mesaje emergente
+        function mostrarMensajeEmergente(mensaje){
+            const mensajeEmergente = document.getElementById('mensajeEmergente');
+            mensajeEmergente.innerText = mensaje; // Actualizar el mensaje
+            mensajeEmergente.classList.add('visible');
+            // Esperar 3 segundos y luego redirigir a index.html
+            setTimeout(() => {
+                mensajeEmergente.classList.remove('visible');
+                window.location.href = '/index';
+            }, 3000); // Desaparecer después de 3 segundos
+        }
+
+        // Funcion para limpiar el formulario al dar clik en cancelar
+        function limpiarFormulario() {
+            document.getElementById('registrar-producto-form').reset();
+            document.querySelectorAll('.error').forEach(e => e.innerHTML = '');
+        }
+
+        // Asignar el evento input para validar en tiempo real
+        document.getElementById('nombre').addEventListener('input', validarNombre);
+        document.getElementById('descripcion').addEventListener('input', validarDescripcion);
+        document.getElementById('precio').addEventListener('input', validarPrecio);
+        document.getElementById('cantidad').addEventListener('input', validarCantidad);
+        document.getElementById('ubicacion').addEventListener('input', validarUbicacion);
+        document.getElementById('marca').addEventListener('input', validarMarca);
+        document.getElementById('color').addEventListener('input', validarColor);
+        document.getElementById('tamano').addEventListener('input', validarTamano);
+
+
+
+    </script>
+
+</body>
+</html>
