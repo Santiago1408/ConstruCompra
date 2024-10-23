@@ -43,6 +43,26 @@ header{
     border-bottom:5px solid #A96424;
     margin-bottom: 30px;
 }
+.perfil-text {
+    font-size: 20px;
+    font-weight: 600;
+    color: black;
+    margin-left: 10px;
+}
+
+.navbar-brand {
+    display: flex;
+    align-items: center;
+}
+
+.container-fluid {
+    padding: 10px 30px;
+}
+
+img {
+    border-radius: 50%;
+    object-fit: cover;
+}
 header .menu {
     display: flex;
     gap: 20px;
