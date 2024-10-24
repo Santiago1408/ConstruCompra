@@ -105,15 +105,36 @@
     <div class="container">
 
         <!-- Sección del perfil -->
+ <!-- Sección del Perfil -->
         <div class="profile">
-            <h2>Mi Perfil</h2>
-            <p><strong>Nombre:</strong> {{ usuario.nombre }}</p>
-            <p><strong>Fecha de Nacimiento:</strong> {{ usuario.fecha_nacimiento }}</p>
-            <p><strong>Dirección:</strong> {{ usuario.direccion or 'No especificada' }}</p>
-            <p><strong>Teléfono:</strong> {{ usuario.telefono or 'No especificado' }}</p>
-            <p><strong>Correo Electrónico:</strong> {{ usuario.correo }}</p>
-        </div>
+            <div class="profile-avatar">
+                <i class="fas fa-user"></i>
+            </div>
 
+            <div class="profile-info">
+                <!-- Primera Columna -->
+                <div>
+                    <p><strong>Nombre Completo:</strong> <span>{{ usuario.nombre }}</span></p>
+                </div>
+                <div>
+                    <p><strong>Fecha de Nacimiento:</strong> <span>{{ usuario.fecha_nacimiento }}</span></p>
+                </div>
+                <div>
+                    <p><strong>Género:</strong> <span>{{ usuario.genero }}</span></p>
+                </div>
+
+                <!-- Segunda Columna -->
+                <div>
+                    <p><strong>Correo Electrónico:</strong> <span>{{ usuario.correo }}</span></p>
+                </div>
+                <div>
+                    <p><strong>Dirección:</strong> <span>{{ usuario.direccion or 'No especificada' }}</span></p>
+                </div>
+                <div>
+                    <p><strong>Teléfono:</strong> <span>{{ usuario.telefono or 'No especificado' }}</span></p>
+                </div>
+            </div>
+        </div>
         <!-- Sección de publicaciones -->
         <div class="publications">
             <h2>Mis Publicaciones</h2>
