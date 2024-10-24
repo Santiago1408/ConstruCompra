@@ -23,34 +23,35 @@
         }
 
         .profile-section {
-            position: absolute;
-            left: 20px;
+            margin-bottom: 20px;
+            padding: 20px;
+            background-color: #fff;
+            border: 1px solid #df8755;
+            border-radius: 10px;
+        }
+
+        .profile-header {
             display: flex;
             align-items: center;
         }
 
-        .profile-section img {
+        .profile-header img {
             width: 50px;
             height: 50px;
             margin-right: 10px;
+            border-radius: 50%;
         }
 
-        .profile-section h1 {
-            color: #333;
+        .profile-details {
+            margin-top: 10px;
         }
 
-        .header h1 {
-            color: #333;
+        .profile-details p {
+            margin: 5px 0;
         }
 
         .container {
             padding: 20px;
-        }
-
-        .title-container {
-            display: flex;
-            justify-content: flex-start; /* Left-align the title */
-            margin-bottom: 20px;
         }
 
         .title-container h2 {
@@ -65,37 +66,15 @@
             margin-top: 20px;
         }
 
-        /* New Product Box Styles */
         .product-card {
             display: flex;
-            justify-content: space-between; /* Space between content and button */
+            justify-content: space-between;
             background-color: white;
             border: 1px solid #df8755;
             border-radius: 10px;
             padding: 15px;
             margin-bottom: 15px;
-            align-items: center; /* Vertically center content */
-        }
-
-        .product-details {
-            flex-grow: 1;
-        }
-
-        .product-card h3 {
-            margin-bottom: 5px;
-        }
-
-        .product-card .description {
-            margin: 10px 0;
-        }
-
-        .product-card .price {
-            font-weight: bold;
-            margin-top: 10px;
-        }
-
-        .edit-btn {
-            margin-left: 20px; /* Add some space between the text and the image */
+            align-items: center;
         }
 
         .edit-btn img {
@@ -103,20 +82,28 @@
             height: 30px;
             cursor: pointer;
         }
-
     </style>
 </head>
 <body>
-
     <div class="header">
-        <div class="profile-section">
-            <!--<img src="{{ url_for('static', filename='perfil.png') }}" alt="Perfil" class="profile-pic">
-            <h1 style= "color:#df8755;">Mi perfil</h1> -->
-        </div>
         <h1>Inicio</h1>
     </div>
 
     <div class="container">
+        <!-- Sección del perfil -->
+        <div class="profile-section">
+            <div class="profile-header">
+                <img src="{{ url_for('static', filename='perfil.png') }}" alt="Perfil">
+                <h2>{{ usuario.nombre }}</h2>
+            </div>
+            <div class="profile-details">
+                <p><strong>Vive en:</strong> {{ usuario.ciudad }}</p>
+                <p><strong>Número de Celular:</strong> {{ usuario.celular }}</p>
+                <p><strong>Correo Electrónico:</strong> {{ usuario.correo }}</p>
+            </div>
+        </div>
+
+        <!-- Sección de publicaciones -->
         <div class="title-container">
             <h2>Mis Publicaciones</h2>
         </div>
@@ -128,7 +115,7 @@
                     <div class="product-details">
                         <h3>{{ producto.nombre }}</h3>
                         <p class="description">{{ producto.descripcion }}</p>
-                        <p class="price">Precio: {{ producto.precio }}</p>
+                        <p class="price">Precio: {{ producto.precio }} Bs</p>
                     </div>
                     <a href="{{ url_for('editar_producto', id_producto=producto.id_producto) }}" class="edit-btn">
                         <img src="{{ url_for('static', filename='Edit.png') }}" alt="Editar">
@@ -140,6 +127,5 @@
             <p>No has registrado ningún producto aún.</p>
         {% endif %}
     </div>
-
 </body>
 </html>
