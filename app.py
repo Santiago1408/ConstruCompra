@@ -68,35 +68,42 @@ def guardar_producto():
 
 @app.route('/mis_publicaciones')
 def mis_publicaciones():
-    if 'id_usuario' not in session:
-        return redirect(url_for('logueo'))  # Redirigir si no ha iniciado sesión
+    try:
+        if 'id_usuario' not in session:
+            return redirect(url_for('logueo'))
 
-    id_usuario = session['id_usuario']  # Obtener el ID del usuario
+        id_usuario = session['id_usuario']
 
-    # Conexión a la base de datos
-    connection = get_db_connection()
-    cursor = connection.cursor(dictionary=True)
+        connection = get_db_connection()
+        cursor = connection.cursor(dictionary=True)
 
-    # Obtener los datos del usuario
-    query_usuario = '''
-        SELECT nombre, ciudad, celular, correo
-        FROM usuarios
-        WHERE id_usuarios = %s
-    '''
-    cursor.execute(query_usuario, (id_usuario,))
-    usuario = cursor.fetchone()
+        # Consulta del perfil del usuario con los campos correctos
+        query_usuario = '''
+            SELECT nombre, fecha_nacimiento, direccion, telefono, correo, genero
+            FROM usuarios
+            WHERE id_usuarios = %s
+        '''
+        cursor.execute(query_usuario, (id_usuario,))
+        usuario = cursor.fetchone()
 
-    # Obtener los productos del usuario
-    query_productos = '''
-        SELECT id_producto, nombre, descripcion, precio
-        FROM productos
-        WHERE id_usuarios = %s
-    '''
-    cursor.execute(query_productos, (id_usuario,))
-    productos = cursor.fetchall()
+        if not usuario:
+            return "Usuario no encontrado", 404
 
-    cursor.close()
-    connection.close()
+        # Consulta de productos del usuario
+        query_productos = '''
+            SELECT id_producto, nombre, descripcion, precio
+            FROM productos
+            WHERE id_usuarios = %s
+        '''
+        cursor.execute(query_productos, (id_usuario,))
+        productos = cursor.fetchall()
 
-    # Pasar los datos al HTML
-    return render_template('mis_publicaciones.html', usuario=usuario, productos=productos)
+        cursor.close()
+        connection.close()
+
+        # Pasamos el perfil del usuario y sus productos al template
+        return render_template('mis_publicaciones.html', usuario=usuario, productos=productos)
+
+    except Exception as e:
+        print(f"Error: {e}")  # Ver error en consola
+        return "Ocurrió un error en el servidor", 500
