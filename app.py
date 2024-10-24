@@ -71,26 +71,32 @@ def mis_publicaciones():
     if 'id_usuario' not in session:
         return redirect(url_for('logueo'))  # Redirigir si no ha iniciado sesión
 
-    # Obtener el ID del usuario de la sesión
-    id_usuario = session['id_usuario']
+    id_usuario = session['id_usuario']  # Obtener el ID del usuario
 
-    # Consultar los productos asociados a este usuario
+    # Conexión a la base de datos
     connection = get_db_connection()
     cursor = connection.cursor(dictionary=True)
-    query = '''
+
+    # Obtener los datos del usuario
+    query_usuario = '''
+        SELECT nombre, ciudad, celular, correo
+        FROM usuarios
+        WHERE id_usuarios = %s
+    '''
+    cursor.execute(query_usuario, (id_usuario,))
+    usuario = cursor.fetchone()
+
+    # Obtener los productos del usuario
+    query_productos = '''
         SELECT id_producto, nombre, descripcion, precio
         FROM productos
         WHERE id_usuarios = %s
     '''
-    cursor.execute(query, (id_usuario,))
+    cursor.execute(query_productos, (id_usuario,))
     productos = cursor.fetchall()
 
     cursor.close()
     connection.close()
 
-    # Pasar los productos al HTML
-    return render_template('mis_publicaciones.html', productos=productos)
-
-
-if __name__ == '__main__':
-    app.run(debug=True)
+    # Pasar los datos al HTML
+    return render_template('mis_publicaciones.html', usuario=usuario, productos=productos)
