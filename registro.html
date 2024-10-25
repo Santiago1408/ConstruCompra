@@ -365,6 +365,12 @@
                 modalInstance.show();
             }
         });
+
+        // Función para resetear el formulario y redirigir a la página principal
+        function resetAndRedirect() {
+        document.querySelector('form').reset(); // Resetea el formulario
+        window.location.href = '/'; // Redirige a la página principal
+    }
     </script>
 
 </body>
