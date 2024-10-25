@@ -19,8 +19,9 @@
 
         .container {
             width: 70%;
+            height: 750px;
             margin: 50px auto;
-            background-color: #f2f0f0;
+            background-color: #f2f0f0; 
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -50,6 +51,11 @@
             margin: 10px 0;
         }
 
+        .vista{
+            margin-left:20px;
+            margin-top: 10px;
+        }
+
         label {
             font-size: 16px;
             font-weight: bold;
@@ -70,8 +76,8 @@
         }
 
         .button-container {
-            margin-top: 20px;
-            text-align: right;
+            margin-top: 30px;
+            text-align: center;
         }
 
         button {
@@ -110,6 +116,33 @@
         #mensajeEmergente.visible {
             display: block;
         }
+        .contenedor{
+            margin-bottom: 90px;
+            margin-top: 5px;
+        }
+        .izquierda{
+            width: 45%;
+            float: left;
+            margin: 0 auto;
+        }
+        .derecha{
+            width: 45%;
+            float: right;
+            margin-right: 13px;
+        }
+        .campo_derecho{
+            width: 45%;
+
+        }
+        .campo_izquierdo{
+            background-color: rgb(255, 0, 0);
+            width: 45%;
+            display: flex;
+            justify-content: end;
+        }
+        ::placeholder{
+            color: #989680;
+        }
 
     </style>
 
@@ -126,44 +159,60 @@
 
         <form id="registrar-producto-form" action="/registrar_producto" method="POST">
             <input type="hidden" id="id_usuario" name="id_usuario" value="{{ session['id_usuario'] }}">
-    
-            <label for="nombre">Nombre del producto:</label>
-            <input type="text" id="nombre" name="nombre" required>
-            <div id="error-nombre" class="error"></div>
-    
-            <label for="descripcion">Descripción:</label>
-            <input type="text" id="descripcion" name="descripcion" required>
-            <div id="error-descripcion" class="error"></div>
-    
-            <label for="precio">Precio (Bs.):</label>
-            <input type="number" id="precio" name="precio" step="0.01" required>
-            <div id="error-precio" class="error"></div>
-    
-            <label for="cantidad">Cantidad:</label>
-            <input type="number" id="cantidad" name="cantidad" required>
-            <div id="error-cantidad" class="error"></div>
-    
-            <label for="tipo_venta">Tipo de venta:</label>
-            <select id="tipo_venta" name="tipo_venta" required>
-                <option value="Unitario" selected>Unitario</option>
-                <option value="Total">Total</option>
-            </select>
-    
-            <label for="ubicacion">Ubicación:</label>
-            <input type="text" id="ubicacion" name="ubicacion" required>
-            <div id="error-ubicacion" class="error"></div>
-    
-            <label for="marca">Marca:</label>
-            <input type="text" id="marca" name="marca">
-            <div id="error-marca" class="error"></div>
-    
-            <label for="color">Color:</label>
-            <input type="text" id="color" name="color">
-            <div id="error-color" class="error"></div>
-    
-            <label for="tamano">Tamaño:</label>
-            <input type="text" id="tamano" name="tamano">
-            <div id="error-tamano" class="error"></div>
+            
+            <div class="campo_derecho">
+                <label for="nombre">Nombre del producto:</label>
+                <input type="text" id="nombre" name="nombre" required placeholder="Campo obligatorio">
+                <div id="error-nombre" class="error"></div>
+        
+                <label for="descripcion">Descripción:</label>
+                <input type="text" id="descripcion" name="descripcion" required placeholder="Campo obligatorio">
+                <div id="error-descripcion" class="error"></div>
+        
+                <div class="contenedor">
+                    <div class="izquierda">
+                        <label for="precio">Precio (Bs.):</label>
+                        <input type="number" id="precio" name="precio" step="0.01" required placeholder="Campo obligatorio">
+                        <div id="error-precio" class="error"></div>    
+                    </div>
+                    <div class="derecha">
+                        <label for="cantidad">Cantidad:</label>
+                        <input type="number" id="cantidad" name="cantidad" required placeholder="Campo obligatorio">
+                        <div id="error-cantidad" class="error"></div>    
+                    </div>
+                </div>
+                
+                <label for="tipo_venta">Tipo de venta:</label>
+                <select id="tipo_venta" name="tipo_venta" required>
+                    <option value="Unitario" selected>Unitario</option>
+                    <option value="Total">Total</option>
+                </select>
+        
+                <label for="ubicacion">Ubicación:</label>
+                <input type="text" id="ubicacion" name="ubicacion" required placeholder="Campo obligatorio">
+                <div id="error-ubicacion" class="error"></div>
+
+                <label for="tamano">Tamaño:</label>
+                <input type="text" id="tamano" name="tamano" placeholder="Campo opcional">
+                <div id="error-tamano" class="error"></div> 
+
+                <div class="contenedor">
+                    <div class="izquierda">
+                        <label for="marca">Marca:</label>
+                        <input type="text" id="marca" name="marca" placeholder="Campo opcional">
+                        <div id="error-marca" class="error"></div>    
+                    </div>
+                    <div class="derecha">
+                        <label for="color">Color:</label>
+                        <input type="text" id="color" name="color" placeholder="Campo opcional">
+                        <div id="error-color" class="error"></div>    
+                    </div>  
+                </div>
+            </div>
+            
+            <div class="campo_izquierdo">
+
+            </div>
     
             <div class="button-container">
                 <button type="button" id="botonRegistrar" onclick="validarFormulario(event)">Registrar Producto</button>
