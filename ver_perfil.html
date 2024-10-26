@@ -153,3 +153,12 @@
         }
     </style>
 </head>
+<body>
+    <header class="header">
+        <div class="profile-section">
+            <img src="data:image/jpeg;base64,{{ datos_usuario.foto_perfil | b64encode }}" alt="Perfil">
+            <h1>{{ datos_usuario.nombre }}</h1>
+        </div>
+        <span class="inicio-button">Inicio</span>
+    </header>
+
