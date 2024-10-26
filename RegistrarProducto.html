@@ -21,7 +21,7 @@
             width: 70%;
             height: 750px;
             margin: 50px auto;
-            background-color: #f2f0f0; 
+            background-color: #f2f0f0;
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -78,6 +78,10 @@
         .button-container {
             margin-top: 30px;
             text-align: center;
+            display: flex;
+            gap: 25px;
+            justify-content: center; /* Para centrar los botones horizontalmente */
+            margin-top:125px;
         }
 
         button {
@@ -132,13 +136,70 @@
         }
         .campo_derecho{
             width: 45%;
-
+            margin-left: 75px;
         }
         .campo_izquierdo{
-            background-color: rgb(255, 0, 0);
-            width: 45%;
+            width: 500px;
+            height: 450px;
+            background: white;
+            position: absolute;
+            right: 350px; /* Alinea el contenedor de imágenes a la derecha */
+            top: 180px; /* Baja el contenedor 180px desde la parte superior */
+            text-align: center;
             display: flex;
-            justify-content: end;
+            flex-direction: column;
+            align-items: center; /* Centra los elementos hijos horizontalmente */
+            justify-content: center; /* Centra los elementos hijos verticalmente */
+
+        }
+        .imagen-principal  {
+              width: 86%;
+            height: 65%; /* Establece una altura fija o relativa para que la imagen se adapte */
+            background: #d3d3d3;
+            margin-top: 0;
+            position: relative; /* Necesario para que el posicionamiento absoluto funcione correctamente */
+            overflow: hidden;
+        }
+         .imagen-principal img{
+              width: 100%;
+            height: 100%;
+            object-fit: contain;
+         }
+        .imagen-menu {
+            margin-top: 10px;
+            background: #d3d3d3;
+            width: 86%;
+            height: 22%;
+            display:flex;
+            flex-direction:row;
+            justify-content: center;
+             flex-wrap: wrap;
+        }
+
+        .imagen-menu img {
+            width: 90px; /* Tamaño de las miniaturas */
+            height: 90px;
+            margin: 5px; /* Espacio entre las miniaturas */
+            border-radius: 3px;
+            cursor: pointer;
+
+        }
+        .botonSubir{
+               position: absolute;
+                right: 29%;
+                top: 68%;
+
+                width: 90px;
+                height: 40px;
+
+                background-image: url("static/subir.png"); /* Ruta de la imagen de fondo */
+                background-size: cover;
+                background-position: center;
+                border: none;
+                cursor: pointer;
+}
+
+    text-align: center;
         }
         ::placeholder{
             color: #989680;
@@ -159,65 +220,75 @@
 
         <form id="registrar-producto-form" action="/registrar_producto" method="POST">
             <input type="hidden" id="id_usuario" name="id_usuario" value="{{ session['id_usuario'] }}">
-            
+
             <div class="campo_derecho">
                 <label for="nombre">Nombre del producto:</label>
                 <input type="text" id="nombre" name="nombre" required placeholder="Campo obligatorio">
                 <div id="error-nombre" class="error"></div>
-        
+
                 <label for="descripcion">Descripción:</label>
                 <input type="text" id="descripcion" name="descripcion" required placeholder="Campo obligatorio">
                 <div id="error-descripcion" class="error"></div>
-        
+
                 <div class="contenedor">
                     <div class="izquierda">
                         <label for="precio">Precio (Bs.):</label>
                         <input type="number" id="precio" name="precio" step="0.01" required placeholder="Campo obligatorio">
-                        <div id="error-precio" class="error"></div>    
+                        <div id="error-precio" class="error"></div>
                     </div>
                     <div class="derecha">
                         <label for="cantidad">Cantidad:</label>
                         <input type="number" id="cantidad" name="cantidad" required placeholder="Campo obligatorio">
-                        <div id="error-cantidad" class="error"></div>    
+                        <div id="error-cantidad" class="error"></div>
                     </div>
                 </div>
-                
+
                 <label for="tipo_venta">Tipo de venta:</label>
                 <select id="tipo_venta" name="tipo_venta" required>
                     <option value="Unitario" selected>Unitario</option>
                     <option value="Total">Total</option>
                 </select>
-        
+
                 <label for="ubicacion">Ubicación:</label>
                 <input type="text" id="ubicacion" name="ubicacion" required placeholder="Campo obligatorio">
                 <div id="error-ubicacion" class="error"></div>
 
                 <label for="tamano">Tamaño:</label>
                 <input type="text" id="tamano" name="tamano" placeholder="Campo opcional">
-                <div id="error-tamano" class="error"></div> 
+                <div id="error-tamano" class="error"></div>
 
                 <div class="contenedor">
                     <div class="izquierda">
                         <label for="marca">Marca:</label>
                         <input type="text" id="marca" name="marca" placeholder="Campo opcional">
-                        <div id="error-marca" class="error"></div>    
+                        <div id="error-marca" class="error"></div>
                     </div>
                     <div class="derecha">
                         <label for="color">Color:</label>
                         <input type="text" id="color" name="color" placeholder="Campo opcional">
-                        <div id="error-color" class="error"></div>    
-                    </div>  
+                        <div id="error-color" class="error"></div>
+                    </div>
                 </div>
             </div>
-            
+
             <div class="campo_izquierdo">
+                <div class="imagen-principal">
+                      <img id="imgPrincipal" src="" alt="Imagen Principal" style="display: none; width: 100%; height: auto; border-radius: 5px;" />
+                </div>
+                 <div class="imagen-menu" id="miniaturas">
+                    <!-- Las miniaturas se agregarán aquí dinámicamente -->
+                </div>
 
             </div>
-    
+            <input type="file" id="inputImagenes" accept="image/*" style="display: none;" multiple onchange="manejarImagenes(this.files)">
+            <button type="button" class="botonSubir" onclick="abrirExplorador()"></button>
+
             <div class="button-container">
                 <button type="button" id="botonRegistrar" onclick="validarFormulario(event)">Registrar Producto</button>
+                 <button type="button" id="botonVista" onclick="vistaPreviaPublicacion(event)">Vista Previa</button>
                 <button type="button" id="cancelar-button" onclick="limpiarFormulario()">Cancelar</button>
             </div>
+
         </form>
     </div>
 
@@ -225,7 +296,7 @@
     <div id="mensajeEmergente">Producto registrado exitosamente</div>
 
     <script> // Validaciones de cada campo del formulario de registro
-        // Funcion para validar el campo de registro de nombre 
+        // Funcion para validar el campo de registro de nombre
         function validarNombre(){
             const nombre = document.getElementById('nombre').value;
             const errorNombre = document.getElementById('error-nombre');
@@ -247,7 +318,7 @@
             return esValido;
         }
 
-        // Funcion para validar el campo de registro de descripciopn  
+        // Funcion para validar el campo de registro de descripciopn
         function validarDescripcion(){
             const descripcion = document.getElementById('descripcion').value;
             const errorDescripcion = document.getElementById('error-descripcion');
@@ -340,7 +411,7 @@
             else if (!/^[a-zA-Z0-9\s,.-]+$/.test(ubicacion)){
                 errorUbicacion.innerHTML = 'La ubicación solo puede contener letras, números, espacios, comas y guiones.';
                 esValido = false;
-            } 
+            }
             // Validar que no contenga solo números
             else if (/^\d+$/.test(ubicacion)){
                 errorUbicacion.innerHTML = 'La ubicación no puede contener solo números.';
@@ -382,7 +453,7 @@
             }else if (/[^a-zA-Z\s]/.test(color)){
                 errorColor.innerHTML = 'El color no puede contener caracteres especiales.';
                 esValido = false;
-            } 
+            }
             // Verificar si el color tiene más de 20 caracteres
             else if (color.length > 20){
                 errorColor.innerHTML = 'El color no puede tener más de 20 caracteres.';
@@ -397,7 +468,7 @@
             const errorTamano = document.getElementById('error-tamano');
             errorTamano.innerHTML = ''; // Limpiar los mensajes previos
             let esValido = true;
-            
+
             // Expresión regular que permite letras, números, espacios y algunas palabras clave como "de", "x"
             const formatoTamanoFlexible = /^[a-zA-Z0-9\s]+$/;
 
@@ -451,6 +522,60 @@
             }
         }
 
+            function abrirExplorador() {
+                document.getElementById('inputImagenes').click(); // Simula el clic en el input
+            }
+
+            function manejarImagenes(files) {
+                const imgPrincipal = document.getElementById('imgPrincipal');
+                const miniaturasDiv = document.getElementById('miniaturas');
+
+                // Verificar si ya hay una imagen principal
+                if (imgPrincipal.src === "") {
+                    const principalFile = files[0];
+                    mostrarImagenPrincipal(principalFile); // Muestra la primera imagen como principal
+                } else {
+                    const anteriorFile = imgPrincipal.src; // Guarda la imagen anterior como miniatura
+                    agregarMiniatura(anteriorFile); // Agrega la imagen anterior a miniaturas
+                }
+
+                // Mostrar la nueva imagen como principal
+                const nuevoFile = files[0];
+                mostrarImagenPrincipal(nuevoFile); // Muestra la nueva imagen como principal
+            }
+
+            function mostrarImagenPrincipal(file) {
+                const imgPrincipal = document.getElementById('imgPrincipal');
+                const reader = new FileReader();
+
+                reader.onload = function(event) {
+                    imgPrincipal.src = event.target.result; // Mostrar la imagen principal
+                    imgPrincipal.style.display = 'block'; // Hacer visible la imagen principal
+                };
+
+                reader.readAsDataURL(file); // Leer la imagen como URL
+            }
+
+            function agregarMiniatura(src) {
+                const miniaturasDiv = document.getElementById('miniaturas');
+
+                // Verifica que no se exceda el límite de 5 miniaturas
+                if (miniaturasDiv.children.length < 5) {
+                    const miniatura = document.createElement('img');
+                    miniatura.src = src; // Establecer la miniatura
+                    miniatura.onclick = function() {
+                        // Cambiar la imagen principal al hacer clic en la miniatura
+                        mostrarImagenPrincipal(src); // Cambiar imagen principal
+                    };
+
+                    miniaturasDiv.appendChild(miniatura); // Agregar la miniatura al contenedor
+                }
+            }
+
+
+
+
+
         // Funcion para mostrar el mesaje emergente
         function mostrarMensajeEmergente(mensaje){
             const mensajeEmergente = document.getElementById('mensajeEmergente');
@@ -463,7 +588,7 @@
             }, 3000); // Desaparecer después de 3 segundos
         }
 
-        // Funcion para limpiar el formulario al dar clik en cancelar 
+        // Funcion para limpiar el formulario al dar clik en cancelar
         function limpiarFormulario() {
             document.getElementById('registrar-producto-form').reset();
             document.querySelectorAll('.error').forEach(e => e.innerHTML = '');
@@ -479,7 +604,7 @@
         document.getElementById('color').addEventListener('input', validarColor);
         document.getElementById('tamano').addEventListener('input', validarTamano);
 
-        
+
 
     </script>
 
