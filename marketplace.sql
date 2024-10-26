@@ -44,6 +44,7 @@ INSERT INTO `productos` (`id_producto`, `id_usuarios`, `nombre`, `descripcion`, 
 (20, 20, 'Interruptor eléctrico', 'Interruptor eléctrico de pared', 100, 'Unitario', 20.00, 'Av. América Oeste 791, Cochabamba', 'Elec', 'Blanco', '15 cm', '2024-10-05 00:47:51');
 
 
+
 CREATE TABLE `usuarios` (
   `id_usuarios` int(11) NOT NULL AUTO_INCREMENT,
   `nombre` varchar(50) NOT NULL,
@@ -53,8 +54,11 @@ CREATE TABLE `usuarios` (
   `telefono` varchar(15) DEFAULT NULL,
   `correo` varchar(100) NOT NULL,
   `contrasenia` varchar(255) NOT NULL,
+  `foto_perfil` BLOB DEFAULT NULL,
   PRIMARY KEY (`id_usuarios`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+
 
 
 -- Indices de la tabla `productos`
