@@ -162,3 +162,51 @@
         <span class="inicio-button">Inicio</span>
     </header>
 
+    <div class="profile-container">
+        <div class="profile-header">
+            <h2 class="profile-name">{{ datos_usuario.nombre }}</h2>
+            <button class="edit-button" onclick="window.location.href='{{ url_for('edicionUsr') }}'">Editar perfil</button>
+        </div>
+
+        <div class="profile-content">
+            <!-- Foto de perfil grande que ocupa casi todo el ancho -->
+            <img src="data:image/jpeg;base64,{{ datos_usuario.foto_perfil | b64encode }}" alt="Foto de perfil" class="profile-image">
+
+            <div class="profile-info">
+                <div class="info-row">
+                    <div class="info-item">
+                        <span class="info-label">
+                            <img src="{{ url_for('static', filename='icono1.png') }}" alt="Fecha" class="info-icon">
+                            Fecha de nacimiento:
+                        </span>
+                        <span>{{ datos_usuario.fecha_nacimiento }}</span>
+                    </div>
+
+                    <div class="info-item">
+                        <span class="info-label">
+                            <img src="{{ url_for('static', filename='icono2.jpg') }}" alt="Ubicación" class="info-icon">
+                            Dirección:
+                        </span>
+                        <span>{{ datos_usuario.direccion }}</span>
+                    </div>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">Correo Electrónico:</span>
+                    <span>{{ datos_usuario.correo }}</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">Teléfono:</span>
+                    <span>{{ datos_usuario.telefono }}</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="info-label">Género:</span>
+                    <span>{{ datos_usuario.genero }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
