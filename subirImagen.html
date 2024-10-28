@@ -423,7 +423,7 @@
         
             for (let i = 0; i < files.length; i++) {
                 if (totalMiniaturas >= 5) {
-                    alert("Solo puedes añadir hasta 5 imágenes del material.");
+                    alert("Solo puedes añadir hasta 5 imágenes del material .");
                     break;
                 }
                 const file = files[i];
@@ -453,7 +453,6 @@
                 miniatura.src = event.target.result;
                 miniatura.className = 'miniatura';
                 miniatura.onclick = function() {
-                    // Cambiar la imagen principal al hacer clic en la miniatura
                     mostrarImagenPrincipal(file);
                 };
         
