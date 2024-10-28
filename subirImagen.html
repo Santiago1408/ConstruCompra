@@ -403,11 +403,66 @@
                 });
             }
         }
-             // Función para abrir el explorador de archivos del sistema
-        function subirImagen(event) {
-            // Simular un clic en el input de tipo file para abrir el explorador
-            document.getElementById('inputImagen').click();
+         
+          function abrirExplorador() {
+            document.getElementById('inputImagenes').click(); // Simula el clic en el input
         }
+        
+        function manejarImagenes(files) {
+            const imgPrincipal = document.getElementById('imgPrincipal');
+            const miniaturasDiv = document.getElementById('miniaturas');
+        
+            // Si no hay imagen principal, asignar la primera imagen seleccionada
+            if (!imgPrincipal.src) {
+                const primerArchivo = files[0];
+                mostrarImagenPrincipal(primerArchivo);
+            }
+        
+            // Contador para verificar si ya hay 5 miniaturas
+            let totalMiniaturas = miniaturasDiv.children.length;
+        
+            for (let i = 0; i < files.length; i++) {
+                if (totalMiniaturas >= 5) {
+                    alert("Solo puedes añadir hasta 5 imágenes del material.");
+                    break;
+                }
+                const file = files[i];
+                agregarMiniatura(file);
+                totalMiniaturas++;
+            }
+        }
+        
+        function mostrarImagenPrincipal(file) {
+            const imgPrincipal = document.getElementById('imgPrincipal');
+            const reader = new FileReader();
+        
+            reader.onload = function(event) {
+                imgPrincipal.src = event.target.result;
+                imgPrincipal.style.display = 'block';
+            };
+        
+            reader.readAsDataURL(file);
+        }
+        
+        function agregarMiniatura(file) {
+            const miniaturasDiv = document.getElementById('miniaturas');
+            const reader = new FileReader();
+        
+            reader.onload = function(event) {
+                const miniatura = document.createElement('img');
+                miniatura.src = event.target.result;
+                miniatura.className = 'miniatura';
+                miniatura.onclick = function() {
+                    // Cambiar la imagen principal al hacer clic en la miniatura
+                    mostrarImagenPrincipal(file);
+                };
+        
+                miniaturasDiv.appendChild(miniatura);
+            };
+        
+            reader.readAsDataURL(file);
+        }
+        
 
         // Funcion para mostrar el mesaje emergente
         function mostrarMensajeEmergente(mensaje){
