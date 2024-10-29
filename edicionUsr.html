@@ -164,12 +164,76 @@
         .cancel-button {
             background-color: #c77745;
         }
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin: 0.5rem 0;
+            width: 100%;
+        }
+
+        .info-label {
+            min-width: 150px;
+            text-align: right;
+        }
+
+        .small-editable {
+            width: 60%;
+            padding: 8px 10px;
+            border: none;
+            border-radius: 20px;
+            background-color: #f0f0f0;
+            color: #333;
+            font-size: 0.9rem;
+            transition: background-color 0.3s;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+            outline: none;
+        }
+
+        .small-editable:focus {
+            background-color: #e8e8e8;
+        }
+
+        select.small-editable {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            cursor: pointer;
+        }
+
+        .editable {
+            width: 100%;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 20px;
+            background-color: #f0f0f0;
+            color: #333;
+            font-size: 1rem;
+            transition: background-color 0.3s;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+            outline: none;
+        }
+
+        .editable:focus {
+            background-color: #e8e8e8;
+        }
+
+        select.editable {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            cursor: pointer;
+        }
+
+        .info-item input[type="date"] {
+            cursor: pointer;
+        }
 
         .boton-perfil {
             display: flex;
             justify-content: start;
             margin-top: 0;
-            margin-left: 30px;
+            margin-left: 10px;
             position: relative;
         }
 
@@ -216,23 +280,24 @@
 
                 <div class="info-item">
                     <span class="info-label">Correo Electrónico:</span>
-                    <input type="email" class="editable" value="{{ datos_usuario.correo }}">
+                    <input type="email" class="small-editable" value="{{ datos_usuario.correo }}">
                 </div>
 
                 <div class="info-item">
                     <span class="info-label">Teléfono:</span>
-                    <input type="tel" class="editable" value="{{ datos_usuario.telefono }}">
+                    <input type="tel" class="small-editable" value="{{ datos_usuario.telefono }}">
                 </div>
 
                 <div class="info-item">
                     <span class="info-label">Género:</span>
-                    <select class="editable">
+                    <select class="small-editable">
                         <option value="Masculino" {{ 'selected' if datos_usuario.genero == 'Masculino' }}>Masculino</option>
                         <option value="Femenino" {{ 'selected' if datos_usuario.genero == 'Femenino' }}>Femenino</option>
                         <option value="Otro" {{ 'selected' if datos_usuario.genero == 'Otro' }}>Otro</option>
                     </select>
                 </div>
-                
+
+
                 <div class = "boton-perfil">
                 <button class="action-button">Cambiar foto</button>
             </div>
