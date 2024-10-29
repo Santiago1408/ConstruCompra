@@ -173,5 +173,26 @@
             <p>No has registrado ningún producto aún.</p>
         {% endif %}
     </div>
+        <!-- Modal de confirmación de eliminación -->
+        <div id="myModal" class="modal">
+            <div class="modal-content">
+                <h2>Eliminar publicación</h2>
+                <p>¿Está seguro que desea eliminar publicación?</p>
+                <div class="modal-footer">
+                    <button id="btnAceptar" class="modal-btn">Aceptar</button>
+                    <button id="btnCancelar" class="modal-btn">Cancelar</button>
+                </div>
+            </div>
+        </div>
+        <!-- Modal de éxito -->
+    <div id="successModal" class="modal">
+        <div class="modal-content">
+            <h2>Eliminar publicación</h2>
+            <p>Se ha eliminado la publicación exitosamente.</p>
+            <div class="modal-footer">
+                <button id="btnCerrar" class="modal-btn">Cerrar</button>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
