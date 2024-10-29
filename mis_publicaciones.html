@@ -251,7 +251,25 @@
             });
         }
     
-        
+        document.getElementById("btnCancelar").onclick = function() {
+            document.getElementById("myModal").style.display = "none";
+        }
+    
+        document.getElementById("btnCerrar").onclick = function() {
+            document.getElementById("successModal").style.display = "none";
+        }
+    
+        // Cerrar modales si se hace clic fuera de ellos
+        window.onclick = function(event) {
+            const myModal = document.getElementById("myModal");
+            const successModal = document.getElementById("successModal");
+            if (event.target === myModal) {
+                myModal.style.display = "none";
+            }
+            if (event.target === successModal) {
+                successModal.style.display = "none";
+            }
+        }
     </script>
 </body>
 </html>
