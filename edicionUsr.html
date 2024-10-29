@@ -51,8 +51,8 @@
             font-size: 1.5rem;
             cursor: pointer;
             font-weight: 600;
-            text-decoration: none; 
-            color: black; 
+            text-decoration: none;
+            color: black;
         }
 
         .profile-container {
@@ -81,7 +81,7 @@
         .profile-name {
             font-size: 2rem;
             margin: 0;
-            margin-left: 270px; 
+            margin-left: 270px;
         }
 
         .profile-content {
@@ -92,12 +92,12 @@
         }
 
         .profile-image {
-            width: 250px; 
-            height: auto; 
-            object-fit: cover; 
-            border-radius: 10px; 
+            width: 250px;
+            height: auto;
+            object-fit: cover;
+            border-radius: 10px;
             flex-shrink: 0;
-            margin-top: -100px; 
+            margin-top: -100px;
             position: relative;
             z-index: 1;
         }
@@ -136,7 +136,7 @@
             object-fit: contain;
         }
 
-        
+
         .button-container {
             display: flex;
             gap: 1rem;
@@ -164,12 +164,12 @@
         .cancel-button {
             background-color: #c77745;
         }
-        
+
         .boton-perfil {
             display: flex;
             justify-content: start;
-            margin-top: 0; 
-            margin-left: 30px; 
+            margin-top: 0;
+            margin-left: 30px;
             position: relative;
         }
 
@@ -202,7 +202,7 @@
                             <img src="{{ url_for('static', filename='icono1.png') }}" alt="Fecha" class="info-icon">
                             Fecha de nacimiento:
                         </span>
-                        <span>{{ datos_usuario.fecha_nacimiento }}</span>
+                        <input type="date" class="editable" value="{{ datos_usuario.fecha_nacimiento }}">
                     </div>
 
                     <div class="info-item">
@@ -210,29 +210,32 @@
                             <img src="{{ url_for('static', filename='icono2.jpg') }}" alt="Ubicación" class="info-icon">
                             Dirección:
                         </span>
-                        <span>{{ datos_usuario.direccion }}</span>
+                        <input type="text" class="editable" value="{{ datos_usuario.direccion }}">
                     </div>
                 </div>
 
                 <div class="info-item">
                     <span class="info-label">Correo Electrónico:</span>
-                    <span>{{ datos_usuario.correo }}</span>
+                    <input type="email" class="editable" value="{{ datos_usuario.correo }}">
                 </div>
 
                 <div class="info-item">
                     <span class="info-label">Teléfono:</span>
-                    <span>{{ datos_usuario.telefono }}</span>
+                    <input type="tel" class="editable" value="{{ datos_usuario.telefono }}">
                 </div>
 
                 <div class="info-item">
                     <span class="info-label">Género:</span>
-                    <span>{{ datos_usuario.genero }}</span>
+                    <select class="editable">
+                        <option value="Masculino" {{ 'selected' if datos_usuario.genero == 'Masculino' }}>Masculino</option>
+                        <option value="Femenino" {{ 'selected' if datos_usuario.genero == 'Femenino' }}>Femenino</option>
+                        <option value="Otro" {{ 'selected' if datos_usuario.genero == 'Otro' }}>Otro</option>
+                    </select>
                 </div>
-            </div>
-        </div>
-        <div>
-            <div class = "boton-perfil">
+                
+                <div class = "boton-perfil">
                 <button class="action-button">Cambiar foto</button>
+            </div>
             </div>
         </div>
         <div class="button-container">
@@ -242,4 +245,3 @@
     </div>
 </body>
 </html>
-
