@@ -43,6 +43,17 @@ INSERT INTO `productos` (`id_producto`, `id_usuarios`, `nombre`, `descripcion`, 
 (19, 19, 'Piso flotante', 'Paquete de 2m2 de piso flotante', 25, 'Total', 300.00, 'Calle España 680, Cochabamba', 'PisoFlex', 'Madera', '2m2', '2024-10-05 00:47:51'),
 (20, 20, 'Interruptor eléctrico', 'Interruptor eléctrico de pared', 100, 'Unitario', 20.00, 'Av. América Oeste 791, Cochabamba', 'Elec', 'Blanco', '15 cm', '2024-10-05 00:47:51');
 
+--
+--Estructura de tabla para almacenar imagenes de los producto
+--
+CREATE TABLE `imagenes_productos` (
+    `id_imagen` int(11) NOT NULL AUTO_INCREMENT,
+    `id_producto` int(11) NOT NULL,
+    `url_imagen` varchar(255) NOT NULL CHECK (`url_imagen` <> ''),
+    PRIMARY KEY (`id_imagen`),
+    FOREIGN KEY (`id_producto`) REFERENCES `productos`(`id_producto`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+---------------------------------------------------------------
 
 
 CREATE TABLE `usuarios` (
