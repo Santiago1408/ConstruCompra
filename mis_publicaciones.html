@@ -194,5 +194,21 @@
             </div>
         </div>
     </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Ocultar modales al inicio
+            document.getElementById("myModal").style.display = "none";
+            document.getElementById("successModal").style.display = "none";
+        });
+        
+        let currentIdProducto;
+        
+        function confirmarEliminar(idProducto) {
+            currentIdProducto = idProducto;
+            document.getElementById("myModal").style.display = "flex";
+        }
+        
+        
+    </script>
 </body>
 </html>
