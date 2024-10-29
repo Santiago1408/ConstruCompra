@@ -184,19 +184,6 @@
             background-color: #f0f0f0;
         }
     </style>
-    <script>
-        function habilitarEdicion() {
-            document.querySelectorAll('.editable').forEach(function(span) {
-                const input = document.createElement('input');
-                input.type = 'text';
-                input.value = span.innerText;
-                input.className = 'editable-input';
-                span.replaceWith(input);
-            });
-            document.getElementById('guardar').style.display = 'inline';
-            document.getElementById('cancelar').style.display = 'inline';
-        }
-    </script>
 </head>
 <body>
     <header class="header">
