@@ -294,6 +294,17 @@
                 <button type="button" id="botonRegistrar" onclick="validarFormulario(event)">Registrar Producto</button>
                 <button type="button" id="cancelar-button" onclick="limpiarFormulario()">Cancelar</button>
             </div>
+             <!-- Ventana emergente de vista previa -->
+            <div id="vistaPrevia" class="vista-previa-overlay" style="display: none;">
+                <div class="vista-previa-contenido">
+                    <span class="cerrar" onclick="cerrarVistaPrevia()">&times;</span>
+                    <div class="vista-previa-imagen">
+                        <img id="imagenVistaPrevia" src="" alt="Imagen Principal del Producto">
+                    </div>
+                    <h2 id="nombreVistaPrevia"></h2>
+                    <p id="precioVistaPrevia"></p>
+                </div>
+            </div>
         </form>
     </div>
 
