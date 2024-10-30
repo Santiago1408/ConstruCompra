@@ -358,6 +358,14 @@
             function cerrarModal() {
                 document.getElementById('modal').style.display = 'none';
             }
+
+            function subirFoto() {
+                const input = document.getElementById('fileInput');
+                const file = input.files[0];
+
+                cerrarModal();
+            }
+
         </script>
     </div>
 </body>
