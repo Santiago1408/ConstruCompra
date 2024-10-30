@@ -585,6 +585,33 @@
             reader.readAsDataURL(file);
         }
         
+        function vistaPreviaPublicacion() {
+            console.log("Vista previa activada");  // Agrega esto para verificar si la función se ejecuta
+
+            // Obtén los valores de los campos del formulario
+            const nombre = document.getElementById('nombre').value;
+            const precio = document.getElementById('precio').value;
+            const imagenSrc = document.getElementById('imgPrincipal').src;
+
+            // Valida que los campos necesarios estén completos
+            if (!nombre || !precio || !imagenSrc) {
+                alert("Por favor, complete el nombre, precio y suba una imagen para la vista previa.");
+                return;
+            }
+
+            // Asigna los valores a los elementos de la ventana emergente
+            document.getElementById('imagenVistaPrevia').src = imagenSrc;
+            document.getElementById('nombreVistaPrevia').textContent = nombre;
+           document.getElementById('precioVistaPrevia').textContent = `Precio: Bs ${precio}`;
+
+            // Muestra la ventana emergente
+            document.getElementById('vistaPrevia').style.display = 'flex';
+        }
+
+        function cerrarVistaPrevia() {
+            // Oculta la ventana emergente
+            document.getElementById('vistaPrevia').style.display = 'none';
+        }
 
         // Funcion para mostrar el mesaje emergente
         function mostrarMensajeEmergente(mensaje){
