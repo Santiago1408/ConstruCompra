@@ -405,22 +405,23 @@
     </div>
 
 <script>
-   function mostrarInfo(id_producto) {
+    function mostrarInfo(id_producto) {
         fetch(`/producto/${id_producto}`)
             .then(response => response.json())
             .then(data => {
                 const modalContent = `
                     <h2>${data.nombre}</h2>
+                    <p>Publicado por: <a href="/ver_perfil/${data.id_vendedor}" style="color: white; text-decoration: underline; cursor: pointer;">${data.nombre_usuario}</a></p>
                     <div class="precio">Bs. ${data.precio}</div>
-                    <p><strong>Descripción:</strong> ${data.descripcion || 'No disponible'}</p>
-                    <p><strong>Marca:</strong> ${data.marca || 'No disponible'}</p>
-                    <p><strong>Cantidad:</strong> ${data.cantidad || 'No disponible'}</p>
-                    <p><strong>Tamaño:</strong> ${data.tamano || 'No disponible'}</p>
-                    <p><strong>Color:</strong> ${data.color || 'No disponible'}</p>
-                    <p><strong>Ubicación:</strong> ${data.ubicacion || 'No disponible'}</p>
+                    <p>Descripción: ${data.descripcion || 'No disponible'}</p>
+                    <p>Marca: ${data.marca || 'No disponible'}</p>
+                    <p>Cantidad: ${data.cantidad || 'No disponible'}</p>
+                    <p>Tamaño: ${data.tamano || 'No disponible'}</p>
+                    <p>Color: ${data.color || 'No disponible'}</p>
+                    <p>Ubicación: ${data.ubicacion || 'No disponible'}</p>
                 `;
                 document.getElementById('detalleProducto').innerHTML = modalContent;
-
+    
                 document.getElementById('detalleProductoModal').style.display = 'block';
                 document.getElementById('modalOverlay').style.display = 'block';
             })
