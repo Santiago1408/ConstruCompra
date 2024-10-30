@@ -36,3 +36,10 @@ def obtener_producto(id_producto):
         return jsonify(producto)
     else:
         return jsonify({'error': 'Producto no encontrado'}), 404
+
+@app.route('/ver_perfil')
+def ver_perfil():
+    if 'id_usuario' not in session:
+        return redirect(url_for('logueo'))
+    
+    return redirect(url_for('ver_perfil_usuario', user_id=session['id_usuario']))
