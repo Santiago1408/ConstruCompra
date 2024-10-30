@@ -197,7 +197,9 @@
     <div class="profile-container">
         <div class="profile-header">
             <h2 class="profile-name">{{ datos_usuario.nombre }}</h2>
-            <button class="edit-button" onclick="window.location.href='{{ url_for('edicionUsr') }}'">Editar perfil</button>
+            {% if is_owner %}
+            <button class="edit-button">Editar perfil</button>
+            {% endif %}
         </div>
 
         <div class="profile-content">
