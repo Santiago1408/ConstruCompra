@@ -344,8 +344,9 @@
         <div id="modal" class="modal">
             <div class="modal-content">
                 <h3>Subir nueva foto de perfil:</h3>
-                <button>SUBIR</button>
-                <button onclick="cerrarModal()" >CANCELAR</button>
+                <input type="file" id="fileInput" style="display: none;" accept="image/*" onchange="subirFoto()">
+                <button onclick="document.getElementById('fileInput').click()">SUBIR</button>
+                <button onclick="cerrarModal()">CANCELAR</button>
             </div>
         </div>
 
