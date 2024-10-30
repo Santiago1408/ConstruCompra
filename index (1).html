@@ -404,35 +404,45 @@
         <button onclick="cerrarModal()">SALIR</button>
     </div>
 
-<script>
-    function mostrarInfo(id_producto) {
-        fetch(`/producto/${id_producto}`)
-            .then(response => response.json())
-            .then(data => {
-                const modalContent = `
-                    <h2>${data.nombre}</h2>
-                    <p>Publicado por: <a href="/ver_perfil/${data.id_vendedor}" style="color: white; text-decoration: underline; cursor: pointer;">${data.nombre_usuario}</a></p>
-                    <div class="precio">Bs. ${data.precio}</div>
-                    <p>Descripción: ${data.descripcion || 'No disponible'}</p>
-                    <p>Marca: ${data.marca || 'No disponible'}</p>
-                    <p>Cantidad: ${data.cantidad || 'No disponible'}</p>
-                    <p>Tamaño: ${data.tamano || 'No disponible'}</p>
-                    <p>Color: ${data.color || 'No disponible'}</p>
-                    <p>Ubicación: ${data.ubicacion || 'No disponible'}</p>
-                `;
-                document.getElementById('detalleProducto').innerHTML = modalContent;
-    
-                document.getElementById('detalleProductoModal').style.display = 'block';
-                document.getElementById('modalOverlay').style.display = 'block';
-            })
-            .catch(error => console.error('Error al obtener los detalles:', error));
-    }
-    function cerrarModal() {
-        document.getElementById('detalleProductoModal').style.display = 'none';
-        document.getElementById('modalOverlay').style.display = 'none';
-    }
-    
-</script>
+    <script>
+        function mostrarInfo(id_producto) {
+         fetch(`/producto/${id_producto}`)
+         .then(response => response.json())
+         .then(data => {
+             console.log(data); // Verificar en la consola del navegador los datos obtenidos
+     
+             // Si hay una foto de perfil, se agrega al HTML con base64
+             const perfilFoto = data.foto_perfil ? `<img src="data:image/jpeg;base64,${data.foto_perfil}" style="width: 30px; height: 30px; border-radius: 50%; margin-left: 10px;" alt="Foto de perfil">` : '';
+     
+             const modalContent = `
+                 <h2>${data.nombre || 'Nombre no disponible'}</h2>
+                 <p>Publicado por:
+                     <a href="/ver_perfil/${data.id_vendedor}" style="color: white; text-decoration: underline; cursor: pointer;">
+                         ${data.nombre_usuario || 'Vendedor no disponible'}
+                     </a>
+                     ${perfilFoto}
+                 </p>
+                 <div class="precio">Bs. ${data.precio || 'No disponible'}</div>
+                 <p>Descripción: ${data.descripcion || 'No disponible'}</p>
+                 <p>Marca: ${data.marca || 'No disponible'}</p>
+                 <p>Cantidad: ${data.cantidad || 'No disponible'}</p>
+                 <p>Tamaño: ${data.tamano || 'No disponible'}</p>
+                 <p>Color: ${data.color || 'No disponible'}</p>
+                 <p>Ubicación: ${data.ubicacion || 'No disponible'}</p>
+             `;
+             document.getElementById('detalleProducto').innerHTML = modalContent;
+     
+             document.getElementById('detalleProductoModal').style.display = 'block';
+             document.getElementById('modalOverlay').style.display = 'block';
+         })
+         .catch(error => console.error('Error al obtener los detalles:', error));
+     }
+     
+         function cerrarModal() {
+             document.getElementById('detalleProductoModal').style.display = 'none';
+             document.getElementById('modalOverlay').style.display = 'none';
+         }
+     </script>
 
 </body>
 </html>
