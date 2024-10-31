@@ -76,12 +76,12 @@
         }
 
         .button-container {
-            margin-top: 30px;
+            margin-top: 5px;
             text-align: center;
             display: flex;
-            gap: 25px;
+            gap: 40px;
             justify-content: center; /* Para centrar los botones horizontalmente */
-            margin-top:125px;
+
         }
 
         button {
@@ -134,24 +134,33 @@
             float: right;
             margin-right: 13px;
         }
-
+        .form-container{
+                display: flex;
+                display: flex;
+                flex-direction: row;
+                gap: 20px; /* Espacio entre columnas */
+                margin-bottom: 20px;
+        }
         .campo_derecho{
             width: 45%;
             margin-left: 75px;
         }
         .campo_izquierdo{
-            width: 500px;
+            top:20px;
+            width: 40%;
+
+
+
+        }
+        .imagenes{
             height: 450px;
             background: white;
-            position:absolute;
-            right: 350px; /* Alinea el contenedor de imágenes a la derecha */
-            top: 180px; /* Baja el contenedor 180px desde la parte superior */
-            text-align: center;
+            position:relative;
             display: flex;
             flex-direction: column;
             align-items: center; /* Centra los elementos hijos horizontalmente */
             justify-content: center; /* Centra los elementos hijos verticalmente */
-
+            top:10px;
         }
         .imagen-principal  {
               width: 86%;
@@ -178,16 +187,21 @@
         }
 
         .imagen-menu img {
-           top:5px;
-            width: 70px; /* Tamaño de las miniaturas */
-            height: 90px;
+
+            width: 15%; /* Tamaño de las miniaturas */
+            height: 90%;
             margin: 1px; /* Espacio entre las miniaturas */
             border-radius: 3px;
             cursor: pointer;
 
         }
+        .subir{
+             display:flex;
+            justify-content: center;
+            margin-top:20px;
+        }
         .botonSubir{
-                position: absolute;
+
                 right: 27%;
                 top: 68%;
                 background:black;
@@ -234,6 +248,7 @@
         }
 
 
+
     </style>
 
 </head>
@@ -250,51 +265,82 @@
         <form id="registrar-producto-form" action="/registrar_producto" method="POST">
             <input type="hidden" id="id_usuario" name="id_usuario" value="{{ session['id_usuario'] }}">
 
-            <label for="nombre">Nombre del producto:</label>
-            <input type="text" id="nombre" name="nombre" required>
-            <div id="error-nombre" class="error"></div>
+          <div class="form-container">
+            <div class="campo_derecho">
+                <label for="nombre">Nombre del producto:</label>
+                <input type="text" id="nombre" name="nombre" required placeholder="Campo obligatorio">
+                <div id="error-nombre" class="error"></div>
 
-            <label for="descripcion">Descripción:</label>
-            <input type="text" id="descripcion" name="descripcion" required>
-            <div id="error-descripcion" class="error"></div>
+                <label for="descripcion">Descripción:</label>
+                <input type="text" id="descripcion" name="descripcion" required placeholder="Campo obligatorio">
+                <div id="error-descripcion" class="error"></div>
 
-            <label for="precio">Precio (Bs.):</label>
-            <input type="number" id="precio" name="precio" step="0.01" required>
-            <div id="error-precio" class="error"></div>
+                <div class="contenedor">
+                    <div class="izquierda">
+                        <label for="precio">Precio (Bs.):</label>
+                        <input type="number" id="precio" name="precio" step="0.01" required placeholder="Campo obligatorio">
+                        <div id="error-precio" class="error"></div>
+                    </div>
+                    <div class="derecha">
+                        <label for="cantidad">Cantidad:</label>
+                        <input type="number" id="cantidad" name="cantidad" required placeholder="Campo obligatorio">
+                        <div id="error-cantidad" class="error"></div>
+                    </div>
+                </div>
 
-            <label for="cantidad">Cantidad:</label>
-            <input type="number" id="cantidad" name="cantidad" required>
-            <div id="error-cantidad" class="error"></div>
+                <label for="tipo_venta">Tipo de venta:</label>
+                <select id="tipo_venta" name="tipo_venta" required>
+                    <option value="Unitario" selected>Unitario</option>
+                    <option value="Total">Total</option>
+                </select>
 
-            <label for="tipo_venta">Tipo de venta:</label>
-            <select id="tipo_venta" name="tipo_venta" required>
-                <option value="Unitario" selected>Unitario</option>
-                <option value="Total">Total</option>
-            </select>
+                <label for="ubicacion">Ubicación:</label>
+                <input type="text" id="ubicacion" name="ubicacion" required placeholder="Campo obligatorio">
+                <div id="error-ubicacion" class="error"></div>
 
-            <label for="ubicacion">Ubicación:</label>
-            <input type="text" id="ubicacion" name="ubicacion" required>
-            <div id="error-ubicacion" class="error"></div>
+                <label for="tamano">Tamaño:</label>
+                <input type="text" id="tamano" name="tamano" placeholder="Campo opcional">
+                <div id="error-tamano" class="error"></div>
 
-            <label for="marca">Marca:</label>
-            <input type="text" id="marca" name="marca">
-            <div id="error-marca" class="error"></div>
+                <div class="contenedor">
+                    <div class="izquierda">
+                        <label for="marca">Marca:</label>
+                        <input type="text" id="marca" name="marca" placeholder="Campo opcional">
+                        <div id="error-marca" class="error"></div>
+                    </div>
+                    <div class="derecha">
+                        <label for="color">Color:</label>
+                        <input type="text" id="color" name="color" placeholder="Campo opcional">
+                        <div id="error-color" class="error"></div>
+                    </div>
+                </div>
+            </div>
 
-            <label for="color">Color:</label>
-            <input type="text" id="color" name="color">
-            <div id="error-color" class="error"></div>
+            <div class="campo_izquierdo">
+                <div class="imagenes">
+                <div class="imagen-principal">
+                     <img id="imgPrincipal" src="" alt="Imagen Principal" style="display: none; width: 100%; height: auto; border-radius: 5px;" />
+                 </div>
+                <div class="imagen-menu" id="miniaturas">
+                    <!-- Las miniaturas se agregarán aquí dinámicamente -->
+                </div>
+                </div>
+                <div class="subir">
+                    <input type="file" id="inputImagenes" accept="image/*" style="display: none;" multiple onchange="manejarImagenes(this.files)">
+                    <button type="button" class="botonSubir" onclick="abrirExplorador()">Subir Imagen</button>
+                </div>
+            </div>
 
-            <label for="tamano">Tamaño:</label>
-            <input type="text" id="tamano" name="tamano">
-            <div id="error-tamano" class="error"></div>
+
+
+             </div>
 
             <div class="button-container">
-                 <button type="button" id="botonVistaPrevia" onclick="vistaPrevia(event)">Vista previa</button>        
-                <button type="button" id="botonSubir" onclick="subirImagen(event)">Subir imagen</button>
-                <button type="button" id="botonRegistrar" onclick="validarFormulario(event)">Registrar Producto</button>
-                <button type="button" id="cancelar-button" onclick="limpiarFormulario()">Cancelar</button>
+                 <button type="button" id="botonRegistrar" onclick="validarFormulario(event)">Registrar Producto</button>
+                 <button type="button" id="botonVista" onclick="vistaPreviaPublicacion(event)">Vista Previa</button>
+                 <button type="button" id="cancelar-button" onclick="limpiarFormulario()">Cancelar</button>
             </div>
-             <!-- Ventana emergente de vista previa -->
+            <!-- Ventana emergente de vista previa -->
             <div id="vistaPrevia" class="vista-previa-overlay" style="display: none;">
                 <div class="vista-previa-contenido">
                     <span class="cerrar" onclick="cerrarVistaPrevia()">&times;</span>
@@ -305,6 +351,7 @@
                     <p id="precioVistaPrevia"></p>
                 </div>
             </div>
+
         </form>
     </div>
 
@@ -327,14 +374,14 @@
             } else if (/[^a-zA-Z\s]/.test(nombre)){
                 errorNombre.innerHTML = 'El nombre del producto no puede contener caracteres especiales.';
                 esValido = false;
-            } else if (nombre.length < 3 || nombre.length >100){
+            } else if (nombre.length < 3 || nombre.length > 25){
                 errorNombre.innerHTML = 'El nombre del producto debe tener entre 3 y 25 caracteres.';
                 esValido = false;
             }
             return esValido;
         }
 
-        // Funcion para validar el campo de registro de descripciopg
+        // Funcion para validar el campo de registro de descripciopn
         function validarDescripcion(){
             const descripcion = document.getElementById('descripcion').value;
             const errorDescripcion = document.getElementById('error-descripcion');
@@ -420,16 +467,16 @@
             if (ubicacion.trim() === ""){
                 errorUbicacion.innerHTML = 'La ubicación no puede estar vacía.';
                 esValido = false;
-            } else if (ubicacion.length < 3 || ubicacion.length > 25){
-                errorUbicacion.innerHTML = 'La ubicación debe tener entre 3 y 25 caracteres.';
+            } else if (ubicacion.length < 3 || ubicacion.length > 100){
+                errorUbicacion.innerHTML = 'La ubicación debe tener entre 3 y 100 caracteres.';
                 esValido = false;
             }// Validar caracteres permitidos (letras, números, espacios, comas, y guiones)
-            else if (!/^[a-zA-Z0-9\s,.-]+$/.test(ubicacion)) {
+            else if (!/^[a-zA-Z0-9\s,.-]+$/.test(ubicacion)){
                 errorUbicacion.innerHTML = 'La ubicación solo puede contener letras, números, espacios, comas y guiones.';
                 esValido = false;
             }
             // Validar que no contenga solo números
-            else if (/^\d+$/.test(ubicacion)) {
+            else if (/^\d+$/.test(ubicacion)){
                 errorUbicacion.innerHTML = 'La ubicación no puede contener solo números.';
                 esValido = false;
             }
@@ -479,7 +526,7 @@
         }
 
         // Funcion para validar el campo de registro de tamaño
-       function validarTamano(){
+        function validarTamano(){
             const tamano = document.getElementById('tamano').value;
             const errorTamano = document.getElementById('error-tamano');
             errorTamano.innerHTML = ''; // Limpiar los mensajes previos
@@ -537,27 +584,29 @@
                 });
             }
         }
-         
+
+
+
           function abrirExplorador() {
             document.getElementById('inputImagenes').click(); // Simula el clic en el input
         }
-        
+
         function manejarImagenes(files) {
             const imgPrincipal = document.getElementById('imgPrincipal');
             const miniaturasDiv = document.getElementById('miniaturas');
-        
+
             // Si no hay imagen principal, asignar la primera imagen seleccionada
             if (!imgPrincipal.src) {
                 const primerArchivo = files[0];
                 mostrarImagenPrincipal(primerArchivo);
             }
-        
+
             // Contador para verificar si ya hay 5 miniaturas
             let totalMiniaturas = miniaturasDiv.children.length;
-        
+
             for (let i = 0; i < files.length; i++) {
                 if (totalMiniaturas >= 5) {
-                    alert("Solo puedes añadir hasta 5 imágenes del material .");
+                    alert("Solo puedes añadir hasta 5 imágenes del material.");
                     break;
                 }
                 const file = files[i];
@@ -565,37 +614,40 @@
                 totalMiniaturas++;
             }
         }
-        
+
         function mostrarImagenPrincipal(file) {
             const imgPrincipal = document.getElementById('imgPrincipal');
             const reader = new FileReader();
-        
+
             reader.onload = function(event) {
                 imgPrincipal.src = event.target.result;
                 imgPrincipal.style.display = 'block';
             };
-        
+
             reader.readAsDataURL(file);
         }
-        
+
         function agregarMiniatura(file) {
             const miniaturasDiv = document.getElementById('miniaturas');
             const reader = new FileReader();
-        
+
             reader.onload = function(event) {
                 const miniatura = document.createElement('img');
                 miniatura.src = event.target.result;
                 miniatura.className = 'miniatura';
                 miniatura.onclick = function() {
+                    // Cambiar la imagen principal al hacer clic en la miniatura
                     mostrarImagenPrincipal(file);
                 };
-        
+
                 miniaturasDiv.appendChild(miniatura);
             };
-        
+
             reader.readAsDataURL(file);
         }
-        
+
+
+
         function vistaPreviaPublicacion() {
             console.log("Vista previa activada");  // Agrega esto para verificar si la función se ejecuta
 
@@ -623,6 +675,10 @@
             // Oculta la ventana emergente
             document.getElementById('vistaPrevia').style.display = 'none';
         }
+
+
+
+
 
         // Funcion para mostrar el mesaje emergente
         function mostrarMensajeEmergente(mensaje){
