@@ -375,7 +375,11 @@
                     img.onload = function() {
                         const { width, height } = img;
                         if (width === 180 && height === 180) {
-                    
+                            const reader = new FileReader();
+                            reader.onloadend = function () {
+                                const profileImages = document.querySelectorAll('.profile-image, .profile-section img');
+                                profileImages.forEach((profileImg) => {
+                                profileImg.src = reader.result;
                         } else {
                             alert("La imagen debe ser de 180x180 píxeles.");
                             input.value = ''; // Resetea el input si el tamaño no es válido
