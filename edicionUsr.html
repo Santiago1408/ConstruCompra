@@ -386,7 +386,7 @@
                             };
                             reader.readAsDataURL(file);
                         } else {
-                            alert("La imagen debe ser de 180x180 píxeles.");
+                            alert("La imagen debe ser de maximo 180x180 píxeles.");
                             input.value = ''; // Resetea el input si el tamaño no es válido
                         }
                         URL.revokeObjectURL(img.src); 
