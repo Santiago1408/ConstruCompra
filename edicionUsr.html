@@ -389,6 +389,16 @@
         </div>
     </div>
     <script>
+            function validarCampos() {
+                const correo = document.querySelector('input[type="email"]').value;
+    
+                // Valida el formato del correo
+                const correoRegex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
+                if (!correoRegex.test(correo)) {
+                    mostrarModal("Campo incorrecto: El correo debe ser un Gmail válido.");
+                    return;
+                }
+            }
             function cerrarModalError() {
                 document.getElementById('error-modal').style.display = 'none';
             }
