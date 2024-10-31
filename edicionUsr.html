@@ -374,7 +374,7 @@
                     const img = new Image();
                     img.onload = function() {
                         const { width, height } = img;
-                        if (width === 180 && height === 180) {
+                        if (width <= 180 && height <= 180) {
                             const reader = new FileReader();
                             reader.onloadend = function () {
                                 const profileImages = document.querySelectorAll('.profile-image, .profile-section img');
