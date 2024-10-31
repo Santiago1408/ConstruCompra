@@ -398,6 +398,19 @@
                     mostrarModal("Campo incorrecto: El correo debe ser un Gmail válido.");
                     return;
                 }
+                const hoy = new Date();
+                const fechaNacimientoDate = new Date(fechaNacimiento);
+                let edad = hoy.getFullYear() - fechaNacimientoDate.getFullYear();
+                const mes = hoy.getMonth() - fechaNacimientoDate.getMonth();
+                if (mes < 0 || (mes === 0 && hoy.getDate() < fechaNacimientoDate.getDate())) {
+                    edad--;
+                }
+    
+                // Valida que la edad sea mayor a 18 años
+                if (edad < 18) {
+                    mostrarModal("Campo incorrecto: Debe ser mayor de 18 años.");
+                    return;
+                }
             }
             function cerrarModalError() {
                 document.getElementById('error-modal').style.display = 'none';
