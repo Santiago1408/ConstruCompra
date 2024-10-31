@@ -380,6 +380,11 @@
                                 const profileImages = document.querySelectorAll('.profile-image, .profile-section img');
                                 profileImages.forEach((profileImg) => {
                                 profileImg.src = reader.result;
+                            });
+                            const profileHeader = document.querySelector('.profile-header');
+                            profileHeader.style.backgroundImage = `linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url(${reader.result})`;
+                            };
+                            reader.readAsDataURL(file);
                         } else {
                             alert("La imagen debe ser de 180x180 píxeles.");
                             input.value = ''; // Resetea el input si el tamaño no es válido
