@@ -370,6 +370,18 @@
                         input.value = ''; // Resetea el input si el formato no es válido
                         return; 
                     }
+
+                    const img = new Image();
+                    img.onload = function() {
+                        const { width, height } = img;
+                        if (width === 180 && height === 180) {
+                    
+                        } else {
+                            alert("La imagen debe ser de 180x180 píxeles.");
+                            input.value = ''; // Resetea el input si el tamaño no es válido
+                        }
+                        URL.revokeObjectURL(img.src); 
+                    };
                     alert("Foto seleccionada: " + file.name);
                 }
                 cerrarModal();
