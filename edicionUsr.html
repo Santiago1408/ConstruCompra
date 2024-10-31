@@ -431,14 +431,14 @@
                             };
                             reader.readAsDataURL(file);
                         } else {
-                            alert("La imagen debe ser de maximo 180x180 píxeles.");
+                            mostrarModal("La imagen debe ser de máximo 180x180 píxeles.");
                             input.value = ''; // Resetea el input si el tamaño no es válido
                         }
                         URL.revokeObjectURL(img.src); 
                     };
 
                     img.onerror = function() {
-                        alert("Error al cargar la imagen. Intenta con otro archivo.");
+                        mostrarModal("Error al cargar la imagen. Intenta con otro archivo.");
                         input.value = ''; // Resetea el input si hay un error al cargar la imagen
                     };
                     img.src = URL.createObjectURL(file);
