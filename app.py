@@ -50,8 +50,8 @@ def filtrar_productos():
     cursor.close()
     connection.close()
 
-    # Renderizar productos en HTML
-    productos_html = render_template('index.html', productos=productos_filtrados)
+    # Renderizar solo la sección de productos filtrados
+    productos_html = render_template('_productos.html', productos=productos_filtrados)
     return jsonify({'html': productos_html})
 
 def get_db_connection():
