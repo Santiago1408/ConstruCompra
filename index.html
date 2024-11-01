@@ -458,8 +458,6 @@
 
 </section>
 
-
-
     <!-- Modal -->
     <div id="modalOverlay"></div>
     <div id="detalleProductoModal">
@@ -531,10 +529,28 @@
         alert(marca);
     }
 
-    function buscar(){
-        const nombreProd = document.getElementById("buscador").value;
-        alert(nombreProd);
-    }
+    document.getElementById('buscar').addEventListener('click', buscar);
+
+    function buscar() {
+    const nombre = document.getElementById('buscador').value;
+
+    fetch('/buscar_producto', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ nombre: nombre }),
+    })
+    .then(response => response.json())
+    .then(data => {
+        document.getElementById('catalogoProductos').innerHTML = data.html;
+    })
+    .catch(error => console.error('Error en la búsqueda:', error));
+}
+
+
+// Agregar un listener para el botón de búsqueda
+document.getElementById("buscar").addEventListener("click", buscar);
 </script>
 
 </body>
