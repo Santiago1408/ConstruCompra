@@ -192,23 +192,30 @@ def mis_publicaciones():
         else:
             usuario['foto_perfil'] = None
 
-        # Consulta actualizada para obtener productos con su primera imagen
+        # Consulta para obtener productos
         query_productos = '''
-            SELECT p.id_producto, p.nombre, p.descripcion, p.precio,
-                   (SELECT imagen 
-                    FROM imagenes 
-                    WHERE id_producto = p.id_producto 
-                    LIMIT 1) as primera_imagen
-            FROM productos p
-            WHERE p.id_usuarios = %s
+            SELECT id_producto, nombre, descripcion, precio
+            FROM productos
+            WHERE id_usuarios = %s
         '''
         cursor.execute(query_productos, (id_usuario,))
         productos = cursor.fetchall()
 
-        # Convertir las imágenes a base64
+        # Obtener todas las imágenes para cada producto
         for producto in productos:
-            if producto['primera_imagen']:
-                producto['primera_imagen'] = base64.b64encode(producto['primera_imagen']).decode('utf-8')
+            query_imagenes = '''
+                SELECT imagen
+                FROM imagenes
+                WHERE id_producto = %s
+            '''
+            cursor.execute(query_imagenes, (producto['id_producto'],))
+            imagenes = cursor.fetchall()
+            
+            # Convertir todas las imágenes a base64
+            producto['imagenes'] = [
+                base64.b64encode(img['imagen']).decode('utf-8')
+                for img in imagenes
+            ]
 
         cursor.close()
         connection.close()
