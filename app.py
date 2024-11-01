@@ -164,20 +164,19 @@ def guardar_producto():
         cursor.close()
         conn.close()
 
-@app.route('/mis_publicaciones')
+@app.route('/mis_publicaciones', methods=['GET'])
 def mis_publicaciones():
     try:
         if 'id_usuario' not in session:
             return redirect(url_for('logueo'))
 
         id_usuario = session['id_usuario']
-
         connection = get_db_connection()
         cursor = connection.cursor(dictionary=True)
 
-        # Consulta del perfil del usuario con los campos correctos
+        # Consulta del perfil del usuario
         query_usuario = '''
-            SELECT nombre, fecha_nacimiento, direccion, telefono, correo, genero
+            SELECT nombre, foto_perfil, fecha_nacimiento, direccion, telefono, correo, genero
             FROM usuarios
             WHERE id_usuarios = %s
         '''
@@ -187,24 +186,44 @@ def mis_publicaciones():
         if not usuario:
             return "Usuario no encontrado", 404
 
-        # Consulta de productos del usuario
+        # Convertir la foto de perfil de BLOB a base64
+        if usuario['foto_perfil']:
+            usuario['foto_perfil'] = base64.b64encode(usuario['foto_perfil']).decode('utf-8')
+        else:
+            usuario['foto_perfil'] = None
+
+        # Consulta actualizada para obtener productos con su primera imagen
         query_productos = '''
-            SELECT id_producto, nombre, descripcion, precio
-            FROM productos
-            WHERE id_usuarios = %s
+            SELECT p.id_producto, p.nombre, p.descripcion, p.precio,
+                   (SELECT imagen 
+                    FROM imagenes 
+                    WHERE id_producto = p.id_producto 
+                    LIMIT 1) as primera_imagen
+            FROM productos p
+            WHERE p.id_usuarios = %s
         '''
         cursor.execute(query_productos, (id_usuario,))
         productos = cursor.fetchall()
 
+        # Convertir las imágenes a base64
+        for producto in productos:
+            if producto['primera_imagen']:
+                producto['primera_imagen'] = base64.b64encode(producto['primera_imagen']).decode('utf-8')
+
         cursor.close()
         connection.close()
 
-        # Pasamos el perfil del usuario y sus productos al template
-        return render_template('mis_publicaciones.html', usuario=usuario, productos=productos)
+        # Si la solicitud es AJAX, devolver solo la lista de publicaciones
+        if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+            return render_template('partial_publicaciones.html', productos=productos, usuario=usuario)
+
+        # Si no es AJAX, renderizar la página completa
+        return render_template('mis_publicaciones.html', productos=productos, usuario=usuario)
 
     except Exception as e:
-        print(f"Error: {e}")  # Ver error en consola
+        print(f"Error: {e}")
         return "Ocurrió un error en el servidor", 500
+
 
 @app.route('/ver_perfil/<int:user_id>')
 def ver_perfil_usuario(user_id):
