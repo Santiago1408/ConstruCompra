@@ -239,7 +239,8 @@
 
         .sidebar-button, .aplicarFiltros {
             border: 2px solid #ddd;
-            color: #676767;
+            background-color: #A96424;
+            color: #ffffff;
             padding: 10px 20px;
             font-size: 18px;
             border-radius: 20px;
@@ -404,11 +405,8 @@
         </div>
         <div class="menu">
             <a href="#">INICIO</a>
-             <!--<a href="#">CARRITO</a> -->
             <a href="{{ url_for('mis_publicaciones') }}">MIS PUBLICACIONES</a>
             <a href="{{ url_for('registrar_producto') }}">REGISTRAR PRODUCTO</a>
-            <!-- <a href="#">HISTORIAL</a> -->
-            <!-- <a href="#">CONTACTO</a> -->
         </div>
     </header>
 
@@ -418,8 +416,8 @@
             <h1 id="titulo">ConstruCompra</h1>
         </div>
         <div class="busqueda2">
-            <input type="text" placeholder="Buscar">
-            <button><i class="fas fa-search"></i></button>
+            <input type="text" placeholder="Buscar" id="buscador">
+            <button><i class="fas fa-search" id="buscar" onclick="buscar()"></i></button>
         </div>
     </div>
 
@@ -430,9 +428,9 @@
     <h3 class="campos">Precio:</h3>
     <div class="defPrecios">
         <label>Min:</label>
-        <input id="precioMin" type="number" name="precioMin" value="0" />
+        <input id="precioMin" type="number" name="precioMin" value="0" min="0"/>
         <label>Max:</label>
-        <input id="precioMax" type="number" name="precioMax" value="0" />
+        <input id="precioMax" type="number" name="precioMax" value="0" min="0"/>
     </div>
     <label for="marca">Marca:</label>
     <input id="marca" class="marca" type="text" name="marca" placeholder="Marca del producto deseado" />
@@ -451,6 +449,13 @@
         <div class="precioProducto">Bs. {{ producto.precio }}</div>
     </div>
     {% endfor %}
+
+
+    <!-- index.html -->
+    <section class="productos" id="catalogoProductos">
+        {% include '_productos.html' %}
+    </section>
+
 </section>
 
 
@@ -523,7 +528,14 @@
             catalogo.innerHTML = data.html;
         })
         .catch(error => console.error('Error al aplicar filtros:', error));
+        alert(marca);
+    }
+
+    function buscar(){
+        const nombreProd = document.getElementById("buscador").value;
+        alert(nombreProd);
     }
 </script>
 
 </body>
+</html>
