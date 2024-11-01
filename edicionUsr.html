@@ -418,7 +418,7 @@
     <script>
             function validarCampos() {
                 const correo = document.querySelector('input[type="email"]').value;
-    
+                 const fechaNacimiento = document.querySelector('input[type="date"]').value;
                 // Valida el formato del correo
                 const correoRegex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
                 if (!correoRegex.test(correo)) {
