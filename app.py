@@ -21,6 +21,28 @@ db_config = {
     'database': 'proyectocibernau$marketplace',
 }
 
+@app.route('/buscar_producto', methods=['POST'])
+def buscar_producto():
+    data = request.get_json()
+    nombre_busqueda = data.get('nombre', '').strip()
+
+    # Conectar a la base de datos usando el mismo método
+    connection = get_db_connection()
+    cursor = connection.cursor(dictionary=True)
+
+    # Construir consulta para búsqueda por nombre
+    query = "SELECT id_producto, nombre, descripcion, precio FROM productos WHERE nombre LIKE %s"
+    params = [f"%{nombre_busqueda}%"]
+
+    cursor.execute(query, params)
+    productos_buscados = cursor.fetchall()
+    cursor.close()
+    connection.close()
+
+    # Renderizar los productos con el mismo formato de index.html
+    productos_html = render_template('_productos.html', productos=productos_buscados)
+    return jsonify({'html': productos_html})
+
 @app.route('/filtrar_productos', methods=['POST'])
 def filtrar_productos():
     data = request.get_json()
