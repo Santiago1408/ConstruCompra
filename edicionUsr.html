@@ -413,6 +413,47 @@
                 }
                 mostrarModal("Los datos han sido guardados con éxito.");
             }
+
+            function guardarCambios() {
+            // Obtener todos los valores de los campos
+                const fechaNacimiento = document.querySelector('input[type="date"]').value;
+                const direccion = document.querySelector('input.editable[value]').value;
+                const correo = document.querySelector('input[type="email"]').value;
+                const telefono = document.querySelector('input[type="tel"]').value;
+                const genero = document.querySelector('select').value;
+
+                // Crear objeto con los datos
+                const datos = {
+                    fecha_nacimiento: fechaNacimiento,
+                    direccion: direccion,
+                    correo: correo,
+                    telefono: telefono,
+                    genero: genero
+                };
+
+                // Enviar datos al servidor
+                fetch('/edicionUsr', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                        body: JSON.stringify(datos)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        mostrarModal("Los datos han sido guardados con éxito.");
+                        setTimeout(() => {
+                        window.location.href = '/ver_perfil';
+                        }, 2000);
+                    } else {
+                        mostrarModal(data.message || "Error al guardar los datos.");
+                    }
+                })
+                .catch(error => {
+                        mostrarModal("Error al guardar los datos: " + error);
+                });
+            }
             function cerrarModalError() {
                 document.getElementById('error-modal').style.display = 'none';
             }
