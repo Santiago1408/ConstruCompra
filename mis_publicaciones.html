@@ -40,18 +40,22 @@
         .container {
             padding: 20px;
         }
+        .title-container {
+            display: inline-block; /* This ensures the background only spans the text width */
+        }
         .title-container h2 {
             background-color: #df8755;
             color: white;
             padding: 10px 20px;
             border-radius: 50px;
             font-size: 1.5rem;
+            display: inline-block; /* This prevents the background from spanning full width */
         }
         .publications {
             margin-top: 20px;
         }
         .product-card {
-            display: flex;
+             display: flex;
             justify-content: space-between;
             background-color: white;
             border: 1px solid #df8755;
@@ -141,20 +145,35 @@
             text-decoration: none; /* Para quitar el subrayado */
             color: black; /* Color del botón de inicio */
         }
-        .product-image {
+        .profile-link {
+            text-decoration: none; /* Elimina subrayado del enlace */
+            display: flex; /* Alinea el contenido horizontalmente */
+            align-items: center; /* Centra verticalmente */
+        }
+        .username {
+            color: black;
+            font-size: 20px;
+            margin-left: 10px;
+            transition: color 0.3s;
+        }
+        .profile-link:hover .username {
+            color: #df8755; /* Cambia a #df8755 al pasar el cursor */
+        }
+        .profile-pic {
+            border-radius: 50%; /* Hace la imagen circular */
+        }
+         .product-image {
             width: 150px;
             height: 150px;
             object-fit: cover;
             border-radius: 8px;
-            margin-right: 20px;
         }
-
         .product-content {
             display: flex;
             flex-grow: 1;
             align-items: center;
         }
-        
+
         .no-image-placeholder {
             width: 150px;
             height: 150px;
@@ -165,10 +184,93 @@
             border-radius: 8px;
             margin-right: 20px;
         }
-    </style>
+         .product-image-container {
+            position: relative;
+            width: 150px;
+            margin-right: 20px;
+        }
+        .image-navigation {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 5px;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 5px;
+            border-radius: 10px;
+        }
+         .nav-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            transition: background-color 0.3s;
+            border: none;
+            padding: 0;
+        }
+        .nav-dot.active {
+            background-color: white;
+        }
+         .image-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(223, 135, 85, 0.8);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s;
+            z-index: 2;
+        }
+         .image-arrow:hover {
+            background-color: rgba(223, 135, 85, 1);
+        }
 
+        .prev-image {
+            left: 5px;
+        }
+
+        .next-image {
+            right: 5px;
+        }
+
+        .no-image-placeholder {
+            width: 150px;
+            height: 150px;
+            background-color: #f0f0f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            color: #666;
+        }
+
+    </style>
 </head>
 <body>
+    <div class="header">
+        <div class="profile-section">
+            <a href="{{ url_for('ver_perfil') }}" class="d-flex align-items-center profile-link">
+                {% if usuario %}
+                    <img src="data:image/png;base64,{{ usuario.foto_perfil }}" alt="Foto de perfil" class="profile-pic" width="50" height="50">
+                    <h1 class="username">{{ usuario.nombre }}</h1>
+                {% else %}
+                    <img src="{{ url_for('static', filename='perfil.png') }}" alt="Perfil" class="profile-pic" width="50" height="50">
+                    <h1 class="username">Usuario</h1>
+                {% endif %}
+            </a>
+        </div>
+        <a href="{{ url_for('index') }}" class="inicio-button" alt="Inicio">Inicio</a>
+    </div>
     <div class="container">
         <div class="title-container">
             <h2>Mis Publicaciones</h2>
@@ -178,15 +280,28 @@
                 {% for producto in productos %}
                 <div class="product-card" id="product-{{ producto.id_producto }}">
                     <div class="product-content">
-                        {% if producto.primera_imagen %}
-                            <img src="data:image/jpeg;base64,{{ producto.primera_imagen }}" 
-                                 alt="Imagen de {{ producto.nombre }}"
-                                 class="product-image">
-                        {% else %}
-                            <div class="no-image-placeholder">
-                                <span>Sin imagen</span>
-                            </div>
-                        {% endif %}
+                        <div class="product-image-container" id="image-container-{{ producto.id_producto }}">
+                            {% if producto.imagenes %}
+                                <img src="data:image/jpeg;base64,{{ producto.imagenes[0] }}"
+                                     alt="Imagen de {{ producto.nombre }}"
+                                     class="product-image"
+                                     id="current-image-{{ producto.id_producto }}">
+                                {% if producto.imagenes|length > 1 %}
+                                    <button class="image-arrow prev-image" onclick="prevImage({{ producto.id_producto }})">&#10094;</button>
+                                    <button class="image-arrow next-image" onclick="nextImage({{ producto.id_producto }})">&#10095;</button>
+                                    <div class="image-navigation">
+                                        {% for _ in producto.imagenes %}
+                                            <button class="nav-dot {% if loop.index0 == 0 %}active{% endif %}"
+                                                    onclick="showImage({{ producto.id_producto }}, {{ loop.index0 }})"></button>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            {% else %}
+                                <div class="no-image-placeholder">
+                                    <span>Sin imagen</span>
+                                </div>
+                            {% endif %}
+                        </div>
                         <div class="product-details">
                             <h3>{{ producto.nombre }}</h3>
                             <p class="description">{{ producto.descripcion }}</p>
@@ -208,19 +323,16 @@
             <p>No has registrado ningún producto aún.</p>
         {% endif %}
     </div>
-
-        <!-- Modal de confirmación de eliminación -->
-        <div id="myModal" class="modal">
-            <div class="modal-content">
-                <h2>Eliminar publicación</h2>
-                <p>¿Está seguro que desea eliminar publicación?</p>
-                <div class="modal-footer">
-                    <button id="btnAceptar" class="modal-btn">Aceptar</button>
-                    <button id="btnCancelar" class="modal-btn">Cancelar</button>
-                </div>
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <h2>Eliminar publicación</h2>
+            <p>¿Está seguro que desea eliminar publicación?</p>
+            <div class="modal-footer">
+                <button id="btnAceptar" class="modal-btn">Aceptar</button>
+                <button id="btnCancelar" class="modal-btn">Cancelar</button>
             </div>
         </div>
-        <!-- Modal de éxito -->
+    </div>
     <div id="successModal" class="modal">
         <div class="modal-content">
             <h2>Eliminar publicación</h2>
@@ -230,82 +342,106 @@
             </div>
         </div>
     </div>
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            // Ocultar modales al inicio
-            document.getElementById("myModal").style.display = "none";
-            document.getElementById("successModal").style.display = "none";
+ <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        document.getElementById("myModal").style.display = "none";
+        document.getElementById("successModal").style.display = "none";
+    });
+    let currentIdProducto;
+    function confirmarEliminar(idProducto) {
+        currentIdProducto = idProducto;
+        document.getElementById("myModal").style.display = "flex";
+    }
+    document.getElementById("btnAceptar").onclick = function() {
+        fetch(`/eliminar_producto/${currentIdProducto}`, {
+            method: 'POST',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                document.getElementById("myModal").style.display = "none";
+                document.getElementById("successModal").style.display = "flex";
+                actualizarProductos();
+                setTimeout(() => {
+                    document.getElementById("successModal").style.display = "none";
+                }, 2000);
+            } else {
+                alert('Error al eliminar la publicación: ' + data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Error al eliminar la publicación. Inténtalo nuevamente.');
         });
-        
-        let currentIdProducto;
-        
-        function confirmarEliminar(idProducto) {
-            currentIdProducto = idProducto;
-            document.getElementById("myModal").style.display = "flex";
-        }
-        
-        document.getElementById("btnAceptar").onclick = function() {
-            // Crear el objeto FormData
-            const formData = new FormData();
-            
-            // Realizar la solicitud POST
-            fetch(`/eliminar_producto/${currentIdProducto}`, {
-                method: 'POST',
-                headers: {
-                    'X-Requested-With': 'XMLHttpRequest'
-                }
+    }
+    function actualizarProductos() {
+        fetch('/mis_publicaciones')
+            .then(response => response.text())
+            .then(html => {
+                document.querySelector('.publications').innerHTML = new DOMParser().parseFromString(html, 'text/html').querySelector('.publications').innerHTML;
             })
-            .then(response => response.json())
-            .then(data => {
-                if (data.status === 'success') {
-                    document.getElementById("myModal").style.display = "none";
-                    document.getElementById("successModal").style.display = "flex";
-                    
-                    // Eliminar la tarjeta del producto del DOM
-                    const productCard = document.getElementById(`product-${currentIdProducto}`);
-                    if (productCard) {
-                        productCard.remove();
-                    }
-                    
-                    // Cerrar el modal de éxito después de 2 segundos
-                    setTimeout(() => {
-                        document.getElementById("successModal").style.display = "none";
-                        
-                        // Verificar si no hay más productos
-                        const publications = document.querySelector('.publications');
-                        if (publications && !publications.children.length) {
-                            publications.innerHTML = '<p>No has registrado ningún producto aún.</p>';
-                        }
-                    }, 2000);
-                } else {
-                    alert('Error al eliminar la publicación: ' + data.message);
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('Error al eliminar la publicación. Inténtalo nuevamente.');
-            });
+            .catch(error => console.error('Error al actualizar los productos:', error));
+    }
+    document.getElementById("btnCancelar").onclick = function() {
+        document.getElementById("myModal").style.display = "none";
+    }
+
+    document.getElementById("btnCerrar").onclick = function() {
+        document.getElementById("successModal").style.display = "none";
+    }
+    window.onclick = function(event) {
+        const myModal = document.getElementById("myModal");
+        const successModal = document.getElementById("successModal");
+        if (event.target === myModal) {
+            myModal.style.display = "none";
         }
-    
-        document.getElementById("btnCancelar").onclick = function() {
-            document.getElementById("myModal").style.display = "none";
+        if (event.target === successModal) {
+            successModal.style.display = "none";
         }
-    
-        document.getElementById("btnCerrar").onclick = function() {
-            document.getElementById("successModal").style.display = "none";
-        }
-    
-        // Cerrar modales si se hace clic fuera de ellos
-        window.onclick = function(event) {
-            const myModal = document.getElementById("myModal");
-            const successModal = document.getElementById("successModal");
-            if (event.target === myModal) {
-                myModal.style.display = "none";
+    }
+    const productImages = {};
+        const currentImageIndex = {};
+
+        {% for producto in productos %}
+            {% if producto.imagenes %}
+                productImages[{{ producto.id_producto }}] = {{ producto.imagenes|tojson|safe }};
+                currentImageIndex[{{ producto.id_producto }}] = 0;
+            {% endif %}
+        {% endfor %}
+
+        function showImage(productId, index) {
+            const images = productImages[productId];
+            if (!images || index < 0 || index >= images.length) return;
+
+            const imageElement = document.getElementById(`current-image-${productId}`);
+            imageElement.src = `data:image/jpeg;base64,${images[index]}`;
+
+            // Actualizar dots de navegación
+            const container = document.getElementById(`image-container-${productId}`);
+            const dots = container.getElementsByClassName('nav-dot');
+            for (let i = 0; i < dots.length; i++) {
+                dots[i].classList.toggle('active', i === index);
             }
-            if (event.target === successModal) {
-                successModal.style.display = "none";
-            }
+
+            currentImageIndex[productId] = index;
         }
-    </script>
+
+        function nextImage(productId) {
+            const images = productImages[productId];
+            const nextIndex = (currentImageIndex[productId] + 1) % images.length;
+            showImage(productId, nextIndex);
+        }
+
+        function prevImage(productId) {
+            const images = productImages[productId];
+            const prevIndex = (currentImageIndex[productId] - 1 + images.length) % images.length;
+            showImage(productId, prevIndex);
+        }
+</script>
 </body>
 </html>
+
+
