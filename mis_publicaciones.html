@@ -153,10 +153,21 @@
             <div class="publications">
                 {% for producto in productos %}
                 <div class="product-card" id="product-{{ producto.id_producto }}">
-                    <div class="product-details">
-                        <h3>{{ producto.nombre }}</h3>
-                        <p class="description">{{ producto.descripcion }}</p>
-                        <p class="price">Precio: {{ producto.precio }}</p>
+                    <div class="product-content">
+                        {% if producto.primera_imagen %}
+                            <img src="data:image/jpeg;base64,{{ producto.primera_imagen }}" 
+                                 alt="Imagen de {{ producto.nombre }}"
+                                 class="product-image">
+                        {% else %}
+                            <div class="no-image-placeholder">
+                                <span>Sin imagen</span>
+                            </div>
+                        {% endif %}
+                        <div class="product-details">
+                            <h3>{{ producto.nombre }}</h3>
+                            <p class="description">{{ producto.descripcion }}</p>
+                            <p class="price">Precio: {{ producto.precio }}</p>
+                        </div>
                     </div>
                     <div class="action-buttons">
                         <a href="{{ url_for('editar_producto', id_producto=producto.id_producto) }}" class="edit-btn">
@@ -173,6 +184,7 @@
             <p>No has registrado ningún producto aún.</p>
         {% endif %}
     </div>
+
         <!-- Modal de confirmación de eliminación -->
         <div id="myModal" class="modal">
             <div class="modal-content">
