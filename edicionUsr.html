@@ -417,7 +417,7 @@
             function guardarCambios() {
             // Obtener todos los valores de los campos
                 const fechaNacimiento = document.querySelector('input[type="date"]').value;
-                const direccion = document.querySelector('input.editable[value]').value;
+                const direccion = document.querySelector('input[type="text"].editable').value;
                 const correo = document.querySelector('input[type="email"]').value;
                 const telefono = document.querySelector('input[type="tel"]').value;
                 const genero = document.querySelector('select').value;
