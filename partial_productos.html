@@ -1,3 +1,10 @@
 {% for producto in productos %}
 <div class="contenedor">
     <img src="{{ url_for('static', filename='images/default-product.png') }}" alt="Imagen del producto">
+    <div class="tituloProducto">
+        {{ producto.nombre }}
+        <button class="info" onclick="mostrarInfo({{ producto.id_producto }})">Detalles</button>
+    </div>
+    <div class="precioProducto">Bs. {{ producto.precio }}</div>
+</div>
+{% endfor %}
