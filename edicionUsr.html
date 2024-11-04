@@ -440,6 +440,13 @@
                     mostrarModal("Campo obligatorio: La dirección no puede estar vacía.");
                     return false;
                 }
+
+                // Validar solo letras y espacios en el nombre
+                const nombreRegex = /^[a-zA-Z\s]+$/;
+                if (!nombreRegex.test(nombre)) {
+                    mostrarModal("Campo incorrecto: El nombre solo debe contener letras y espacios.");
+                    return false;
+                }
                 // Valida el formato del correo
                 const correoRegex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
                 if (!correoRegex.test(correo)) {
