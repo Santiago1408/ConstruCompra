@@ -422,12 +422,15 @@
                  const direccion = document.querySelector('input[type="text"].editable').value.trim();
 
                 if (!correo) {
+                    mostrarModal("Campo obligatorio: El correo no puede estar vacío.");
                     return false;
                 }
                 if (!fechaNacimiento) {
+                    mostrarModal("Campo obligatorio: La fecha de nacimiento no puede estar vacía.");
                     return false;
                 }
                 if (!direccion) {
+                    mostrarModal("Campo obligatorio: La dirección no puede estar vacía.");
                     return false;
                 }
                 // Valida el formato del correo
