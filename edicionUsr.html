@@ -465,6 +465,7 @@
 
             function guardarCambios() {
             // Obtener todos los valores de los campos
+                const nombre = document.getElementById('nombre-input').value;
                 const fechaNacimiento = document.querySelector('input[type="date"]').value;
                 const direccion = document.querySelector('input[type="text"].editable').value;
                 const correo = document.querySelector('input[type="email"]').value;
@@ -473,6 +474,7 @@
 
                 // Crear objeto con los datos
                 const datos = {
+                    nombre: nombre,
                     fecha_nacimiento: fechaNacimiento,
                     direccion: direccion,
                     correo: correo,
