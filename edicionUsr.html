@@ -452,6 +452,13 @@
                     mostrarModal("Campo incorrecto: Debe ser mayor de 18 años.");
                     return;
                 }
+
+                // Validar que la dirección no contenga URLs
+                const urlPattern = /https?:\/\/\S+/i;
+                if (urlPattern.test(direccion)) {
+                    mostrarModal("Campo incorrecto: La dirección no puede contener enlaces o URLs.");
+                    return false;
+                }
                 mostrarModal("Los datos han sido guardados con éxito.");
             }
 
