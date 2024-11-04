@@ -418,9 +418,15 @@
     </div>
     <script>
             function validarCampos() {
+                const nombre = document.getElementById('nombre-input').value.trim();
                 const correo = document.querySelector('input[type="email"]').value;
                  const fechaNacimiento = document.querySelector('input[type="date"]').value;
                  const direccion = document.querySelector('input[type="text"].editable').value.trim();
+
+                if (!nombre) {
+                    mostrarModal("Campo obligatorio: El nombre no puede estar vacío.");
+                    return false;
+                }
 
                 if (!correo) {
                     mostrarModal("Campo obligatorio: El correo no puede estar vacío.");
