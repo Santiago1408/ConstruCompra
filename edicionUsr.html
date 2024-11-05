@@ -428,13 +428,14 @@
             function validarCampos() {
                 const nombre = document.getElementById('nombre-input').value;
                 const correo = document.querySelector('input[type="email"]').value;
-                 const fechaNacimiento = document.querySelector('input[type="date"]').value;
-                 const direccion = document.getElementById('direccion-input').value;
+                const fechaNacimiento = document.querySelector('input[type="date"]').value;
+                const direccion = document.getElementById('direccion-input').value;
+                
                 if (!nombre) {
                     mostrarModal("Campo obligatorio: El nombre no puede estar vacío.");
                     return false;
                 }
-
+                
                 if (!correo) {
                     mostrarModal("Campo obligatorio: El correo no puede estar vacío.");
                     return false;
@@ -484,15 +485,15 @@
             }
 
             function guardarCambios() {
-            // Obtener todos los valores de los campos
+                if (!validarCampos()) return;
+    
                 const nombre = document.getElementById('nombre-input').value;
                 const fechaNacimiento = document.querySelector('input[type="date"]').value;
                 const direccion = document.getElementById('direccion-input').value;
                 const correo = document.querySelector('input[type="email"]').value;
                 const telefono = document.querySelector('input[type="tel"]').value;
                 const genero = document.querySelector('select').value;
-
-                // Crear objeto con los datos
+    
                 const datos = {
                     nombre: nombre,
                     fecha_nacimiento: fechaNacimiento,
@@ -501,30 +502,56 @@
                     telefono: telefono,
                     genero: genero
                 };
-
-                // Enviar datos al servidor
-                fetch('/edicionUsr', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                        body: JSON.stringify(datos)
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        mostrarModal("Los datos han sido guardados con éxito.");
-                        setTimeout(() => {
-                        window.location.href = '/ver_perfil';
-                        }, 2000);
-                    } else {
-                        mostrarModal(data.message || "Error al guardar los datos.");
-                    }
-                })
-                .catch(error => {
+    
+                const fotoInput = document.getElementById('fileInput');
+                if (fotoInput.files.length > 0) {
+                    const formData = new FormData();
+                    formData.append('foto_perfil', fotoInput.files[0]);
+                    formData.append('datos', JSON.stringify(datos));
+    
+                    fetch('/edicionUsr', {
+                        method: 'POST',
+                        body: formData
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            mostrarModal("Los datos han sido guardados con éxito.");
+                            setTimeout(() => {
+                                window.location.href = '/ver_perfil';
+                            }, 2000);
+                        } else {
+                            mostrarModal(data.message || "Error al guardar los datos.");
+                        }
+                    })
+                    .catch(error => {
                         mostrarModal("Error al guardar los datos: " + error);
-                });
+                    });
+                } else {
+                    fetch('/edicionUsr', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(datos)
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            mostrarModal("Los datos han sido guardados con éxito.");
+                            setTimeout(() => {
+                                window.location.href = '/ver_perfil';
+                            }, 2000);
+                        } else {
+                            mostrarModal(data.message || "Error al guardar los datos.");
+                        }
+                    })
+                    .catch(error => {
+                        mostrarModal("Error al guardar los datos: " + error);
+                    });
+                }
             }
+        
             function cerrarModalError() {
                 document.getElementById('error-modal').style.display = 'none';
             }
