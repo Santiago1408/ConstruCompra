@@ -418,7 +418,7 @@
     </div>
     <script>
             function validarCampos() {
-                const nombre = document.getElementById('nombre-input').value.trim();
+                const nombre = document.getElementById('nombre-input').value;
                 const correo = document.querySelector('input[type="email"]').value;
                  const fechaNacimiento = document.querySelector('input[type="date"]').value;
                  const direccion = document.querySelector('input[type="text"].editable').value.trim();
@@ -441,10 +441,10 @@
                     return false;
                 }
 
-                // Validar solo letras y espacios en el nombre
-                const nombreRegex = /^[a-zA-Z\s]+$/;
+                // Validar el nombre solo con letras (incluidos acentos), espacios y guiones
+                const nombreRegex = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s-]+$/;
                 if (!nombreRegex.test(nombre)) {
-                    mostrarModal("Campo incorrecto: El nombre solo debe contener letras y espacios.");
+                    mostrarModal("Campo incorrecto: El nombre solo puede contener letras, espacios y guiones.");
                     return false;
                 }
                 // Valida el formato del correo
