@@ -583,21 +583,22 @@
                     img.onload = function() {
                         const { width, height } = img;
                         if (width <= 180 && height <= 180) {
+                            // Usar FileReader para previsualizar la imagen en el perfil
                             const reader = new FileReader();
                             reader.onloadend = function () {
                                 const profileImages = document.querySelectorAll('.profile-image, .profile-section img');
                                 profileImages.forEach((profileImg) => {
-                                profileImg.src = reader.result;
-                            });
-                            const profileHeader = document.querySelector('.profile-header');
-                            profileHeader.style.backgroundImage = `linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url(${reader.result})`;
+                                    profileImg.src = reader.result;
+                                });
                             };
                             reader.readAsDataURL(file);
+    
+                            mostrarModal("Foto de perfil seleccionada correctamente.");
                         } else {
                             mostrarModal("La imagen debe ser de máximo 180x180 píxeles.");
-                            input.value = ''; // Resetea el input si el tamaño no es válido
+                            input.value = '';
                         }
-                        URL.revokeObjectURL(img.src); 
+                        URL.revokeObjectURL(img.src);
                     };
 
                     img.onerror = function() {
