@@ -421,8 +421,7 @@
                 const nombre = document.getElementById('nombre-input').value;
                 const correo = document.querySelector('input[type="email"]').value;
                  const fechaNacimiento = document.querySelector('input[type="date"]').value;
-                 const direccion = document.querySelector('input[type="text"].editable').value.trim();
-
+                 const direccion = document.getElementById('direccion-input').value;
                 if (!nombre) {
                     mostrarModal("Campo obligatorio: El nombre no puede estar vacío.");
                     return false;
