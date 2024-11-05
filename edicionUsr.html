@@ -345,7 +345,7 @@
 
     <div class="profile-container">
         <div class="profile-header">
-            <input type="text" class="editable" value="{{ datos_usuario.nombre }}" id="nombre-input">
+            <input type="text" class="editable" id="nombre-input" value="{{ datos_usuario.nombre }}">
             <h2 class="profile-name">{{ datos_usuario.nombre }}</h2>
         </div>
 
@@ -367,7 +367,7 @@
                             <img src="{{ url_for('static', filename='icono2.jpg') }}" alt="Ubicación" class="info-icon">
                             Dirección:
                         </span>
-                        <input type="text" class="editable" value="{{ datos_usuario.direccion }}">
+                        <input type="text" class="editable" id="direccion-input" value="{{ datos_usuario.direccion }}">
                     </div>
                 </div>
 
