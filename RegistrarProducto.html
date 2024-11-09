@@ -185,21 +185,22 @@
 
         }
         .botonSubir{
-               position: absolute;
-                right: 29%;
-                top: 68%;
+            position: absolute;
+            right: 29%;
+            top: 68%;
 
-                width: 90px;
-                height: 40px;
+            width: 90px;
+            height: 40px;
 
-                background-image: url("static/subir.png"); /* Ruta de la imagen de fondo */
-                background-size: cover;
-                background-position: center;
-                border: none;
-                cursor: pointer;
-}
+            background-image: url("static/subir.png"); /* Ruta de la imagen de fondo */
+            background-size: cover;
+            background-position: center;
+            border: none;
+            cursor: pointer;
+        }
 
-    text-align: center;
+        input{
+            text-align: center;
         }
         ::placeholder{
             color: #989680;
@@ -273,7 +274,7 @@
 
             <div class="campo_izquierdo">
                 <div class="imagen-principal">
-                      <img id="imgPrincipal" src="" alt="Imagen Principal" style="display: none; width: 100%; height: auto; border-radius: 5px;" />
+                    <img id="imgPrincipal" src="" alt="Imagen Principal" style="display: none; width: 100%; height: auto; border-radius: 5px;" />
                 </div>
                  <div class="imagen-menu" id="miniaturas">
                     <!-- Las miniaturas se agregarán aquí dinámicamente -->
@@ -501,9 +502,22 @@
             const esColorValido = validarColor();
             const esTamanoValido = validarTamano();
 
+            // Verificar si al menos una imagen ha sido cargada
+            if (base64Images.length === 0) {
+                mostrarMensajeEmergente("Debes agregar al menos una imagen antes de enviar el formulario.");
+                return; // Detener la función para evitar el envío
+            }
+
             if (esNombreValido && esDescripcionValido && esPrecioValido && esCantidadValido && esUbicacionValido && esMarcaValido && esColorValido && esTamanoValido) {
                 // Crear un objeto FormData para enviar el formulario
                 const formData = new FormData(document.getElementById('registrar-producto-form'));
+
+                // Agregar las imágenes al FormData
+                const inputImagenes = document.getElementById('inputImagenes');
+                for (let i = 0; i < inputImagenes.files.length; i++) {
+                    formData.append('imagenes', inputImagenes.files[i]); // 'imagenes' es la clave
+                }
+
                 fetch('/registrar_producto', {
                     method: 'POST',
                     body: formData,
@@ -522,55 +536,55 @@
             }
         }
 
-            function abrirExplorador() {
-                document.getElementById('inputImagenes').click(); // Simula el clic en el input
+        function abrirExplorador() {
+            document.getElementById('inputImagenes').click(); // Simula el clic en el input
+        }
+
+        function manejarImagenes(files) {
+            const imgPrincipal = document.getElementById('imgPrincipal');
+            const miniaturasDiv = document.getElementById('miniaturas');
+
+            // Verificar si ya hay una imagen principal
+            if (imgPrincipal.src === "") {
+                const principalFile = files[0];
+                mostrarImagenPrincipal(principalFile); // Muestra la primera imagen como principal
+            } else {
+                const anteriorFile = imgPrincipal.src; // Guarda la imagen anterior como miniatura
+                agregarMiniatura(anteriorFile); // Agrega la imagen anterior a miniaturas
             }
 
-            function manejarImagenes(files) {
-                const imgPrincipal = document.getElementById('imgPrincipal');
-                const miniaturasDiv = document.getElementById('miniaturas');
+            // Mostrar la nueva imagen como principal
+            const nuevoFile = files[0];
+            mostrarImagenPrincipal(nuevoFile); // Muestra la nueva imagen como principal
+        }
 
-                // Verificar si ya hay una imagen principal
-                if (imgPrincipal.src === "") {
-                    const principalFile = files[0];
-                    mostrarImagenPrincipal(principalFile); // Muestra la primera imagen como principal
-                } else {
-                    const anteriorFile = imgPrincipal.src; // Guarda la imagen anterior como miniatura
-                    agregarMiniatura(anteriorFile); // Agrega la imagen anterior a miniaturas
-                }
+        function mostrarImagenPrincipal(file) {
+            const imgPrincipal = document.getElementById('imgPrincipal');
+            const reader = new FileReader();
 
-                // Mostrar la nueva imagen como principal
-                const nuevoFile = files[0];
-                mostrarImagenPrincipal(nuevoFile); // Muestra la nueva imagen como principal
-            }
+            reader.onload = function(event) {
+                imgPrincipal.src = event.target.result; // Mostrar la imagen principal
+                imgPrincipal.style.display = 'block'; // Hacer visible la imagen principal
+            };
 
-            function mostrarImagenPrincipal(file) {
-                const imgPrincipal = document.getElementById('imgPrincipal');
-                const reader = new FileReader();
+            reader.readAsDataURL(file); // Leer la imagen como URL
+        }
 
-                reader.onload = function(event) {
-                    imgPrincipal.src = event.target.result; // Mostrar la imagen principal
-                    imgPrincipal.style.display = 'block'; // Hacer visible la imagen principal
+        function agregarMiniatura(src) {
+            const miniaturasDiv = document.getElementById('miniaturas');
+
+            // Verifica que no se exceda el límite de 5 miniaturas
+            if (miniaturasDiv.children.length < 5) {
+                const miniatura = document.createElement('img');
+                miniatura.src = src; // Establecer la miniatura
+                miniatura.onclick = function() {
+                    // Cambiar la imagen principal al hacer clic en la miniatura
+                    mostrarImagenPrincipal(src); // Cambiar imagen principal
                 };
 
-                reader.readAsDataURL(file); // Leer la imagen como URL
+                miniaturasDiv.appendChild(miniatura); // Agregar la miniatura al contenedor
             }
-
-            function agregarMiniatura(src) {
-                const miniaturasDiv = document.getElementById('miniaturas');
-
-                // Verifica que no se exceda el límite de 5 miniaturas
-                if (miniaturasDiv.children.length < 5) {
-                    const miniatura = document.createElement('img');
-                    miniatura.src = src; // Establecer la miniatura
-                    miniatura.onclick = function() {
-                        // Cambiar la imagen principal al hacer clic en la miniatura
-                        mostrarImagenPrincipal(src); // Cambiar imagen principal
-                    };
-
-                    miniaturasDiv.appendChild(miniatura); // Agregar la miniatura al contenedor
-                }
-            }
+        }
 
 
 
