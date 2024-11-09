@@ -525,7 +525,7 @@
                 .then(response => response.json()) // Analizar la respuesta JSON
                 .then(data => {
                     // Mostrar el mensaje de éxito
-                    mostrarMensajeEmergente(data.message);
+                    mostrarMensajeEmergente(data.message, true);
                     // Limpiar el formulario después de guardar
                     limpiarFormulario();
                 })
@@ -591,15 +591,25 @@
 
 
         // Funcion para mostrar el mesaje emergente
-        function mostrarMensajeEmergente(mensaje){
+        function mostrarMensajeEmergente(mensaje, esExitoso = false){
             const mensajeEmergente = document.getElementById('mensajeEmergente');
-            mensajeEmergente.innerText = mensaje; // Actualizar el mensaje
-            mensajeEmergente.classList.add('visible');
-            // Esperar 3 segundos y luego redirigir a index.html
-            setTimeout(() => {
-                mensajeEmergente.classList.remove('visible');
-                window.location.href = '/index';
-            }, 3000); // Desaparecer después de 3 segundos
+            if (mensajeEmergente) {
+                mensajeEmergente.innerText = mensaje; // Actualizar el mensaje
+                mensajeEmergente.classList.add('visible');
+                // Solo redirigir si es un mensaje de éxito
+                if (esExito) {
+                    setTimeout(() => {
+                        mensajeEmergente.classList.remove('visible');
+                        // Redirigir a la pantalla principal después de 3 segundos
+                        window.location.href = '/index';
+                    }, 3000); // Desaparecer después de 3 segundos
+                } else {
+                    // Para los mensajes de error, simplemente desaparecer después de 3 segundos
+                    setTimeout(() => {
+                        mensajeEmergente.classList.remove('visible');
+                    }, 3000); // Desaparecer después de 3 segundos
+                }
+            }
         }
 
         // Funcion para limpiar el formulario al dar clik en cancelar
