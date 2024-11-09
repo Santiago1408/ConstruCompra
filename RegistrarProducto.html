@@ -555,6 +555,14 @@
             for (let i = 0; i < files.length; i++) {
                 const file = files[i];
 
+                // Validar extensión de archivo
+                const validExtensions = ['.png', '.jpg'];
+                const fileExtension = file.name.slice(((file.name.lastIndexOf(".") - 1) >>> 0) + 2).toLowerCase();
+                if (!validExtensions.includes(`.${fileExtension}`)) {
+                    alert("Solo se permiten imágenes en formato PNG o JPG.");
+                    continue; // Salta al siguiente archivo
+                }
+
                 // Validar tamaño de archivo
                 if (file.size > MAX_FILE_SIZE) {
                     alert(`El archivo "${file.name}" supera el tamaño máximo permitido de 5MB.`);
@@ -563,7 +571,7 @@
                 // Mostrar la nueva imagen como principal
                 const nuevoFile = files[0];
                 mostrarImagenPrincipal(nuevoFile); // Muestra la nueva imagen como principal
-                
+
                 reader.readAsDataURL(file);
             }
 
