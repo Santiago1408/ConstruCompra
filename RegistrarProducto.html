@@ -219,7 +219,7 @@
 
         <h2 style="text-align:center; color:#df8755;">REGISTRAR NUEVO PRODUCTO</h2>
 
-        <form id="registrar-producto-form" action="/registrar_producto" method="POST">
+        <form id="registrar-producto-form" action="/registrar_producto" method="POST" enctype="multipart/form-data">
             <input type="hidden" id="id_usuario" name="id_usuario" value="{{ session['id_usuario'] }}">
 
             <div class="campo_derecho">
@@ -543,6 +543,8 @@
         }
 
         const MAX_FILE_SIZE = 5 * 1024 * 1024; // Tamaño máximo permitido en bytes (5MB)
+        const MAX_WIDTH = 600; // Ancho máximo en píxeles
+        const MAX_HEIGHT = 400; // Alto máximo en píxeles
 
         function manejarImagenes(files) {
             if (!files.length) return;
@@ -578,14 +580,28 @@
                         alert(`La imagen "${file.name}" ya ha sido cargada.`);
                         return;
                     }
+                    const img = new Image();
+                    img.src = base64Image;
 
-                    
+                    // Verificar dimensiones de la imagen cuando se cargue
+                    img.onload = function() {
+                        if (img.width > MAX_WIDTH || img.height > MAX_HEIGHT) {
+                            alert(`La imagen "${file.name}" supera las dimensiones máximas permitidas de ${MAX_WIDTH}x${MAX_HEIGHT} píxeles.`);
+                            return;
+                        }
+
+                        // Mostrar la primera imagen seleccionada como principal si está vacía
+                        if (base64Images.length === 0) {
+                            mostrarImagenPrincipal(base64Image);
+                        }
+
+                        // Agregar la imagen a la lista y mostrar miniatura con opción de eliminar
+                        base64Images.push(base64Image);
+                        agregarMiniatura(base64Image);
+                    };    
                 };
-
                 reader.readAsDataURL(file);
             }
-
-            
         }
 
         function mostrarImagenPrincipal(file) {
