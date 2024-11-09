@@ -660,8 +660,11 @@
 
         // Funcion para limpiar el formulario al dar clik en cancelar
         function limpiarFormulario() {
-            document.getElementById('registrar-producto-form').reset();
-            document.querySelectorAll('.error').forEach(e => e.innerHTML = '');
+            document.getElementById('registrar-producto-form').reset(); // Restablecer el formulario
+            document.getElementById('imgPrincipal').src = '';
+            document.getElementById('imgPrincipal').style.display = 'none';
+            document.getElementById('miniaturas').innerHTML = ''; // Limpiar miniaturas
+            document.querySelectorAll('.error').forEach(error => error.textContent = ''); // Limpiar mensajes de error
         }
 
         // Asignar el evento input para validar en tiempo real
