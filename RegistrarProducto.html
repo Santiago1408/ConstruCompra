@@ -551,22 +551,23 @@
                 alert(`Puedes agregar hasta ${5 - base64Images.length} imágenes más.`);
                 return;
             }
-            
-            const imgPrincipal = document.getElementById('imgPrincipal');
-            const miniaturasDiv = document.getElementById('miniaturas');
 
-            // Verificar si ya hay una imagen principal
-            if (imgPrincipal.src === "") {
-                const principalFile = files[0];
-                mostrarImagenPrincipal(principalFile); // Muestra la primera imagen como principal
-            } else {
-                const anteriorFile = imgPrincipal.src; // Guarda la imagen anterior como miniatura
-                agregarMiniatura(anteriorFile); // Agrega la imagen anterior a miniaturas
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+
+                // Validar tamaño de archivo
+                if (file.size > MAX_FILE_SIZE) {
+                    alert(`El archivo "${file.name}" supera el tamaño máximo permitido de 5MB.`);
+                    continue;
+                }
+                // Mostrar la nueva imagen como principal
+                const nuevoFile = files[0];
+                mostrarImagenPrincipal(nuevoFile); // Muestra la nueva imagen como principal
+                
+                reader.readAsDataURL(file);
             }
 
-            // Mostrar la nueva imagen como principal
-            const nuevoFile = files[0];
-            mostrarImagenPrincipal(nuevoFile); // Muestra la nueva imagen como principal
+            
         }
 
         function mostrarImagenPrincipal(file) {
