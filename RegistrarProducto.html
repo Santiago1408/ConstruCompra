@@ -536,11 +536,22 @@
             }
         }
 
+        const base64Images = []; // Array global para almacenar imágenes en base64
+
         function abrirExplorador() {
             document.getElementById('inputImagenes').click(); // Simula el clic en el input
         }
 
+        const MAX_FILE_SIZE = 5 * 1024 * 1024; // Tamaño máximo permitido en bytes (5MB)
+
         function manejarImagenes(files) {
+            if (!files.length) return;
+            // Verificar el límite total de 5 imágenes
+            if (files.length + base64Images.length > 5) {
+                alert(`Puedes agregar hasta ${5 - base64Images.length} imágenes más.`);
+                return;
+            }
+            
             const imgPrincipal = document.getElementById('imgPrincipal');
             const miniaturasDiv = document.getElementById('miniaturas');
 
