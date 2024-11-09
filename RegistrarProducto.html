@@ -568,9 +568,19 @@
                     alert(`El archivo "${file.name}" supera el tamaño máximo permitido de 5MB.`);
                     continue;
                 }
-                // Mostrar la nueva imagen como principal
-                const nuevoFile = files[0];
-                mostrarImagenPrincipal(nuevoFile); // Muestra la nueva imagen como principal
+                
+                const reader = new FileReader();
+                // Antes de cargar la imagen, validamos si ya existe en `base64Images`
+                reader.onload = function(event) {
+                    const base64Image = event.target.result;
+                    // Verificar si la imagen es duplicada
+                    if (base64Images.includes(base64Image)) {
+                        alert(`La imagen "${file.name}" ya ha sido cargada.`);
+                        return;
+                    }
+
+                    
+                };
 
                 reader.readAsDataURL(file);
             }
