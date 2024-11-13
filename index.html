@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='estilos.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <script src="script.js"></script>
+    <title>ConstruCompra</title>
+    <style>
+        :root {
+            --primary-color: #2C3E50;
+            --secondary-color: #E67E22;
+            --accent-color: #3498DB;
+            --text-color: #2C3E50;
+            --background-color: #F5F7FA;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition-speed: 0.3s;
+        }
+        .contenedor {
+            width: calc(29% - 40px); /* Calcula el ancho de los productos para que quepan 3 por fila */
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 15px;
+            text-align: left;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin: 20px;
+            background-color: #fff;
+            display: flex;
+            flex-direction: column;
+            box-shadow: var(--card-shadow);
+            transition: all var(--transition-speed);
+        }
+        .contenedor:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+        }
+        .contenedor img {
+            max-width: 100%;
+            border-radius: 10px;
+            margin-bottom: 15px; /* Añade espacio debajo de la imagen */
+        }
+        .tituloProducto {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-color);
+            margin: 15px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .precioProducto {
+            font-size: 24px;
+            font-weight: 700;
+            margin: 15px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--primary-color);
+        }
+        .carrito {
+            border-radius: 20px;
+            background-color: #A96424;
+            border: 0;
+            color: white;
+            margin: 10px;
+            height: 50px;
+            width: 70px;
+            padding: 5px;
+            margin-left: 70%;
+        }
+        .descProducto {
+            padding: 5px;
+            font-size: 13px;
+        }
+
+        .info {
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all var(--transition-speed);
+        }
+
+        .agregar {
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all var(--transition-speed);
+        }
+
+        .info:hover {
+            background-color: var(--primary-color);
+            transform: scale(1.05);
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            background-color: var(--background-color);
+            margin: 0;
+            padding: 0;
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+        header {
+            background-color: white;
+            padding: 10px 40px; /* Reduced vertical padding from 20px to 10px */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            border-bottom: 3px solid var(--secondary-color);
+            margin-bottom: 0;
+        }
+
+        header .menu {
+            display: flex;
+            gap: 30px;
+            margin-left: auto;
+        }
+
+        header .menu a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 500;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 4px 16px; /* Reduced vertical padding from 8px to 4px */
+            border-radius: 4px;
+            transition: all var(--transition-speed);
+        }
+
+
+        header .menu a:hover {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+
+        header .container-fluid {
+            padding: 15px 30px;
+        }
+
+
+        .superior {
+            background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+                url('https://st3.depositphotos.com/1001335/14944/i/450/depositphotos_149444160-stock-illustration-materials-for-construction-3d-illustration.jpg');
+            background-size: cover;
+            background-position: center;
+            padding: 10px 0;
+            margin-bottom: 40px;
+        }
+        .perfil-text {
+            font-size: 20px;
+            font-weight: 600;
+            color: black;
+            margin-left: 10px;
+        }
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+        }
+        .container-fluid {
+            padding: 10px 30px;
+        }
+        img {
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        .busqueda {
+            color: white;
+            font-size: 48px;
+            font-weight: 700;
+            text-align: center;
+            margin: 0 auto;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            width: 100%;
+        }
+
+        .busqueda2 {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-top: 30px;
+        }
+       .busqueda2 {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-top: 30px;
+        }
+
+        .busqueda2 input[type="text"] {
+            padding: 15px 25px;
+            width: 400px;
+            border-radius: 30px;
+            border: none;
+            font-size: 16px;
+            box-shadow: var(--card-shadow);
+            transition: all var(--transition-speed);
+        }
+
+        .busqueda2 input[type="text"]:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px var(--secondary-color);
+        }
+
+        .busqueda2 button {
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all var(--transition-speed);
+        }
+
+        .busqueda2 button:hover {
+            background-color: var(--primary-color);
+            transform: scale(1.05);
+        }
+        .busqueda2 button {
+            color: #ffffff;
+        }
+
+        .productos {
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .producto {
+            background-color: white;
+            padding: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            text-align: center;
+            width: 30%;
+        }
+        .producto img {
+            width: 100%;
+            border-radius: 10px;
+        }
+        .producto h3 {
+            margin: 10px 0;
+        }
+        .producto p {
+            color: gray;
+            font-size: 14px;
+        }
+        .producto .precio {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .producto .carrito {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .producto .carrito button {
+            padding: 10px 15px;
+            border: none;
+            background-color: #A96424;
+            color: white;
+            font-size: 16px;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        .productos {
+            display: flex;
+            flex-wrap: wrap; /* Permite que los contenedores se ajusten a nuevas filas */
+            justify-content: space-between; /* Distribuye el espacio entre ellos */
+            gap: 20px; /* Añade un pequeño espacio entre los productos */
+            padding: 20px;
+        }
+        .sidebar {
+            width: 280px;
+            padding: 30px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: var(--card-shadow);
+            margin: 20px;
+            position: sticky;
+            top: 20px;
+            height: fit-content;
+            float: left;
+        }
+
+        .sidebar-button {
+            width: 100%;
+            padding: 12px 20px;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            background: white;
+            color: var(--text-color);
+            font-size: 15px;
+            cursor: pointer;
+            transition: all var(--transition-speed);
+        }
+
+        .sidebar-button:hover, .sidebar-button.active {
+            background-color: #bc8741;
+            color: white;
+            border-color: var(--secondary-color);
+        }
+
+        .titFiltros {
+            font-size: 20px;
+            color: var(--text-color);
+            margin: 25px 0 15px;
+            font-weight: 600;
+        }
+        .productos {
+            margin-left: 22%; /* Deja espacio para la barra lateral */
+            padding: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 20px;
+        }
+        .perfil-text {
+            color: black; /* Color por defecto */
+            transition: color 0.3s; /* Transición suave al cambiar de color */
+        }
+        .perfil-text:hover {
+            color: #df8755;
+        }
+        #detalleProductoModal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #C18E4A;
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            width: 321px;
+            height: 435px;
+            color: white;
+        }
+        #detalleProductoModal h2 {
+            font-size: 22px;
+            text-align: center;
+            border-bottom: 2px solid white;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+        }
+        #detalleProductoModal .precio {
+            font-size: 20px;
+            text-align: right;
+        }
+        #detalleProductoModal button {
+            background-color: #FFD700; /* Color dorado */
+            color: white; /* Color del texto */
+            border: none; /* Sin borde */
+            padding: 7px 35px; /* Más largo */
+            border-radius: 25px; /* Bordes redondeados */
+            cursor: pointer; /* Manito al pasar el ratón */
+            font-size: 16px; /* Tamaño del texto */
+            font-weight: bold; /* Texto en negrita */
+            position: absolute; /* Posición absoluta */
+            bottom: 20px; /* Distancia desde la parte inferior */
+            right: 20px; /* Distancia desde el lado derecho */
+            width: auto; /* Permite que el tamaño del botón se ajuste según el contenido */
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.4),
+            inset 0 3px 5px rgba(255, 255, 255, 0.2); /* Sombra reducida e interior */
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5); /* Sombra ligera para el texto */
+        }
+        #modalOverlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+        @media screen and (max-width: 1024px) {
+            .contenedor {
+                width: calc(50% - 40px);
+            }
+        }
+
+        @media screen and (max-width: 768px) {
+            .contenedor {
+                width: calc(100% - 40px);
+            }
+
+            header {
+                flex-direction: column;
+                padding: 20px;
+            }
+
+            header .menu {
+                margin-top: 20px;
+                gap: 15px;
+            }
+
+            .busqueda2 input[type="text"] {
+                width: 80%;
+            }
+
+            .sidebar {
+                width: calc(100% - 40px);
+                margin: 20px;
+                position: static;
+            }
+        }
+        .carousel-producto {
+            position: relative;
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+            margin-bottom: 15px;
+            border-radius: 10px;
+        }
+        .imagen-producto {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+            display: none;
+        }
+        .imagen-producto.active {
+            opacity: 1;
+            display: block;
+        }
+
+        .imagen-producto:first-child {
+            display: block;
+        }
+        .carousel-nav {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 5px;
+            z-index: 2;
+        }
+        .carousel-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            border: none;
+            cursor: pointer;
+            padding: 0;
+        }
+
+        .carousel-dot.active {
+            background: white;
+        }
+       .prev-btn,.next-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2;
+        }
+        .prev-btn { left: 10px; }
+        .next-btn { right: 10px; }
+
+        .next-btn {
+            right: 10px;
+        }
+
+        .prev-btn:hover, .next-btn:hover {
+            background: rgba(0, 0, 0, 0.7);
+        }
+        .no-resultados {
+            width: 100%;
+            text-align: center;
+            padding: 20px;
+            font-size: 18px;
+            color: #666;
+        }
+        .campos {
+            color: #666;
+            margin: 10px 0;
+            font-size: 16px;
+        }
+
+     .defPrecios input, .marca {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            margin: 5px 0;
+            transition: all var(--transition-speed);
+        }
+
+        .defPrecios input:focus, .marca:focus {
+            outline: none;
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 0 2px rgba(230, 126, 34, 0.1);
+        }
+
+    .aplicarFiltros {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 15px;
+            font-weight: 500;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: all var(--transition-speed);
+        }
+
+    .aplicarFiltros:hover {
+            background-color: var(--primary-color);
+            transform: scale(1.02);
+        }
+        .profile-link {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            background-color: var(--background-color);
+            border: 2px solid transparent;
+        }
+
+        .profile-link:hover {
+            background-color: #f0f2f5;
+            border-color: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+
+        .profile-image {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--secondary-color);
+            transition: all 0.3s ease;
+        }
+
+        .profile-link:hover .profile-image {
+            transform: scale(1.05);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .profile-name {
+            margin-left: 12px;
+            font-size: 16px;
+            font-weight: 500;
+            color: var(--text-color);
+            transition: color 0.3s ease;
+        }
+
+        .profile-link:hover .profile-name {
+            color: var(--secondary-color);
+        }
+
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container-fluid d-flex align-items-center">
+            <a class="profile-link" href="{{ url_for('ver_perfil') }}">
+                {% if usuario_info %}
+                    <img class="profile-image" src="data:image/png;base64,{{ usuario_info['foto_perfil'] }}" alt="Foto de perfil">
+                    <span class="profile-name">{{ usuario_info['nombre'] }}</span>
+                {% else %}
+                    <img class="profile-image" src="{{ url_for('static', filename='perfil.png') }}" alt="Logo">
+                    <span class="profile-name">Usuario</span>
+                {% endif %}
+            </a>
+        </div>
+        <div class="menu">
+            <a href="#">INICIO</a>
+            <a href="{{ url_for('mis_publicaciones') }}">MIS PUBLICACIONES</a>
+            <a href="{{ url_for('registrar_producto') }}">REGISTRAR PRODUCTO</a>
+        </div>
+    </header>
+    <div class="superior">
+        <div class="busqueda">
+            <h1 id="titulo">ConstruCompra</h1>
+        </div>
+        <div class="busqueda2">
+            <input type="text" placeholder="Buscar" id="buscador">
+            <button><i class="fas fa-search" id="buscar" onclick="buscar()"></i></button>
+        </div>
+    </div>
+    <div class="sidebar">
+        <button class="sidebar-button active" onclick="location.reload()">Nuevas Publicaciones</button>
+        <h2 class="titFiltros">Filtros</h2>
+        <h3 class="campos">Precio:</h3>
+        <div class="defPrecios">
+            <label>Min:</label>
+            <input id="precioMin" type="number" name="precioMin" value="" min="0" placeholder="Precio mínimo"/>
+            <label>Max:</label>
+            <input id="precioMax" type="number" name="precioMax" value="" min="0" placeholder="Precio máximo"/>
+        </div>
+        <label for="marca">Marca:</label>
+        <input id="marca" class="marca" type="text" name="marca" placeholder="Marca del producto deseado" />
+        <button id="aplicarFiltros" class="aplicarFiltros" onclick="aplicarFiltros()">Aplicar filtros</button>
+    </div>
+
+    <section class="productos">
+        {% for producto in productos %}
+        <div class="contenedor">
+            <div class="carousel-producto" data-current="0">
+                {% if producto.imagenes and producto.imagenes|length > 0 %}
+                    {% for imagen in producto.imagenes %}
+                        <img src="data:image/jpeg;base64,{{ imagen }}"
+                             alt="Imagen del producto {{ producto.nombre }}"
+                             class="imagen-producto {% if loop.index0 == 0 %}active{% endif %}"
+                             loading="lazy">
+                    {% endfor %}
+
+                    {% if producto.imagenes|length > 1 %}
+                        <button class="prev-btn" onclick="navegarCarrusel(this.parentElement, -1)">&#10094;</button>
+                        <button class="next-btn" onclick="navegarCarrusel(this.parentElement, 1)">&#10095;</button>
+
+                        <div class="carousel-nav">
+                            {% for _ in producto.imagenes %}
+                                <button class="carousel-dot {% if loop.index0 == 0 %}active{% endif %}"
+                                        onclick="irAImagen(this.parentElement.parentElement, {{ loop.index0 }})"></button>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                {% else %}
+                    <img src="{{ url_for('static', filename='images/default-product.png') }}"
+                         alt="Imagen por defecto"
+                         class="imagen-producto active">
+                {% endif %}
+            </div>
+
+            <div class="tituloProducto">
+                {{ producto.nombre }}
+                <button class="info" onclick="mostrarInfo({{ producto.id_producto }})">Detalles</button>
+            </div>
+            <div class="precioProducto">
+                Bs. {{ producto.precio }}
+                <button class="agregar">Añadir al carrito</button>
+            </div>
+        </div>
+        {% endfor %}
+    </section>
+
+    <div id="modalOverlay"></div>
+    <div id="detalleProductoModal">
+        <div id="detalleProducto"></div>
+        <button onclick="cerrarModal()">SALIR</button>
+    </div>
+<script>
+       function mostrarInfo(id_producto) {
+            fetch(`/producto/${id_producto}`)
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                const perfilFoto = data.foto_perfil ? `<img src="data:image/jpeg;base64,${data.foto_perfil}" style="width: 30px; height: 30px; border-radius: 50%; margin-left: 10px;" alt="Foto de perfil">` : '';
+                const modalContent = `
+                    <h2>${data.nombre || 'Nombre no disponible'}</h2>
+                    <p>Publicado por:
+                        <a href="/ver_perfil/${data.id_vendedor}" style="color: white; text-decoration: underline; cursor: pointer;">
+                            ${data.nombre_usuario || 'Vendedor no disponible'}
+                        </a>
+                        ${perfilFoto}
+                    </p>
+                    <div class="precio">Bs. ${data.precio || 'No disponible'}</div>
+                    <p>Descripción: ${data.descripcion || 'No disponible'}</p>
+                    <p>Marca: ${data.marca || 'No disponible'}</p>
+                    <p>Cantidad: ${data.cantidad || 'No disponible'}</p>
+                    <p>Tamaño: ${data.tamano || 'No disponible'}</p>
+                    <p>Color: ${data.color || 'No disponible'}</p>
+                    <p>Ubicación: ${data.ubicacion || 'No disponible'}</p>
+                `;
+                document.getElementById('detalleProducto').innerHTML = modalContent;
+                document.getElementById('detalleProductoModal').style.display = 'block';
+                document.getElementById('modalOverlay').style.display = 'block';
+            })
+            .catch(error => console.error('Error al obtener los detalles:', error));
+        }
+        function prevImage(button) {
+            const carousel = button.parentElement;
+            const images = carousel.getElementsByClassName('imagen-producto');
+            let activeIndex = -1;
+            for (let i = 0; i < images.length; i++) {
+                if (images[i].style.display === 'block') {
+                    activeIndex = i;
+                    break;
+                }
+            }
+            images[activeIndex].style.display = 'none';
+            const newIndex = activeIndex === 0 ? images.length - 1 : activeIndex - 1;
+            images[newIndex].style.display = 'block';
+        }
+        function nextImage(button) {
+            const carousel = button.parentElement;
+            const images = carousel.getElementsByClassName('imagen-producto');
+            let activeIndex = -1;
+            for (let i = 0; i < images.length; i++) {
+                if (images[i].style.display === 'block') {
+                    activeIndex = i;
+                    break;
+                }
+            }
+            images[activeIndex].style.display = 'none';
+            const newIndex = activeIndex === images.length - 1 ? 0 : activeIndex + 1;
+            images[newIndex].style.display = 'block';
+        }
+        function navegarCarrusel(carousel, direccion) {
+            const imagenes = carousel.getElementsByClassName('imagen-producto');
+            const dots = carousel.getElementsByClassName('carousel-dot');
+            let currentIndex = parseInt(carousel.dataset.current) || 0;
+            imagenes[currentIndex].classList.remove('active');
+            if (dots.length > 0) {
+                dots[currentIndex].classList.remove('active');
+            }
+            currentIndex = (currentIndex + direccion + imagenes.length) % imagenes.length;
+            imagenes[currentIndex].classList.add('active');
+            if (dots.length > 0) {
+                dots[currentIndex].classList.add('active');
+            }
+            carousel.dataset.current = currentIndex;
+        }
+        function irAImagen(carousel, index) {
+            const imagenes = carousel.getElementsByClassName('imagen-producto');
+            const dots = carousel.getElementsByClassName('carousel-dot');
+            let currentIndex = parseInt(carousel.dataset.current) || 0;
+            if (index < 0 || index >= imagenes.length) return;
+
+            imagenes[currentIndex].classList.remove('active');
+            if (dots.length > 0) {
+                dots[currentIndex].classList.remove('active');
+            }
+            imagenes[index].classList.add('active');
+            if (dots.length > 0) {
+                dots[index].classList.add('active');
+            }
+            carousel.dataset.current = index;
+        }
+        document.addEventListener('DOMContentLoaded', function() {
+            const imagenes = document.querySelectorAll('.imagen-producto');
+            imagenes.forEach(img => {
+                img.addEventListener('error', function() {
+                    console.error('Error al cargar la imagen:', this.src);
+                    this.src = "{{ url_for('static', filename='images/default-product.png') }}";
+                });
+            });
+        });
+        document.addEventListener('DOMContentLoaded', function() {
+            const carruseles = document.getElementsByClassName('carousel-producto');
+            for (let carrusel of carruseles) {
+                carrusel.dataset.current = 0;
+            }
+        });
+        function cerrarModal() {
+            document.getElementById('detalleProductoModal').style.display = 'none';
+            document.getElementById('modalOverlay').style.display = 'none';
+        }
+
+        function buscar() {
+            const termino = document.getElementById('buscador').value;
+            realizarBusqueda(termino);
+        }
+        let debounceTimer;
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('buscador').addEventListener('input', function () {
+                clearTimeout(debounceTimer);
+                debounceTimer = setTimeout(() => buscar(), 300);
+            });
+        });
+
+
+
+        function aplicarFiltros() {
+            const precioMin = document.getElementById('precioMin').value;
+            const precioMax = document.getElementById('precioMax').value;
+            const marca = document.getElementById('marca').value;
+            const termino = document.getElementById('buscador').value;
+
+            if(precioMin < 0 || precioMax < 0){
+                alert("Los precios no pueden ser negativos");
+            }else{
+                if(precioMin > precioMax){
+                    alert("El precio mínimo no puede ser mayor al máximo");
+                }else{
+                    realizarBusqueda(termino, precioMin, precioMax, marca);
+                }
+            }
+        }
+
+        function realizarBusqueda(termino, precioMin = '', precioMax = '', marca = '') {
+            const params = new URLSearchParams();
+            if (termino) params.append('termino', termino);
+            if (precioMin) params.append('precioMin', precioMin);
+            if (precioMax) params.append('precioMax', precioMax);
+            if (marca) params.append('marca', marca);
+
+            fetch(`/buscar_productos?${params.toString()}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        actualizarCatalogo(data.productos);
+                    } else {
+                        console.error('Error en la búsqueda:', data.message);
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        }
+        function actualizarCatalogo(productos) {
+            const productosContainer = document.querySelector('.productos');
+            productosContainer.innerHTML = ''; // Limpiar el contenedor
+            productos.forEach(producto => {
+                const contenedor = document.createElement('div');
+                contenedor.className = 'contenedor';
+                const carouselHTML = `
+                    <div class="carousel-producto" data-current="0">
+                        ${producto.imagenes && producto.imagenes.length > 0 ?
+                            producto.imagenes.map((imagen, index) => `
+                                <img src="data:image/jpeg;base64,${imagen}"
+                                     alt="Imagen del producto ${producto.nombre}"
+                                     class="imagen-producto ${index === 0 ? 'active' : ''}"
+                                     loading="lazy">
+                            `).join('') :
+                            `<img src="/static/images/default-product.png"
+                                  alt="Imagen por defecto"
+                                  class="imagen-producto active">`
+                        }
+                        ${producto.imagenes && producto.imagenes.length > 1 ? `
+                            <button class="prev-btn" onclick="navegarCarrusel(this.parentElement, -1)">&#10094;</button>
+                            <button class="next-btn" onclick="navegarCarrusel(this.parentElement, 1)">&#10095;</button>
+                            <div class="carousel-nav">
+                                ${producto.imagenes.map((_, index) => `
+                                    <button class="carousel-dot ${index === 0 ? 'active' : ''}"
+                                            onclick="irAImagen(this.parentElement.parentElement, ${index})"></button>
+                                `).join('')}
+                            </div>
+                        ` : ''}
+                    </div>
+                    <div class="tituloProducto">
+                        ${producto.nombre}
+                        <button class="info" onclick="mostrarInfo(${producto.id_producto})">Detalles</button>
+                    </div>
+                    <div class="precioProducto">Bs. ${producto.precio}</div>
+                `;
+                contenedor.innerHTML = carouselHTML;
+                productosContainer.appendChild(contenedor);
+            });
+            if (productos.length === 0) {
+                productosContainer.innerHTML = '<p class="no-resultados">No se encontraron productos que coincidan con tu búsqueda.</p>';
+            }
+        }
+        document.getElementById('buscador').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                buscar();
+            }
+        });
+</script>
+</body>
+</html>
