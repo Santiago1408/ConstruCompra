@@ -87,7 +87,7 @@
             transition: all var(--transition-speed);
         }
 
-        .Agregar {
+        .agregar {
             background-color: var(--secondary-color);
             color: white;
             border: none;
@@ -98,7 +98,12 @@
             cursor: pointer;
             transition: all var(--transition-speed);
         }
-
+        
+        .agregar:hover {
+            background-color: var(--primary-color);
+            transform: scale(1.05);
+        }
+        
         .info:hover {
             background-color: var(--primary-color);
             transform: scale(1.05);
@@ -695,7 +700,7 @@
             </div>
             <div class="precioProducto">
                 Bs. {{ producto.precio }}
-                <button class="Agregar">Añadir al carrito</button>
+                <button class="agregar">Añadir al carrito</button>
             </div>
         </div>
         {% endfor %}
