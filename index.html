@@ -585,7 +585,32 @@
         .profile-link:hover .profile-name {
             color: var(--secondary-color);
         }
+        .fixed-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 70px;
+            height: 70px;
+            background-color: #007bff;
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+        }
 
+        .fixed-button:hover {
+            background-color: #0056b3;
+        }
+
+        .button-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
     </style>
 </head>
 <body>
@@ -607,6 +632,9 @@
             <a href="{{ url_for('registrar_producto') }}">REGISTRAR PRODUCTO</a>
         </div>
     </header>
+    <div class="fixed-button">
+        <img src="static/carrito.jpg" alt="Botón" class="button-image">
+    </div>
     <div class="superior">
         <div class="busqueda">
             <h1 id="titulo">ConstruCompra</h1>
