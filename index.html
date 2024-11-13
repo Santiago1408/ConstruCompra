@@ -607,6 +607,10 @@
             z-index: 1000;
         }
 
+        .fixed-button.hidden {
+            top: 100px;
+        }
+        
         .fixed-button:hover {
             background-color: #0056b3;
         }
@@ -712,6 +716,16 @@
         <button onclick="cerrarModal()">SALIR</button>
     </div>
 <script>
+        document.addEventListener("scroll", function() {
+            const fixedButton = document.querySelector(".fixed-button");
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+            if (scrollTop <= 20) {
+                fixedButton.classList.add("hidden");
+            } else {
+                fixedButton.classList.remove("hidden");
+            }
+        });
        function mostrarInfo(id_producto) {
             fetch(`/producto/${id_producto}`)
             .then(response => response.json())
