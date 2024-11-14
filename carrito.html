@@ -14,9 +14,94 @@
             font-family: Arial, sans-serif;
             background-color: #f5f5f5;
         }
-        .mensaje {
-            font-size: 24px;
-            color: #555;
+	.carrito-container {
+            width: 80%;
+            max-width: 600px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .producto-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px;
+            margin-bottom: 10px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            position: relative;
+        }
+        .producto-info {
+            width: 70%;
+        }
+        .eliminar {
+            background-color: #ff6d00;
+            color: #fff;
+            border: none;
+            padding: 8px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+        .producto-info h3 {
+            margin: 0 0 5px;
+            font-size: 18px;
+            color: #333;
+        }
+        .producto-info p {
+            margin: 5px 0;
+            color: #777;
+            font-size: 14px;
+        }
+        .producto-precio {
+            font-weight: bold;
+            font-size: 16px;
+            margin-top: 10px;
+            color: #333;
+        }
+        .producto-controles {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .producto-controles button {
+            background-color: #ff6d00;
+            color: #fff;
+            border: none;
+            padding: 5px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 18px;
+            width: 30px;
+            height: 30px;
+        }
+        .producto-cantidad {
+            font-size: 16px;
+            font-weight: bold;
+            color: #333;
+        }
+        .acciones-carrito {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        .acciones-carrito button {
+            background-color: #ff6d00;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .total {
+            text-align: right;
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+            margin-top: 10px;
         }
     </style>
 </head>
