@@ -106,15 +106,31 @@
     </style>
 </head>
 <body>
-{% if productos %}
-        <h2>Productos en tu carrito</h2>
-        <ul>
-            {% for producto in productos %}
-                <li>{{ producto.nombre }} - {{ producto.precio }}</li>
-            {% endfor %}
-        </ul>
-    {% else %}
-        <p style="text-align: center;">Todavía no hay productos dentro del carrito</p>
-    {% endif %}
+    <div class="carrito-container">
+    <h2>Productos en tu carrito</h2>
+    <ul>
+        {% for producto in productos %}
+        <li class="producto-item">
+            <div class="producto-info">
+                <h3>{{ producto.nombre }}</h3>
+                <p>Descripción: {{ producto.descripcion }}</p>
+                <p class="producto-precio">Precio: {{ producto.precio }} Bs</p>
+                <button class="eliminar">Eliminar</button>
+            </div>
+            <div class="producto-controles">
+                <button class="incrementar">+</button>
+                <span class="producto-cantidad">{{ producto.cantidad }}</span>
+                <button class="decrementar">-</button>
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
+    <p class="total">Total general: {{ total }} Bs</p>
+    <div class="acciones-carrito">
+        <button>Actualizar carrito</button>
+        <button id="guardarCarrito">Guardar carrito</button>
+        <button>Proceder al pago</button>
+    </div>
+</div>
 </body>
 </html>
