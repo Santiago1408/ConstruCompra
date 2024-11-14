@@ -132,5 +132,39 @@
         <button>Proceder al pago</button>
     </div>
 </div>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+        const guardarCarritoBtn = document.getElementById("guardarCarrito");
+
+        guardarCarritoBtn.addEventListener("click", function() {
+            // Obtener los productos del carrito
+            const productos = Array.from(document.querySelectorAll(".producto-item")).map(item => {
+                const id = item.getAttribute("data-id");
+                const nombre = item.querySelector("h3").textContent;
+                const descripcion = item.querySelector("p").textContent.replace('Descripción: ', '');
+                const precio = parseFloat(item.querySelector(".producto-precio").textContent.replace('Precio: ', '').replace(' Bs', ''));
+                const cantidad = parseInt(item.querySelector(".producto-cantidad").textContent);
+
+                return { id, nombre, descripcion, precio, cantidad };
+            });
+
+            // Enviar los datos del carrito al servidor
+            fetch('/guardar_carrito', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ carrito: productos })
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message); // Mensaje de confirmación
+            })
+            .catch(error => {
+                console.error('Error al guardar el carrito:', error);
+            });
+        });
+    });
+</script>
 </body>
 </html>
