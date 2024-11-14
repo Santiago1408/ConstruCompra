@@ -165,6 +165,33 @@ document.addEventListener("DOMContentLoaded", function() {
             });
         });
     });
+
+document.addEventListener("DOMContentLoaded", function() {
+        const eliminarBotones = document.querySelectorAll(".eliminar");
+
+        eliminarBotones.forEach(boton => {
+            boton.addEventListener("click", function() {
+                const productoItem = this.closest(".producto-item");
+                const productoId = productoItem.getAttribute("data-id");
+
+                // Remover el elemento del DOM
+                productoItem.remove();
+
+                // Lógica para actualizar el total (esto podría requerir una llamada al servidor o cálculo adicional)
+                actualizarTotal();
+            });
+        });
+
+        function actualizarTotal() {
+            let total = 0;
+            document.querySelectorAll(".producto-item").forEach(item => {
+                const precio = parseFloat(item.querySelector(".producto-precio").textContent.replace('Precio: ', '').replace(' Bs', ''));
+                const cantidad = parseInt(item.querySelector(".producto-cantidad").textContent);
+                total += precio * cantidad;
+            });
+            document.querySelector(".total").textContent = `Total general: ${total} Bs`;
+        }
+    });
 </script>
 </body>
 </html>
