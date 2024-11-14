@@ -704,7 +704,7 @@
             </div>
             <div class="precioProducto">
                 Bs. {{ producto.precio }}
-                <button class="agregar">Añadir al carrito</button>
+                <button class="agregar" onclick="agregarAlCarrito({{ producto.id_producto }})">Añadir al carrito</button>
             </div>
         </div>
         {% endfor %}
@@ -726,6 +726,27 @@
                 fixedButton.classList.remove("hidden");
             }
         });
+        function agregarAlCarrito(id_producto) {
+            fetch('/agregar_al_carrito', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ id_producto: id_producto }) // Enviar id_producto en el cuerpo de la solicitud
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert(data.message);
+                } else {
+                    alert("Error: " + data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error al agregar al carrito:', error);
+                alert("Hubo un error al agregar el producto al carrito.");
+            });
+        }
        function mostrarInfo(id_producto) {
             fetch(`/producto/${id_producto}`)
             .then(response => response.json())
