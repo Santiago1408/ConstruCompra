@@ -193,7 +193,7 @@
     <p class="total">Total general: {{ total }} Bs</p>
     <div class="acciones-carrito">
         <div class="botones-superiores">
-            <button class="boton-accion">Actualizar carrito</button>
+            <button id="actualizarCarrito" class="boton-accion">Actualizar carrito</button>
             <button id="guardarCarrito" class="boton-accion">Guardar carrito</button>
         </div>
         <div class="boton-inferior">
@@ -203,6 +203,13 @@
 </div>
 <script>
 document.addEventListener("DOMContentLoaded", function() {
+	const actualizarCarritoBtn = document.getElementById("actualizarCarrito");
+
+        actualizarCarritoBtn.addEventListener("click", function() {
+            actualizarTotal();
+	    alert("Carrito actualizado");
+        });
+	
         const guardarCarritoBtn = document.getElementById("guardarCarrito");
 
         guardarCarritoBtn.addEventListener("click", function() {
