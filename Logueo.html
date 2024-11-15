@@ -583,7 +583,30 @@
             </form>
         </div>
     </div>
-
+    <div id="modalRecuperacion" class="modal">
+        <div class="modal-content">
+            <h3>Recuperar contraseña</h3>
+            <p>Ingresa tu correo electrónico para recibir las instrucciones.</p>
+            <form id="recuperacionForm">
+                <div class="form-group" id="emailGroup">
+                    <div class="input-container">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" id="correoRecuperacion" name="correo"
+                               placeholder="Ingresa tu correo electrónico" required>
+                    </div>
+                </div>
+                <input type="hidden" name="metodo" id="metodoRecuperacion" value="email">
+            <button type="submit" class="btn-primary">
+                <i class="fas fa-paper-plane"></i>
+                Enviar instrucciones
+            </button>
+            <button type="button" class="btn-secondary" onclick="closeModalRecuperacion()">
+                <i class="fas fa-times"></i>
+                Cancelar
+            </button>
+        </form>
+    </div>
+</div>
     <div id="modal" class="modal">
         <div class="modal-content">
             <p id="modalMessage"></p>
