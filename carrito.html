@@ -125,6 +125,38 @@
             cursor: pointer;
             font-size: 18px;
         }
+	.acciones-carrito {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end; 
+            margin-top: 20px;
+        }
+
+        .botones-superiores {
+            display: flex;
+            gap: 10px; /* Espacio entre los botones superiores */
+        }
+
+        .boton-inferior {
+            display: flex;
+            justify-content: center; 
+            width: 100%; 
+            margin-top: 20px; 
+        }
+
+        .boton-accion {
+            background-color: #e58331; 
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .boton-accion:hover {
+            background-color: #d47428; 
+        }    
     </style>
 </head>
 <body>
@@ -160,9 +192,13 @@
     </ul>
     <p class="total">Total general: {{ total }} Bs</p>
     <div class="acciones-carrito">
-        <button>Actualizar carrito</button>
-        <button id="guardarCarrito">Guardar carrito</button>
-        <button>Proceder al pago</button>
+        <div class="botones-superiores">
+            <button class="boton-accion">Actualizar carrito</button>
+            <button id="guardarCarrito" class="boton-accion">Guardar carrito</button>
+        </div>
+        <div class="boton-inferior">
+            <button class="boton-accion">Proceder al pago</button>
+        </div>
     </div>
 </div>
 <script>
