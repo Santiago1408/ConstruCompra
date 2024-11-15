@@ -164,7 +164,7 @@
     <h2>Productos en tu carrito</h2>
     <ul>
         {% for producto in productos %}
-        <li class="producto-item">
+        <li class="producto-item" data-id="{{ producto.id_producto }}">
 	    <div class="product-image-container" id="image-container-{{ producto.id_producto }}">
                 {% if producto.imagenes %}
                     <img src="data:image/jpeg;base64,{{ producto.imagenes[0] }}"
