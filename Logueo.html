@@ -534,17 +534,52 @@
         <div class="form-container">
             <img src="static/Logo2.png" alt="Logo" class="logo">
 
-            <form id="loginForm" action="/iniciar_sesion" method="POST">
-                <label for="usuario">Usuario:</label>
-                <input type="text" id="usuario" name="usuario" placeholder="Ingrese su usuario" required>
+            <div class="form-header">
+                <h1>Bienvenido a ConstruCompra</h1>
+                <p>Inicia sesión para continuar</p>
+            </div>
 
-                <label for="contra">Contraseña:</label>
-                <input type="password" id="contra" name="contra" placeholder="Ingrese su contraseña" required>
+            <form id="loginForm" action="/iniciar_sesion" method="POST">
+                <div class="form-group">
+                    <div class="label-icon">
+                        <i class="fas fa-user"></i>
+                        <label for="usuario">Usuario</label>
+                    </div>
+                    <div class="input-container">
+                        <i class="fas fa-envelope"></i>
+                        <input type="text" id="usuario" name="usuario" placeholder="Ingrese su correo electrónico" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="label-icon">
+                        <i class="fas fa-lock"></i>
+                        <label for="contra">Contraseña</label>
+                    </div>
+                    <div class="input-container">
+                        <i class="fas fa-key"></i>
+                        <input type="password" id="contra" name="contra" placeholder="Ingrese su contraseña" required>
+                    </div>
+                </div>
 
                 <div class="btn-container">
-                    <button type="button" id="registrarse">Registrarse</button>
-                    <button type="submit" id="iniciarSesion">Iniciar sesión</button>
+                    <button type="button" id="registrarse">
+                        <i class="fas fa-user-plus"></i>
+                        Crear cuenta
+                    </button>
+                    <button type="submit" id="iniciarSesion">
+                        <i class="fas fa-sign-in-alt"></i>
+                        Iniciar sesión
+                    </button>
                 </div>
+
+                <button type="button" id="olvidoPassword" class="btn-link divider flex items-center gap-2" style="margin: 30px 0; display: flex; align-items: center; text-align: center; color: #98698a; font-size: 14px; opacity: 0.6; justify-content: center; width: 100%;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect width="18" height="11" x="3" y="11" rx="2" ry="2"/>
+                        <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                    </svg>
+                    ¿Olvidaste tu contraseña?
+                </button>
             </form>
         </div>
     </div>
