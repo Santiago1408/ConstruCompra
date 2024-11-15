@@ -152,7 +152,7 @@
             </div>
             <div class="producto-controles">
                 <button class="incrementar">+</button>
-                <span class="producto-cantidad">{{ producto.cantidad }}</span>
+                <span class="producto-cantidad" data-max-cantidad="{{ producto.cantidad }}">1</span>
                 <button class="decrementar">-</button>
             </div>
         </li>
@@ -212,6 +212,37 @@ document.addEventListener("DOMContentLoaded", function() {
 
                 // Lógica para actualizar el total (esto podría requerir una llamada al servidor o cálculo adicional)
                 actualizarTotal();
+            });
+        });
+});
+document.addEventListener("DOMContentLoaded", function() {
+        const incrementarBotones = document.querySelectorAll(".incrementar");
+        const decrementarBotones = document.querySelectorAll(".decrementar");
+
+        incrementarBotones.forEach(boton => {
+            boton.addEventListener("click", function() {
+                const cantidadElemento = this.nextElementSibling;
+                let cantidad = parseInt(cantidadElemento.textContent);
+                const maxCantidad = parseInt(cantidadElemento.getAttribute("data-max-cantidad"));
+
+                if (cantidad < maxCantidad) {
+                    cantidad++;
+                    cantidadElemento.textContent = cantidad;
+                    actualizarTotal();
+                }
+            });
+        });
+
+        decrementarBotones.forEach(boton => {
+            boton.addEventListener("click", function() {
+                const cantidadElemento = this.previousElementSibling;
+                let cantidad = parseInt(cantidadElemento.textContent);
+
+                if (cantidad > 1) {
+                    cantidad--;
+                    cantidadElemento.textContent = cantidad;
+                    actualizarTotal();
+                }
             });
         });
 
