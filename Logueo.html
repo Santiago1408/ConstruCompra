@@ -654,4 +654,80 @@
     </script>
 </body>
 </html>
+<script>
+        document.getElementById('registrarse').addEventListener('click', function() {
+            window.location.href = '{{ url_for("registro") }}';
+        });
+
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const formData = new FormData(this);
+
+            fetch(this.action, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    window.location.href = '{{ url_for("index") }}';
+                } else {
+                    let message = data.message || "Error en el inicio de sesión.";
+                    showModal(message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showModal("Ocurrió un error. Intente nuevamente.");
+            });
+        });
+
+        function showModal(message) {
+            const modal = document.getElementById('modal');
+            document.getElementById('modalMessage').textContent = message;
+            modal.style.display = 'flex';
+            setTimeout(() => modal.classList.add('active'), 10);
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('modal');
+            modal.classList.remove('active');
+            setTimeout(() => modal.style.display = 'none', 300);
+        }
+        document.getElementById('olvidoPassword').addEventListener('click', function() {
+    document.getElementById('modalRecuperacion').style.display = 'flex';
+    setTimeout(() => document.getElementById('modalRecuperacion').classList.add('active'), 10);
+});
+
+function closeModalRecuperacion() {
+    const modal = document.getElementById('modalRecuperacion');
+    modal.classList.remove('active');
+    setTimeout(() => modal.style.display = 'none', 300);
+}
+
+document.getElementById('recuperacionForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    const formData = new FormData(this);
+
+    fetch('/solicitar_recuperacion', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            showModal(data.message);
+            closeModalRecuperacion();
+        } else {
+            showModal(data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        showModal("Ocurrió un error. Intente nuevamente.");
+    });
+});
+    </script>
 
