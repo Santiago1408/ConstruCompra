@@ -73,6 +73,44 @@ def enviar_correo_recuperacion(destinatario, token):
     except Exception as e:
         logger.error(f"Error enviando correo: {str(e)}")
         return False
+
+@app.route('/solicitar_recuperacion', methods=['POST'])
+def solicitar_recuperacion():
+    try:
+        metodo = request.form['metodo']
+        connection = get_db_connection()
+        cursor = connection.cursor(dictionary=True)
+
+        if metodo == 'email':
+            correo = request.form.get('correo')
+            if not correo:
+                return jsonify(success=False,
+                             message="Por favor, ingresa un correo electrónico válido.")
+
+            cursor.execute("SELECT * FROM usuarios WHERE correo = %s", (correo,))
+            if not cursor.fetchone():
+                return jsonify(success=False,
+                             message="El correo no está registrado en el sistema.")
+
+            token = serializer.dumps(correo, salt='recuperar-password')
+            if enviar_correo_recuperacion(correo, token):
+                return jsonify(success=True,
+                             message="Se han enviado las instrucciones a tu correo.")
+            else:
+                return jsonify(success=False,
+                             message="Error al enviar el correo. Intenta más tarde.")
+        else:
+            return jsonify(success=False,
+                         message="Método de recuperación no válido.")
+
+    except Exception as e:
+        logger.error(f"Error en solicitar_recuperacion: {str(e)}")
+        return render_template('errorSolicitudes.html')
+    finally:
+        if 'connection' in locals():
+            cursor.close()
+            connection.close()
+
 @app.route('/dashboard')
 def dashboard():
     return 'Bienvenido al dashboard'
