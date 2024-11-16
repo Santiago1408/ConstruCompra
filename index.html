@@ -620,6 +620,22 @@
             height: 100%;
             object-fit: cover;
         }
+        .counter-badge {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background-color: #ff0000;
+            color: white;
+            font-size: 14px;
+            font-weight: bold;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+        }
     </style>
 </head>
 <body>
@@ -641,8 +657,9 @@
             <a href="{{ url_for('registrar_producto') }}">REGISTRAR PRODUCTO</a>
         </div>
     </header>
-    <div class="fixed-button">
+    <div class="fixed-button" onclick="window.location.href='{{ url_for('carrito') }}'">
         <img src="static/carrito.jpg" alt="Botón" class="button-image">
+        <div id="cart-counter" class="counter-badge">{{ cantidad_carrito }}</div>
     </div>
     <div class="superior">
         <div class="busqueda">
@@ -732,12 +749,17 @@
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ id_producto: id_producto }) // Enviar id_producto en el cuerpo de la solicitud
+                body: JSON.stringify({ id_producto: id_producto }) 
             })
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
                     alert(data.message);
+                    const cartCounter = document.getElementById('cart-counter');
+                    if (cartCounter) {
+                        let currentCount = parseInt(cartCounter.textContent) || 0;
+                        cartCounter.textContent = currentCount + 1;
+                    }
                 } else {
                     alert("Error: " + data.message);
                 }
@@ -747,6 +769,7 @@
                 alert("Hubo un error al agregar el producto al carrito.");
             });
         }
+    
        function mostrarInfo(id_producto) {
             fetch(`/producto/${id_producto}`)
             .then(response => response.json())
