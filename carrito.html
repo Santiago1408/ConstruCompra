@@ -250,14 +250,37 @@ document.addEventListener("DOMContentLoaded", function() {
                 const productoItem = this.closest(".producto-item");
                 const productoId = productoItem.getAttribute("data-id");
 
+               // Solicitar al servidor eliminar el producto
+        fetch('/eliminar_producto_carrito', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ id_producto: productoId })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
                 // Remover el elemento del DOM
                 productoItem.remove();
-
-                // Lógica para actualizar el total (esto podría requerir una llamada al servidor o cálculo adicional)
+                // Actualizar el estado local del carrito en la sesión del navegador
+                const carrito = JSON.parse(sessionStorage.getItem('carrito')) || [];
+                const nuevoCarrito = carrito.filter(item => item.id !== productoId);
+                sessionStorage.setItem('carrito', JSON.stringify(nuevoCarrito));
+                // Actualizar el total después de eliminar el producto
                 actualizarTotal();
-            });
+                alert(data.message);
+            } else {
+                alert("No se pudo eliminar el producto: " + data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error al eliminar el producto:', error);
+            alert("Error al intentar eliminar el producto.");
         });
+    });
 });
+	
 document.addEventListener("DOMContentLoaded", function() {
         const incrementarBotones = document.querySelectorAll(".incrementar");
         const decrementarBotones = document.querySelectorAll(".decrementar");
