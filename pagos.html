@@ -137,7 +137,7 @@
                 </div>
                 <div class="imgQR">
                     <div class="imagen">
-
+                    <img src="" alt="QR Code" id="imagen">
                     </div>
                 </div>
             </div>
@@ -179,7 +179,16 @@
         </div>
     </div>
     <script>
+        const imagenes = [
+            "static/QRFlor.jpeg",
+            "static/QRMile.jpeg",
+            "static/QRJosue.jpeg",
+            "static/QR2.jpeg"
+        ];
 
+        const imagenAleatoria = imagenes[Math.floor(Math.random() * imagenes.length)];
+        document.getElementById('imagen').src = imagenAleatoria;
+        
         function mostrarSeccion(id){
             var pestanas = document.getElementsByClassName('pestanas');
             for(var i = 0; i<pestanas.length; i++){
