@@ -95,7 +95,8 @@
             display: flex;
             flex-direction: column;
         }
-
+        #c1{margin-left: 100px;} #c2{margin-left: 240px;} #c3{margin-left: 20px;}
+        #c4{margin-left: 100px;} #c5{margin-left: 45px;} #c6{margin-left: 250px;}
         .etiCampo{
             font-size: 25px;
             font-weight: bold;
@@ -119,7 +120,7 @@
     </style>
 </head>
 <body>
-<div class="container">
+    <div class="container">
         <h2 class="titulo">Formas de Pago</h2>
         <div class="buttons">
             <button class="button" onclick="mostrarSeccion('pagoQR')">QR</button>
@@ -136,7 +137,7 @@
                 </div>
                 <div class="imgQR">
                     <div class="imagen">
-                        <img src="" alt="QR Code" id="imagen">
+
                     </div>
                 </div>
             </div>
@@ -178,7 +179,8 @@
         </div>
     </div>
     <script>
-	function mostrarSeccion(id){
+
+        function mostrarSeccion(id){
             var pestanas = document.getElementsByClassName('pestanas');
             for(var i = 0; i<pestanas.length; i++){
                 pestanas[i].classList.remove('activo');
@@ -186,6 +188,7 @@
 
             var pestanaActiva = document.getElementById(id);
             pestanaActiva.classList.add('activo');
+        }
     </script>
 </body>
 </html>
