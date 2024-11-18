@@ -31,7 +31,10 @@
             cursor: pointer;
             transition: background-color 0.3s;
         }
-	
+	.pestanas{
+            display: none;
+        }
+
     </style>
 </head>
 <body>
@@ -41,9 +44,24 @@
             <button class="button" onclick="mostrarSeccion('transBanc')">Transferencia Bancaria</button>
             <button class="button" onclick="mostrarSeccion('pagoTarCred')">Tarjeta de Crédito</button>
         </div>
-
+	<div class="pestanas" id="pagoQR">
+            <div class="qr">
+                <div class="instrucciones">
+                    <p>1. Abra la aplicación movil de su banco en su teléfono celular.</p>
+                    <p>2. Seleccione la forma de pago QR-SIMPLE.</p>
+                    <p>3. Capture el siguiente código QR con la cámara de su teléfono.</p>
+                    <p>4. Espere algunos segundos para que se confirme su pago</p>
+                </div>
+                <div class="imgQR">
+                    <div class="imagen">
+                        <img src="" alt="QR Code" id="imagen">
+                    </div>
+                </div>
+            </div>
+            <button class="realizarPago">Realizar pago</button>
+        </div>
     <script>
-
+	
     </script>
 </body>
 </html>
