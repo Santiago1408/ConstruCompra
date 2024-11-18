@@ -64,13 +64,14 @@
     </style>
 </head>
 <body>
-<h2 class="titulo">Formas de Pago</h2>
+<div class="container">
+        <h2 class="titulo">Formas de Pago</h2>
         <div class="buttons">
             <button class="button" onclick="mostrarSeccion('pagoQR')">QR</button>
             <button class="button" onclick="mostrarSeccion('transBanc')">Transferencia Bancaria</button>
             <button class="button" onclick="mostrarSeccion('pagoTarCred')">Tarjeta de Crédito</button>
         </div>
-	<div class="pestanas" id="pagoQR">
+        <div class="pestanas" id="pagoQR">
             <div class="qr">
                 <div class="instrucciones">
                     <p>1. Abra la aplicación movil de su banco en su teléfono celular.</p>
@@ -86,7 +87,7 @@
             </div>
             <button class="realizarPago">Realizar pago</button>
         </div>
-	<div class="pestanas" id="transBanc">
+        <div class="pestanas" id="transBanc">
             <div class="formTB">
                 <div class="campoTB">
                     <p class="etiCampo" id="c1">Número de cuenta:</p>
@@ -103,7 +104,7 @@
             </div>
             <button class="realizarPago">Realizar pago</button>
         </div>
-	<div class="pestanas" id="pagoTarCred">
+        <div class="pestanas" id="pagoTarCred">
             <div class="formTB">
                 <div class="campoTB">
                     <p class="etiCampo" id="c4">Número de tarjeta:</p>
@@ -120,6 +121,7 @@
             </div>
             <button class="realizarPago">Realizar pago</button>
         </div>
+    </div>
     <script>
 	function mostrarSeccion(id){
             var pestanas = document.getElementsByClassName('pestanas');
