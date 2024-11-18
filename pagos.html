@@ -95,7 +95,14 @@
             <button class="realizarPago">Realizar pago</button>
         </div>
     <script>
-	
+	function mostrarSeccion(id){
+            var pestanas = document.getElementsByClassName('pestanas');
+            for(var i = 0; i<pestanas.length; i++){
+                pestanas[i].classList.remove('activo');
+            }
+
+            var pestanaActiva = document.getElementById(id);
+            pestanaActiva.classList.add('activo');
     </script>
 </body>
 </html>
