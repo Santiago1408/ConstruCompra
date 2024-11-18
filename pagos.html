@@ -5,20 +5,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Formas de Pago</title>
     <style>
-	    body{
-	    	display: flex;
-            	justify-content: center;
-            	align-items: flex-start;
-            	height: 100vh;
-            	font-family: Arial, sans-serif;
-            	margin: 0;
-            	background-color: #f2f0f0;   
-	    }
-	    .buttons {
-            	display: flex;
-            	gap: 20px;
-            	justify-content: center;
-	     }
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            height: 100vh;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background-color: #f2f0f0;
+        }
+
+        .container {
+            width: 80%;
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .titulo {
+            margin-bottom: 20px;
+            font-size: 24px;
+            text-align: center;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+        }
 
         .button, .realizarPago{
             margin: 0 40px;
@@ -31,18 +48,25 @@
             cursor: pointer;
             transition: background-color 0.3s;
         }
-	.pestanas{
-            display: none;
+
+        .realizarPago{
+            display: block;
+            margin: 0 auto;
         }
 
-	.pestanas{
+        .button:hover {
+            background-color: #d35400;
+        }
+
+        .pestanas{
             display: none;
         }
 
         .activo{
             display: block;
         }
-	.instrucciones{
+
+        .instrucciones{
             width: 45%;
             height: 200px;
             background-color: #f2f0f0;
@@ -61,6 +85,37 @@
             width: 50%;
             text-align: center;
         }
+        #imagen{
+            width: 300px;
+            height: 300px;
+            padding: 20px;
+        }
+        .formTB{
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .etiCampo{
+            font-size: 25px;
+            font-weight: bold;
+            padding: 20px 0;
+            text-align: right;
+        }
+        .inputText{
+            height: 40px;
+            margin: 20px 20px;
+            width: 400px;
+            background-color: #e7e7e7;
+            border-radius: 20px;
+            padding: 8px;
+            font-size: 25px;
+        }
+        .campoTB{
+            display: flex;
+            align-items: center;
+        }
+
     </style>
 </head>
 <body>
