@@ -144,21 +144,21 @@
             <button class="realizarPago">Realizar pago</button>
         </div>
         <div class="pestanas" id="transBanc">
-            <div class="formTB">
-                <div class="campoTB">
-                    <p class="etiCampo" id="c1">Número de cuenta:</p>
-                    <input type="text" class="inputText">
+            <form id="formTransferencia" class="formTB" onsubmit="return validarTransferencia()">
+            <div class="campoTB">
+                <p class="etiCampo" id="c1">Número de cuenta:</p>
+                <input type="text" id="numeroCuenta" class="inputText" placeholder="Ingrese su número de cuenta">
                 </div>
                 <div class="campoTB">
                     <p class="etiCampo" id="c2">Banco:</p>
-                    <input type="text" class="inputText">
+                    <input type="text" id="banco" class="inputText" placeholder="Ingrese su banco">
                 </div>
                 <div class="campoTB">
-                    <p class="etiCampo" id="c3">Número de transferencia:</p>
-                    <input type="text" class="inputText">
+                    <p class="etiCampo" id="c3">Número de referencia:</p>
+                    <input type="text" id="numeroReferencia" class="inputText" placeholder=" ">
                 </div>
-            </div>
-            <button class="realizarPago">Realizar pago</button>
+            <button type="submit" class="realizarPago">Realizar pago</button>
+         </form>
         </div>
         <div class="pestanas" id="pagoTarCred">
             <div class="formTB">
