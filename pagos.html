@@ -141,7 +141,7 @@
                     </div>
                 </div>
             </div>
-            <button class="realizarPago">Realizar pago</button>
+            <button class="realizarPago" onclick="window.location.href='{{ url_for('confirmar_compra', user_id=session['id_usuario']) }}'">Realizar pago</button>
         </div>
         <div class="pestanas" id="transBanc">
             <form id="formTransferencia" class="formTB" onsubmit="return validarTransferencia()">
@@ -157,7 +157,7 @@
                     <p class="etiCampo" id="c3">Número de referencia:</p>
                     <input type="text" id="numeroReferencia" class="inputText" placeholder=" ">
                 </div>
-            <button type="submit" class="realizarPago">Confirmar Transferencia</button>
+            <button type="submit" class="realizarPago" onclick="window.location.href='{{ url_for('confirmar_compra', user_id=session['id_usuario']) }}'">Confirmar transferencia</button>
          </form>
         </div>
         <div class="pestanas" id="pagoTarCred">
@@ -174,7 +174,7 @@
                     <p class="etiCampo" id="c6">CVV:</p>
                     <input type="text" id="cvv" class="inputText" placeholder="Ingrese su CVV">
                 </div>
-                <button type="submit" class="realizarPago">Realizar pago</button>
+                <button type="submit" class="realizarPago" onclick="window.location.href='{{ url_for('confirmar_compra', user_id=session['id_usuario']) }}'">Realizar pago</button>
                 </form>
             </div>
         </div>
