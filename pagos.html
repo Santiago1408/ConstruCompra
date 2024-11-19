@@ -254,13 +254,25 @@
         const imagenAleatoria = imagenes[Math.floor(Math.random() * imagenes.length)];
         document.getElementById('imagen').src = imagenAleatoria;
         
-        function mostrarSeccion(id){
-            var pestanas = document.getElementsByClassName('pestanas');
-            for(var i = 0; i<pestanas.length; i++){
-                pestanas[i].classList.remove('activo');
+        function limpiarFormulario(formId) {
+            const form = document.getElementById(formId);
+            if (form) {
+                form.reset();
             }
-
-            var pestanaActiva = document.getElementById(id);
+        }
+        
+        function mostrarSeccion(id) {
+            const pestanas = document.getElementsByClassName('pestanas');
+            for (let i = 0; i < pestanas.length; i++) {
+                pestanas[i].classList.remove('activo');
+                if (pestanas[i].id !== id) {
+                    const form = pestanas[i].querySelector('form');
+                    if (form) {
+                        limpiarFormulario(form.id); // Limpia los formularios de las secciones no activas
+                    }
+                }
+            }
+            const pestanaActiva = document.getElementById(id);
             pestanaActiva.classList.add('activo');
         }
         
