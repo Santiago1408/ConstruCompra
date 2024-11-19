@@ -699,6 +699,27 @@
             line-height: 1.4; /* Espacio entre líneas */
             font-size: 14px; /* Tamaño de la fuente */
         }
+        .informacion_adicional {
+            display: none; /* Oculta la información adicional por defecto */
+            position: absolute;
+            top: 5px; /* Espacio desde el borde superior del contenedor */
+            bottom: 5px; /* Espacio desde el borde inferior del contenedor */
+            left: 50%;
+            transform: translateX(-50%); /* Centra el div horizontalmente */
+            width: 90%; /* Ajusta el ancho para casi cubrir el contenedor */
+            background-color: rgb(0, 0, 0); /* Fondo oscuro */
+            padding: 5px;
+            text-align: center;
+            border-radius: 10px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.3); /* Sombra en los bordes */
+        }
+        .contenido_footer:hover .informacion_adicional {
+            display: block;
+        }
+        .subtitulo {
+            color: #ff914d; /* Cambia este color al que desees para los subtítulos */
+            font-weight: bold; /* Opcional: para destacar más los subtítulos */
+        }
     </style>
 </head>
 <body>
