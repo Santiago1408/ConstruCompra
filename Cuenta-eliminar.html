@@ -1,0 +1,72 @@
+ <div class="content-btn">
+        <button class="delete-button" onclick="confirmDeletion()">Eliminar mi Cuenta</button>
+        <button class="password-button" onclick="window.location.href='{{ url_for('cambiar_password') }}'">Cambiar Contraseña</button>
+    </div>
+
+        <!-- Ventana emergente de confirmación -->
+    <div id="confirmationModal" class="modal">
+        <div class="modal-content">
+            <p class="title">¿Está seguro que desea eliminar su cuenta?</p>
+            <button class="modal-button" onclick="deleteAccount()">Sí</button>
+            <button class="modal-button" onclick="closeModal()">No</button>
+        </div>
+    </div>
+
+
+    <!-- Ventana emergente de éxito -->
+    <div id="successModal" class="modal">
+        <div class="modal-content">
+            <p class="title">¡Se eliminó exitosamente su Cuenta!</p>
+            <button class="modal-button" onclick="redirectToLogin()">Aceptar</button>
+        </div>
+    </div>
+
+    <script>
+        function confirmDeletion() {
+            // Muestra la ventana emergente de confirmación
+            document.getElementById('confirmationModal').style.display = 'flex';
+        }
+
+
+        function deleteAccount() {
+            // Enviar una solicitud POST al servidor para eliminar la cuenta
+            fetch('/eliminarCuenta', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Mostrar un mensaje de éxito y redirigir al usuario
+                    document.getElementById('successModal').style.display = 'flex';
+
+                } else {
+                    // Mostrar un mensaje de error si la eliminación falla
+                    alert(data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error al eliminar la cuenta:', error);
+                alert('Ocurrió un error al intentar eliminar la cuenta.');
+            });
+
+            // Cerrar el modal
+            closeModal();
+        }
+
+
+
+        function closeModal() {
+            // Oculta todas las ventanas emergentes
+            document.getElementById('confirmationModal').style.display = 'none';
+            document.getElementById('successModal').style.display = 'none';
+        }
+        function redirectToLogin() {
+            // Cierra el modal y redirige al inicio de sesión
+            closeModal();
+            window.location.href = '/'; // Redirige al inicio de sesión
+        }
+
+    </script>
