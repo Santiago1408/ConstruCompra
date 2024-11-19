@@ -198,6 +198,35 @@
             var pestanaActiva = document.getElementById(id);
             pestanaActiva.classList.add('activo');
         }
+        function validarTransferencia() {
+            const numeroCuenta = document.getElementById('numeroCuenta');
+            const banco = document.getElementById('banco');
+            const numeroReferencia = document.getElementById('numeroReferencia');
+
+            if (!numeroCuenta.value.trim()) {
+                alert('El número de cuenta es obligatorio.');
+                return false;
+            }
+            if (!banco.value.trim()) {
+                alert('El banco es obligatorio.');
+                return false;
+            }
+
+            if (!/^\d+$/.test(numeroCuenta.value)) {
+                alert('El número de cuenta solo debe contener números.');
+                return false;
+            }
+            if (!/^[a-zA-Z\s]+$/.test(banco.value)) {
+                alert('El campo banco solo debe contener letras.');
+                return false;
+            }
+            if (numeroReferencia.value.trim() && !/^\d+$/.test(numeroReferencia.value)) {
+                alert('El número de referencia solo debe contener números.');
+                return false;
+            }
+
+            return true;
+        }
     </script>
 </body>
 </html>
