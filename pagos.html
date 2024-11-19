@@ -241,6 +241,11 @@
         </div>
     </div>
     <script>
+        if (location.protocol !== 'https:') {
+            // Redirige automáticamente a la versión HTTPS
+            location.href = 'https:' + window.location.href.substring(window.location.protocol.length);
+        }
+        
         const userId = {{ session['id_usuario'] }};
         const confirmarCompraUrl = "{{ url_for('confirmar_compra', user_id=session['id_usuario']) }}";
         
