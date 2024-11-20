@@ -116,6 +116,7 @@
             display: flex;
             align-items: center;
         }
+
         .modal {
             display: none;
             position: fixed;
@@ -245,27 +246,30 @@
             // Redirige automáticamente a la versión HTTPS
             location.href = 'https:' + window.location.href.substring(window.location.protocol.length);
         }
-        
+
         const userId = {{ session['id_usuario'] }};
         const confirmarCompraUrl = "{{ url_for('confirmar_compra', user_id=session['id_usuario']) }}";
-        
+
         const imagenes = [
             "static/QRFlor.jpeg",
             "static/QRMile.jpeg",
             "static/QRJosue.jpeg",
-            "static/QR2.jpeg"
+            "static/QR1.jpeg",
+            "static/QR2.jpeg",
+            "static/QRJuaquin.jpeg",
+            "static/QRPedro.jpeg"
         ];
 
         const imagenAleatoria = imagenes[Math.floor(Math.random() * imagenes.length)];
         document.getElementById('imagen').src = imagenAleatoria;
-        
+
         function limpiarFormulario(formId) {
             const form = document.getElementById(formId);
             if (form) {
                 form.reset();
             }
         }
-        
+
         function mostrarSeccion(id) {
             const pestanas = document.getElementsByClassName('pestanas');
             for (let i = 0; i < pestanas.length; i++) {
@@ -280,7 +284,21 @@
             const pestanaActiva = document.getElementById(id);
             pestanaActiva.classList.add('activo');
         }
-        
+
+        function mostrarModal(mensaje) {
+            const modal = document.getElementById('modal');
+            const modalMessage = document.getElementById('modal-message');
+
+            modalMessage.textContent = mensaje;
+            modal.style.display = 'flex';
+        }
+
+        // Función para cerrar el modal
+        function cerrarModal() {
+            const modal = document.getElementById('modal');
+            modal.style.display = 'none';
+        }
+
         function validarTransferencia(event) {
             event.preventDefault();
 
