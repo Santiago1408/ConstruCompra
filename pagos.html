@@ -277,12 +277,17 @@
                 if (pestanas[i].id !== id) {
                     const form = pestanas[i].querySelector('form');
                     if (form) {
-                        limpiarFormulario(form.id); // Limpia los formularios de las secciones no activas
+                        limpiarFormulario(form.id);
                     }
                 }
             }
             const pestanaActiva = document.getElementById(id);
             pestanaActiva.classList.add('activo');
+
+            // Añadir lógica de temporizador específica para QR
+            if (id === 'pagoQR') {
+                iniciarTemporizadorQR();
+            }
         }
 
         function mostrarModal(mensaje) {
@@ -409,14 +414,40 @@
             return false;
         }
 
+        function iniciarTemporizadorQR() {
+            if (window.qrTimeoutId) {
+                clearTimeout(window.qrTimeoutId);
+            }
+
+            window.qrTimeoutId = setTimeout(() => {
+                const pestanaQR = document.getElementById('pagoQR');
+                if (pestanaQR && pestanaQR.classList.contains('activo')) {
+                    mostrarModal('Transacción fallida.');
+                    
+                    setTimeout(() => {
+                        const imagen = document.getElementById('imagen');
+                        if (imagen) {
+                            imagen.src = imagenes[Math.floor(Math.random() * imagenes.length)];
+                        }
+                        mostrarSeccion('pagoQR');
+                    }, 1500); 
+                }
+            }, 10000); // 10 segundos
+        }
+        
         function validarPagoQR() {
+            // Limpiar el temporizador si el usuario hace clic en realizar pago antes
+            if (window.qrTimeoutId) {
+                clearTimeout(window.qrTimeoutId);
+            }
+
             fetch('/guardar_pago', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    id_usuario: userId, // ID del usuario
+                    id_usuario: userId,
                     metodo_pago: 'QR',
                     num_transaccion: null
                 })
@@ -428,11 +459,15 @@
                     mostrarModal('Transacción exitosa.');
                     setTimeout(() => {
                         window.location.href = confirmarCompraUrl;
-            }, 1500);
+                    }, 1500);
                 } else {
                     mostrarModal(`Error al registrar el pago: ${data.message}`);
                 }
+            })
+            .catch(error => {
+                mostrarModal('Error de conexión.');
             });
+
             return false;
         }
     </script>
