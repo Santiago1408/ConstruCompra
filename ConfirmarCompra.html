@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirmar compra</title>
     <style>
-	* {
+        * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
@@ -33,7 +34,8 @@
             border-bottom: 3px solid #d4733e;
             height: 55px;
         }
-	.profile-pic {
+
+        .profile-pic {
             width: 48px;
             height: 48px;
             border-radius: 50%;
@@ -41,12 +43,6 @@
         }
 
         .user-name {
-            color: #d4733e;
-            font-size: 24px;
-            padding-left: 10px;
-        }
-
-	.user-name {
             color: #d4733e;
             font-size: 24px;
             padding-left: 10px;
@@ -173,7 +169,8 @@
             height: 70px;
             padding: 10px;
         }
-	.modal {
+
+        .modal {
             display: none;
             position: fixed;
             top: 0;
@@ -237,7 +234,8 @@
         .modal-content button:hover {
             background-color: #c77745;
         }
-	.confir-modal {
+
+        .confir-modal {
             display: none;
             position: fixed;
             top: 0;
@@ -308,11 +306,12 @@
             display: inline-block;
             margin-left: 0.25rem;
         }
+
     </style>
 </head>
 <body>
-<div class="container">
-	<div class="header">
+    <div class="container">
+        <div class="header">
             <div class="perfil">
                 <img src="data:image/jpeg;base64,{{ datos_usuario.foto_perfil | b64encode }}" alt="Perfil" class="imaPerfil">
                 <h2 class="user-name">{{ datos_usuario.nombre }}</h2>
@@ -320,8 +319,10 @@
             <div class="titPagina">
                 <h1>Confirmar compra</h1>
             </div>
-        </div> 
-	<div class="form-grid">
+        </div>
+
+
+            <div class="form-grid">
                 <!-- Columna izquierda -->
                 <div class="customer-info">
                     <div class="form-group">
@@ -338,7 +339,6 @@
                         <label class="form-label">Método de pago:</label>
                         <div class="payment-method">
                             <span>Transferencia bancaria</span>
-                            <button class="btn">Cambiar</button>
                         </div>
                     </div>
 
@@ -357,47 +357,46 @@
                     <label class="form-label">Detalles de los productos:</label>
                     <div class="products-details">
 
+                        {% for producto in datos_compra.productos %}
                         <div class="product-item">
-                            <p><strong>Producto:</strong> Pala</p>
-                            <p><strong>Precio:</strong> Bs. 160.50</p>
-                            <p><strong>Cantidad:</strong> 1</p>
-                            <p><strong>Subtotal:</strong> Bs. 160.50</p>
+                            <p><strong>Producto:</strong> {{ producto.nombre_producto}}</p>
+                            <p><strong>Precio:</strong> Bs. {{producto.precio}}</p>
+                            <p><strong>Cantidad:</strong> {{producto.cantidad}}</p>
+                            <p><strong>Subtotal:</strong> Bs. {{ producto.subtotal}}</p>
                         </div>
+                         {% endfor %}
 
-                        <div class="product-item">
-                            <p><strong>Producto:</strong> Cemento</p>
-                            <p><strong>Precio:</strong> Bs. 60.00</p>
-                            <p><strong>Cantidad:</strong> 8</p>
-                            <p><strong>Subtotal:</strong> Bs. 480.00</p>
-                        </div>
                     </div>
 
                     <div class="totals">
-                        <p class="total-line">Costo total: Bs. 1440.50</p>
+                        <p class="total-line">Costo total: Bs. {{ datos_compra.total}}</p>
                         <p class="total-line">Costo envío: Bs. 50.00</p>
-                        <p class="total-line final-total">Monto a pagar: Bs. 1490.50</p>
-                        <button class="btn" style="margin-top: 15px;">Modificar pedido</button>
+                        <p class="total-line final-total">Monto a pagar: Bs. {{datos_compra.monto_pagar}}</p>
+                        <button class="btn" style="margin-top: 15px;" onclick="window.location.href='{{ url_for('carrito') }}'">Modificar pedido</button>
                     </div>
                 </div>
-        </div>
-	<div class="buttons">
-        	<button class="btn" onclick="window.location.href='{{ url_for('index') }}'">Cancelar</button>
+            </div>
+
+            <div class="buttons">
+                <button class="btn" onclick="window.location.href='{{ url_for('index') }}'">Cancelar</button>
                 <button class="btn" onclick="mostrarModal()">Confirmar compra</button>
-        </div>
-	<div id="modal" class="modal">
-        	<div class="modal-content">
+            </div>
+
+            <div id="modal" class="modal">
+                <div class="modal-content">
                     <div class="modal-header"></div>
                     <div class="modal-body">
                         ¿Está seguro que desea realizar la compra?
                     </div>
                     <div class="modal-buttons">
                         <button onclick="cerrarModal()">Cancelar</button>
-                        <button>Confirmar</button>
+                        <button onclick="confirmarDesdeModal()">Confirmar</button>
                     </div>
                 </div>
+            </div>
         </div>
-</div>
-<div class="confir-modal" id="confir-modal">
+    </div>
+    <div class="confir-modal" id="confir-modal">
         <div class="confir-modal-content">
             <div class="confir-modal-header">
                 <button class="close-button" onclick="cerrarConfirModal()">✖</button>
@@ -410,19 +409,46 @@
                 </p>
             </div>
         </div>
-</div>
-<script>
-	function mostrarConfirModal() {
+    </div>
+    <script>
+        let numTrans = null;
+
+        function mostrarConfirModal() {
             document.getElementById('confir-modal').style.display = 'flex';
         }
 
         function cerrarConfirModal() {
             document.getElementById('confir-modal').style.display = 'none';
+            window.location.href = "{{ url_for('index', user_id=session['id_usuario']) }}";
         }
-	
-	function cerrarModal() {
+
+        function confirmarCompra() {
+            mostrarConfirModal();
+        }
+
+        function mostrarModal() {
+            document.getElementById('modal').style.display = 'flex';
+            if(numTrans == null){
+                numTrans = generarNumTrans(1000, 10000);
+                document.getElementById('transaction-number').innerHTML = numTrans;
+            }else{
+                document.getElementById('transaction-number').innerHTML = numTrans;
+            }
+        }
+
+        function generarNumTrans(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+
+        }
+
+        function cerrarModal() {
             document.getElementById('modal').style.display = 'none';
         }
-</script>    
+
+        function confirmarDesdeModal() {
+            cerrarModal();
+            confirmarCompra();
+        }
+    </script>
 </body>
 </html>
