@@ -22,7 +22,7 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             background-color: #ffffff;
         }
-        
+
         .producto-item {
             display: flex;
             align-items: center;
@@ -128,7 +128,7 @@
 	.acciones-carrito {
             display: flex;
             flex-direction: column;
-            align-items: flex-end; 
+            align-items: flex-end;
             margin-top: 20px;
         }
 
@@ -139,13 +139,13 @@
 
         .boton-inferior {
             display: flex;
-            justify-content: center; 
-            width: 100%; 
-            margin-top: 20px; 
+            justify-content: center;
+            width: 100%;
+            margin-top: 20px;
         }
 
         .boton-accion {
-            background-color: #e58331; 
+            background-color: #e58331;
             color: white;
             border: none;
             padding: 10px 20px;
@@ -155,8 +155,8 @@
         }
 
         .boton-accion:hover {
-            background-color: #d47428; 
-        }    
+            background-color: #d47428;
+        }
     </style>
 </head>
 <body>
@@ -202,14 +202,24 @@
     </div>
 </div>
 <script>
-document.addEventListener("DOMContentLoaded", function() {
-	const actualizarCarritoBtn = document.getElementById("actualizarCarrito");
-
-        actualizarCarritoBtn.addEventListener("click", function() {
-            actualizarTotal();
-	    alert("Carrito actualizado");
+    document.addEventListener("DOMContentLoaded", function() {
+    function actualizarTotal() {
+        let total = 0;
+        document.querySelectorAll(".producto-item").forEach(item => {
+            const precio = parseFloat(item.querySelector(".producto-precio").textContent.replace('Precio: ', '').replace(' Bs', ''));
+            const cantidad = parseInt(item.querySelector(".producto-cantidad").textContent);
+            total += precio * cantidad;
         });
-	
+        document.querySelector(".total").textContent = `Total general: ${total} Bs`;
+    }
+
+    const actualizarCarritoBtn = document.getElementById("actualizarCarrito");
+
+    actualizarCarritoBtn.addEventListener("click", function() {
+        actualizarTotal();
+        alert("Carrito actualizado");
+    });
+
         const guardarCarritoBtn = document.getElementById("guardarCarrito");
 
         guardarCarritoBtn.addEventListener("click", function() {
@@ -223,6 +233,9 @@ document.addEventListener("DOMContentLoaded", function() {
 
                 return { id, nombre, descripcion, precio, cantidad };
             });
+
+            // Actualiza el carrito temporal en el almacenamiento del navegador
+            sessionStorage.setItem('carrito', JSON.stringify(productos));
 
             // Enviar los datos del carrito al servidor
             fetch('/guardar_carrito', {
@@ -242,7 +255,7 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     });
 
-document.addEventListener("DOMContentLoaded", function() {
+    document.addEventListener("DOMContentLoaded", function() {
         const eliminarBotones = document.querySelectorAll(".eliminar");
 
         eliminarBotones.forEach(boton => {
@@ -250,7 +263,6 @@ document.addEventListener("DOMContentLoaded", function() {
                 const productoItem = this.closest(".producto-item");
                 const productoId = productoItem.getAttribute("data-id");
 
-               // Solicitar al servidor eliminar el producto
         fetch('/eliminar_producto_carrito', {
             method: 'POST',
             headers: {
@@ -280,7 +292,7 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     });
 });
-	
+
         const incrementarBotones = document.querySelectorAll(".incrementar");
         const decrementarBotones = document.querySelectorAll(".decrementar");
 
