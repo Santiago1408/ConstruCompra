@@ -308,11 +308,29 @@
                 mostrarModal('El número de referencia solo debe contener números.');
                 return false;
             }
-
-            mostrarModal('Transacción exitosa.');
-            setTimeout(() => {
-                window.location.href = confirmarCompraUrl;
+            fetch('/guardar_pago', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    id_usuario: userId,
+                    metodo_pago: 'Transferencia Bancaria',
+                    num_transaccion: null
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                if (data.success) {
+                    mostrarModal('Transacción exitosa.');
+                    setTimeout(() => {
+                        window.location.href = confirmarCompraUrl;
             }, 1500);
+                } else {
+                     mostrarModal(`Error al registrar el pago: ${data.message}`);
+                }
+            });
             return false;
         }
 
