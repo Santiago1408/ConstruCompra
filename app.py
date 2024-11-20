@@ -1321,7 +1321,7 @@ def confirmar_compra(user_id):
         cursor.execute(query_usuario, (user_id,))
         datos_usuario = cursor.fetchone()
 
-        # Verify if user exists
+        # Verificar si el usuario existe
         if not datos_usuario:
             return render_template('error.html', message='Usuario no encontrado'), 404
 
@@ -1361,11 +1361,30 @@ def confirmar_compra(user_id):
             productos_carrito = []
             total_compra = 0
 
+        # Consulta para obtener el último método de pago
+        query_pago = '''
+            SELECT metodo_pago
+            FROM pagos
+            WHERE id_usuario = %s
+            ORDER BY id_pago DESC
+            LIMIT 1
+        '''
+
+        try:
+            cursor.execute(query_pago, (user_id,))
+            ultimo_pago = cursor.fetchone()
+            metodo_pago = ultimo_pago['metodo_pago'] if ultimo_pago else 'No registrado'
+
+        except Exception as e:
+            print(f"Error en la consulta del método de pago: {str(e)}")
+            metodo_pago = 'No registrado'
+
         # Preparar datos para la plantilla
         datos_compra = {
             'productos': productos_carrito,
             'total': total_compra,
-            'monto_pagar': monto_pagar
+            'monto_pagar': monto_pagar,
+            'metodo_pago': metodo_pago  # Incluir el método de pago en los datos
         }
 
         is_owner = 'id_usuario' in session and session['id_usuario'] == user_id
@@ -1375,9 +1394,9 @@ def confirmar_compra(user_id):
         print(f"Datos de compra: {datos_compra}")
 
         return render_template('ConfirmarCompra.html',
-                             datos_usuario=datos_usuario,
-                             datos_compra=datos_compra,
-                             is_owner=is_owner)
+                               datos_usuario=datos_usuario,
+                               datos_compra=datos_compra,
+                               is_owner=is_owner)
 
     except Exception as e:
         print(f"Error general en confirmar_compra: {str(e)}")
