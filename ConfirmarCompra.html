@@ -62,7 +62,33 @@
 	<div class="form-grid">
                 <!-- Columna izquierda -->
                 <div class="customer-info">
-                    
+                    <div class="form-group">
+                        <label class="form-label">Nombre:</label>
+                        <input type="text" class="form-input" value="{{ datos_usuario.nombre }} {{ datos_usuario.apellido }}" readonly>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Dirección de envío:</label>
+                        <input type="text" class="form-input" value="{{ datos_usuario.direccion }}" readonly>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Método de pago:</label>
+                        <div class="payment-method">
+                            <span>Transferencia bancaria</span>
+                            <button class="btn">Cambiar</button>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Correo electrónico:</label>
+                        <input type="email" class="form-input" value="{{ datos_usuario.correo }}" readonly>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Número de celular:</label>
+                        <input type="text" class="form-input" value="{{ datos_usuario.telefono }}" readonly>
+                    </div>
                 </div>
 
                 <div class="order-details">
