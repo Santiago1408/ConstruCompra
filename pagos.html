@@ -365,11 +365,29 @@
                 mostrarModal('El CVV debe tener 3 dígitos.');
                 return false;
             }
-
-            mostrarModal('Transacción exitosa.');
-            setTimeout(() => {
-                window.location.href = confirmarCompraUrl;
+            fetch('/guardar_pago', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    id_usuario: userId, // ID del usuario
+                    metodo_pago: 'Tarjeta de Crédito',
+                    num_transaccion: null // Num. de transacción nulo
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data); // Verifica la respuesta del servidor
+                if (data.success) {
+                    mostrarModal('Transacción exitosa.');
+                    setTimeout(() => {
+                        window.location.href = confirmarCompraUrl;
             }, 1500);
+                } else {
+                    mostrarModal(`Error al registrar el pago: ${data.message}`);
+                }
+            });
             return false;
         }
 
