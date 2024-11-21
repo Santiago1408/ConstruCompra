@@ -6,23 +6,44 @@
     <title>Carrito</title>
     <style>
 	body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
             font-family: Arial, sans-serif;
             background-color: #f5f5f5;
             margin: 0;
-            padding: 20px;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column; 
+            align-items: center;
         }
-        .carrito-container {
+
+        .header {
             width: 100%;
+            background-color: #f5f5f5;
+            padding: 20px 0;
+            border-bottom: 3px solid #df8755;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .inicio-button {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            font-weight: 600;
+            text-decoration: none;
+            color: black;
+        }
+
+        .carrito-container {
+            width: 90%; /* Ancho relativo */
             max-width: 1500px;
-            padding: 20px;
+            padding: 40px;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             background-color: #ffffff;
+            margin: 20px auto; /* Centrado horizontal automático */
         }
-
         .producto-item {
             display: flex;
             align-items: center;
@@ -176,6 +197,10 @@
     </style>
 </head>
 <body>
+    <header class="header">
+        <button class="inicio-button" onclick="window.location.href='{{ url_for('index') }}'">Inicio</button>
+    </header>
+	
     <div class="carrito-container">
     <h2>Productos en tu carrito</h2>
     <ul>
