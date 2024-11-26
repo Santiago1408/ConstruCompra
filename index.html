@@ -842,6 +842,7 @@
                         let currentCount = parseInt(cartCounter.textContent) || 0;
                         cartCounter.textContent = currentCount + 1;
                     }
+                    productosAgregados.add(id_producto);
                 } else {
                    mostrarModal("Error: " + data.message);
                 }
