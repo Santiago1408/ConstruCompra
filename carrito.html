@@ -456,14 +456,20 @@
             document.querySelector(".total").textContent = `Total general: ${total} Bs`;
         }
 	document.getElementById('procederPago').addEventListener('click', function(event) {
-    const carritoGuardado = sessionStorage.getItem('carritoGuardado');
-    if (carritoGuardado !== 'true') {
-        event.preventDefault(); // Evitar la navegación
-       mostrarModal('Por favor, guarda el carrito antes de proceder al pago.');
-    } else {
-        window.location.href = '{{ url_for("pagos") }}';
-    }
-});
+	    // Verificar si hay productos en el carrito
+	    const productItems = document.querySelectorAll('.producto-info');
+	    const carritoGuardado = sessionStorage.getItem('carritoGuardado');
+	
+	        if (productItems.length === 0) {
+	            event.preventDefault(); // Prevenir navegación
+	            mostrarModal('El carrito se encuentra vacío');
+	        } else if (carritoGuardado !== 'true') {
+	            event.preventDefault(); // Prevenir navegación
+	            mostrarModal('Por favor, guarda el carrito antes de proceder al pago.');
+	        } else {
+	            window.location.href = '{{ url_for("pagos") }}';
+	        }
+	});
     });
 </script>
 </body>
