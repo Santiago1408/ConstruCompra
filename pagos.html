@@ -357,6 +357,14 @@
             return false;
         }
 
+        document.getElementById('fechaVencimiento').addEventListener('input', function () {
+        let valor = this.value.replace(/\D/g, ''); // Elimina caracteres no numéricos
+        if (valor.length >= 2) {
+        valor = valor.slice(0, 2) + '/' + valor.slice(2); // Inserta la barra después de los primeros dos dígitos
+        }
+            this.value = valor;
+        });
+        
         function validarTarjetaCredito(event) {
             event.preventDefault();
 
