@@ -388,6 +388,14 @@
                 mostrarModal('La fecha de vencimiento debe estar en el formato MM/AA.');
                 return false;
             }
+            const [mes, anio] = fechaVencimiento.value.split('/');
+            const anioActual = new Date().getFullYear() % 100; // Últimos dos dígitos del año actual
+
+            if (parseInt(anio, 10) < anioActual) {
+                mostrarModal('El año de vencimiento no puede ser menor al año actual.');
+                return false;
+            }
+
             if (!cvv.value.trim()) {
                 mostrarModal('El CVV es obligatorio.');
                 return false;
