@@ -319,6 +319,10 @@
                 mostrarModal('El banco es obligatorio.');
                 return false;
             }
+            if (!/^\d{18}$/.test(numeroCuenta.value)) {
+                mostrarModal('El número de tarjeta debe tener 18 dígitos.');
+                return false;
+            }
             if (!/^\d+$/.test(numeroCuenta.value)) {
                 mostrarModal('El número de cuenta solo debe contener números.');
                 return false;
