@@ -823,7 +823,7 @@
         const productosAgregados = new Set();
         function agregarAlCarrito(id_producto) {
             if (productosAgregados.has(id_producto)) {
-               alert("El producto ya fue añadido al carrito.");
+               mostrarModal("El producto ya fue añadido al carrito.");
             return;
             }
             fetch('/agregar_al_carrito', {
