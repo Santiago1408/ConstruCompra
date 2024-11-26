@@ -819,6 +819,8 @@
                 fixedButton.classList.remove("hidden");
             }
         });
+
+        const productosAgregados = new Set();
         function agregarAlCarrito(id_producto) {
             fetch('/agregar_al_carrito', {
                 method: 'POST',
