@@ -245,8 +245,29 @@
             <button class="boton-accion" id="procederPago">Proceder al pago</button>
         </div>
     </div>
+	<div id="modal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button class="close-button" onclick="cerrarModal()">&times;</button>
+                </div>
+                <div class="modal-body" id="modal-message"></div>
+            </div>
+        </div>
 </div>
 <script>
+	function mostrarModal(mensaje) {
+            const modal = document.getElementById('modal');
+            const modalMessage = document.getElementById('modal-message');
+
+            modalMessage.textContent = mensaje;
+            modal.style.display = 'flex';
+        }
+
+        function cerrarModal() {
+            const modal = document.getElementById('modal');
+            modal.style.display = 'none';
+        }
+
     document.addEventListener("DOMContentLoaded", function() {
     function actualizarTotal() {
         let total = 0;
@@ -262,7 +283,7 @@
 
     actualizarCarritoBtn.addEventListener("click", function() {
         actualizarTotal();
-        alert("Carrito actualizado");
+        mostrarModal('Carrito actualizado');
     });
 
         const guardarCarritoBtn = document.getElementById("guardarCarrito");
@@ -294,7 +315,7 @@
             .then(data => {
                 // Establecer una bandera indicando que el carrito fue guardado
             sessionStorage.setItem('carritoGuardado', 'true');
-            alert(data.message); // Mensaje de confirmación
+            mostrarModal(data.message); // Mensaje de confirmación
             })
             .catch(error => {
                 console.error('Error al guardar el carrito:', error);
@@ -328,7 +349,7 @@
                 sessionStorage.setItem('carrito', JSON.stringify(nuevoCarrito));
                 // Actualizar el total después de eliminar el producto
                 actualizarTotal();
-                alert(data.message);
+                mostrarModal(data.message);
             } else {
                 alert("No se pudo eliminar el producto: " + data.message);
             }
@@ -383,7 +404,7 @@
     const carritoGuardado = sessionStorage.getItem('carritoGuardado');
     if (carritoGuardado !== 'true') {
         event.preventDefault(); // Evitar la navegación
-        alert('Por favor, guarda el carrito antes de proceder al pago.');
+       mostrarModal('Por favor, guarda el carrito antes de proceder al pago.');
     } else {
         window.location.href = '{{ url_for("pagos") }}';
     }
