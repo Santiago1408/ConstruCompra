@@ -606,6 +606,23 @@
             mostrarModal("Error al intentar eliminar el producto.");
         });
 }
+	function guardarCarrito(carrito) {
+    fetch('/guardar_carrito', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ carrito: carrito }),
+    })
+        .then(response => response.json())
+        .then(data => {
+            sessionStorage.setItem('carritoGuardado', 'true');
+            console.log('Carrito guardado con éxito:', data.message);
+        })
+        .catch(error => {
+            console.error('Error al guardar el carrito:', error);
+        });
+}
     });
 </script>
 </body>
