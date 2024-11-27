@@ -136,71 +136,65 @@ def solicitar_recuperacion():
 @app.route('/restablecer_password/<token>', methods=['GET', 'POST'])
 def restablecer_password(token):
     try:
+        # Verificar si el token es válido
         correo = serializer.loads(token, salt='recuperar-password', max_age=3600)
     except:
         return render_template('error.html', message="El enlace ha expirado o no es válido.")
 
     if request.method == 'POST':
         try:
+            # Obtener la nueva contraseña del request
             if request.is_json:
                 data = request.get_json()
                 nueva_password = data.get('nueva_password')
             else:
                 nueva_password = request.form['nueva_password']
 
+            # Validar el formato de la contraseña
             regex = re.compile(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$')
             if not regex.match(nueva_password):
-                return jsonify(success=False, message="La contraseña no cumple con los requisitos de seguridad")
+                return jsonify(success=False,
+                             message="La contraseña debe tener al menos 8 caracteres, una letra mayúscula, una letra minúscula y un número")
 
+            # Conectar a la base de datos
             connection = get_db_connection()
             cursor = connection.cursor(dictionary=True)
 
-            cursor.execute("""
-                SELECT COUNT(*) as reset_count
-                FROM cambios_contrasenia
-                WHERE correo = %s
-                AND fecha >= NOW() - INTERVAL 24 HOUR
-                AND estado = 'exitoso'
-            """, (correo,))
-            reset_count_result = cursor.fetchone()
-            reset_count = reset_count_result['reset_count'] if reset_count_result else 0
-
-            if reset_count >= 3:
-                cursor.close()
-                connection.close()
-                return jsonify(success=False, message="Has alcanzado el límite de cambios de contraseña para hoy.")
-
-            password_hash = bcrypt.hashpw(nueva_password.encode('utf-8'), bcrypt.gensalt())
-            connection.start_transaction()
-
             try:
-                cursor.execute("UPDATE usuarios SET contrasenia = %s WHERE correo = %s",
-                               (password_hash.decode('utf-8'), correo))
+                # Hashear la nueva contraseña
+                password_hash = bcrypt.hashpw(nueva_password.encode('utf-8'), bcrypt.gensalt())
 
-                cursor.execute("""
-                    INSERT INTO cambios_contrasenia (correo, fecha, estado)
-                    VALUES (%s, NOW(), 'exitoso')
-                """, (correo,))
+                # Actualizar la contraseña
+                cursor.execute(
+                    "UPDATE usuarios SET contrasenia = %s WHERE correo = %s",
+                    (password_hash.decode('utf-8'), correo)
+                )
+
+                # Verificar si se actualizó algún registro
+                if cursor.rowcount == 0:
+                    return jsonify(success=False,
+                                 message="No se encontró el usuario para actualizar la contraseña.")
 
                 connection.commit()
+                return jsonify(success=True,
+                             message="Contraseña actualizada correctamente")
 
-                return jsonify(success=True, message="Contraseña actualizada correctamente.")
-
-            except Exception as update_error:
+            except Exception as db_error:
                 connection.rollback()
-                logger.error(f"Error updating password: {str(update_error)}")
-                return jsonify(success=False, message="Error al actualizar la contraseña. Intente nuevamente.")
+                logger.error(f"Error en la base de datos: {str(db_error)}")
+                return jsonify(success=False,
+                             message="Error al actualizar la contraseña en la base de datos")
 
-        except Exception as e:
-            logger.error(f"Error en restablecer_password: {str(e)}")
-            return jsonify(success=False, message="Error al procesar la solicitud.")
-
-        finally:
-            if 'cursor' in locals():
+            finally:
                 cursor.close()
-            if 'connection' in locals():
                 connection.close()
 
+        except Exception as e:
+            logger.error(f"Error general en restablecer_password: {str(e)}")
+            return jsonify(success=False,
+                         message="Error al procesar la solicitud")
+
+    # Si es GET, mostrar el formulario
     return render_template('restablecer_password.html', token=token)
 
 
@@ -217,11 +211,47 @@ def cambiar_password():
                 datos = request.get_json()
             except Exception:
                 return jsonify({'success': False, 'message': 'Formato JSON inválido'}), 400
-            if 'password_actual' not in datos or 'nueva_password' not in datos:
-                return jsonify({'success': False, 'message': 'Datos incompletos'}), 400
-            if len(datos['nueva_password']) < 8:
-                return jsonify({'success': False, 'message': 'La nueva contraseña debe tener al menos 8 caracteres'}), 400
-            if datos['nueva_password'] == datos['password_actual']:
+
+            # Enhanced password validation
+            nueva_password = datos.get('nueva_password', '')
+            password_actual = datos.get('password_actual', '')
+
+            # Comprehensive password complexity check
+            def validar_complejidad_contrasenia(password):
+                # Check minimum length
+                if len(password) < 8:
+                    return False, 'La contraseña debe tener al menos 8 caracteres'
+
+                # Check for at least one uppercase letter
+                if not any(c.isupper() for c in password):
+                    return False, 'La contraseña debe contener al menos una letra mayúscula'
+
+                # Check for at least one lowercase letter
+                if not any(c.islower() for c in password):
+                    return False, 'La contraseña debe contener al menos una letra minúscula'
+
+                # Check for at least one digit
+                if not any(c.isdigit() for c in password):
+                    return False, 'La contraseña debe contener al menos un número'
+
+                # Check for at least one special character
+                special_chars = "!@#$%^&*()_+-=[]{}|;:,.<>?"
+                if not any(c in special_chars for c in password):
+                    return False, 'La contraseña debe contener al menos un carácter especial'
+
+                # Check for common patterns or sequential characters
+                if any(seq in password.lower() for seq in ['123', 'abc', 'qwe', 'password']):
+                    return False, 'La contraseña no puede contener secuencias predecibles'
+
+                return True, ''
+
+            # Validate new password complexity
+            es_valida, mensaje_error = validar_complejidad_contrasenia(nueva_password)
+            if not es_valida:
+                return jsonify({'success': False, 'message': mensaje_error}), 400
+
+            # Check if new password is same as current
+            if nueva_password == password_actual:
                 return jsonify({'success': False, 'message': 'La nueva contraseña no puede ser igual a la actual'}), 400
 
             connection = get_db_connection()
@@ -229,13 +259,14 @@ def cambiar_password():
             cursor.execute('SELECT contrasenia FROM usuarios WHERE id_usuarios = %s', (id_usuario,))
             usuario = cursor.fetchone()
 
-            # Verificar la contraseña actual
-            if not bcrypt.checkpw(datos['password_actual'].encode('utf-8'), usuario['contrasenia'].encode('utf-8')):
+            # Verify current password
+            if not bcrypt.checkpw(password_actual.encode('utf-8'), usuario['contrasenia'].encode('utf-8')):
                 return jsonify({'success': False, 'message': 'Credenciales inválidas'}), 400
 
-            # Hashear la nueva contraseña
-            nueva_password_hashed = bcrypt.hashpw(datos['nueva_password'].encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
+            # Hash new password
+            nueva_password_hashed = bcrypt.hashpw(nueva_password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
 
+            # Update password
             cursor.execute(
                 'UPDATE usuarios SET contrasenia = %s WHERE id_usuarios = %s',
                 (nueva_password_hashed, id_usuario)
@@ -965,6 +996,11 @@ def agregar_al_carrito():
         if 'carrito' not in session:
             session['carrito'] = []
 
+        # Verificar si el producto ya está en el carrito
+        if product_id in session['carrito']:
+            return jsonify({"success": False, "message": "El producto ya fue añadido al carrito"}), 400
+
+
         session['carrito'].append(product_id)
         session.modified = True
 
@@ -1407,6 +1443,7 @@ def confirmar_compra(user_id):
             cursor.close()
         if connection:
             connection.close()
+
 
 
 @app.route('/guardar_pago', methods=['POST'])
