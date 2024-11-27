@@ -568,6 +568,44 @@
 	            window.location.href = '{{ url_for("pagos") }}';
 	        }
 	});
+	    function confirmarAccion() {
+    		const productoItem = document.querySelector(".producto-item[data-id='producto-id']");
+    		const productoId = productoItem.getAttribute("data-id");
+
+    // Eliminar producto del servidor
+    fetch('/eliminar_producto_carrito', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ id_producto: productoId }),
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Remover el elemento del DOM
+                productoItem.remove();
+
+                // Actualizar el carrito local
+                const carrito = JSON.parse(sessionStorage.getItem('carrito')) || [];
+                const nuevoCarrito = carrito.filter(item => item.id !== productoId);
+                sessionStorage.setItem('carrito', JSON.stringify(nuevoCarrito));
+
+                // Guardar automáticamente el carrito actualizado
+                guardarCarrito(nuevoCarrito);
+
+                // Actualizar el total
+                actualizarTotal();
+                mostrarModal('Producto eliminado y carrito actualizado con éxito.');
+            } else {
+                mostrarModal("No se pudo eliminar el producto: " + data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error al eliminar el producto:', error);
+            mostrarModal("Error al intentar eliminar el producto.");
+        });
+}
     });
 </script>
 </body>
